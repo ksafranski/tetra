@@ -13,7 +13,8 @@
     "grunt": "~0.4.1",
     "grunt-cli": "~0.1.13",
     "grunt-contrib-jshint": "~0.6.4",
-    "grunt-jsbeautifier": "~0.2.0"
+    "grunt-jsbeautifier": "~0.2.0",
+    "fs-extra": "^0.9.1"
   },
   "scripts": {
     "preinstall": "npm i -g forever",
