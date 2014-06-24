@@ -2,9 +2,10 @@ var fs = require('fs-extra');
 
 module.exports = function (req, res) {
 
+  var base = __dirname + '/../conf/schemas/';
+
   // Read single version or list
   var read = function () {
-    var base = __dirname + '/../conf/schemas/';
     var params = req.params[0].split('/');
     var schemas;
     var output = {};
@@ -53,8 +54,30 @@ module.exports = function (req, res) {
 
   // Create version
   var create = function () {
-    res.send(201, 'Created');
-    res.send(409, 'Resource already exists');
+    // Get name
+    var name = req.body.name;
+
+    // Ensure name specified
+    if (!name) {
+      res.send(400, 'Bad request');
+      return false;
+    }
+
+    // Check that recource DNE
+    if (fs.existsSync(base + name)) {
+      res.send(409, 'Resource already exists');
+      return false;
+    }
+
+    // Create resource
+    fs.mkdir(base + name, function (err) {
+      if (err) {
+        res.send(500, 'Server error');
+        return false;
+      }
+      // Created
+      res.send(201, 'Created');
+    });
   };
 
   // Update version

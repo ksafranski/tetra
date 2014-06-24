@@ -3,6 +3,7 @@ var output = require('./output');
 var api = require('./api');
 var authentication = require('./authentication');
 var config = require('./config');
+var bodyParser = require('body-parser');
 
 // Service constructor
 var Service = function () {
@@ -17,6 +18,11 @@ Service.prototype.start = function () {
     output('error', 'Missing config file: /conf/service.json');
     return false;
   }
+  // Body parser
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }));
+  app.use(bodyParser.json());
   // Check authentication
   if (config.service.authentication) {
     app.use(authentication);
