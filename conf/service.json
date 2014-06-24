@@ -1,0 +1,8 @@
+{
+  "name": "API",
+  "port": 8000,
+  "versions": [
+    "v1"
+  ],
+  "authentication": true
+}
