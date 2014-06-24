@@ -1,6 +1,8 @@
-# Node BaaS
+![Codeship Status for telepharm/nbaas](https://codeship.io/projects/b4fbc3d0-dde4-0131-c2ca-42d485117a92/status)
 
-RESTful Back-End as a Service platform built entirely in Node.JS.
+# NBaaS
+
+RESTful Back-End as a Service platform built in Node.JS.
 
 ## Installation
 
