@@ -14,6 +14,12 @@ install all dependencies.
 The system works off a version-schema system which allows easy development 
 of versioned RESTful APIs.
 
+### Authentication
+
+The `users` system allows setting up of users which have the ability to access 
+different methods based on their type. User authentication is done during the 
+request by supplying the `username` and `password` via BasicAuthentication header.
+
 ---
 
 ### Users
@@ -66,6 +72,22 @@ the data to be modified (supports partials).
 
 Deleting (`DELETE`) requests are similar to update where the username to delete 
 should be specified in the last place on the URL.
+
+---
+
+### Versions
+
+To support ongoing development the system supports a basic versioning system. 
+Versions can be manipulated using REST calls against the following:
+
+```
+http://yourserver.com:NNNN/version
+```
+
+* `GET` can retrieve all, or by appending to URI; a specific version and its schemas.
+* `POST` will create a new schema by providing `name` in the request body.
+* `PUT` will edit the `name` based on the request body property `name`.
+* `DELETE` will delete a version (and all it's schemas) by specifying the name appended to the URL.
 
 ---
 

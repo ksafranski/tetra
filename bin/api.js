@@ -42,7 +42,7 @@ module.exports = function (req, res) {
       return false;
     }
 
-    // Ensure :schema exists
+    // Ensure schema/endpoint exists
     if (schemas.indexOf(schema) === -1) {
       res.send(404, 'Resource not found');
       return false;
