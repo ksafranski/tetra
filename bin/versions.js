@@ -53,7 +53,8 @@ module.exports = function (req, res) {
 
   // Create version
   var create = function () {
-
+    res.send(201, 'Created');
+    res.send(409, 'Resource already exists');
   };
 
   // Update version
