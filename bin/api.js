@@ -1,5 +1,6 @@
 var config = require('./config');
-var users = require('./users.js');
+var users = require('./users');
+var versions = require('./versions');
 
 // Method handlers
 var methods = {};
@@ -59,19 +60,37 @@ module.exports = function (req, res) {
     }
   };
 
-  // Determine params
-  if (type === 'user') {
-    // Ensure permissions to edit users
+  // Checks auth permissions, then runs function (or returns false)
+  var checkPerms = function (cb) {
     if (req.userType !== 0) {
       res.send(403, 'Forbidden');
       return false;
     }
-    // Passed auth, process...
-    users(req, res);
-  } else if (type === 'schema' || type === 'api') {
-    // Schema or API
+    // Fire callback
+    cb();
+  };
+
+  // Determine params
+  switch (type) {
+  case 'user':
+    checkPerms(function () {
+      users(req, res);
+    });
+    break;
+  case 'version':
+    checkPerms(function () {
+      versions(req, res);
+    });
+    break;
+  case 'schema':
+    checkPerms(function () {
+      handleStandardReq(type, params[1], params[2]);
+    });
+    break;
+  case 'api':
     handleStandardReq(type, params[1], params[2]);
-  } else {
+    break;
+  default:
     // Not valid type
     res.send(404, 'Resource not found');
     return false;
