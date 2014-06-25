@@ -120,6 +120,31 @@ module.exports = function (req, res) {
 
   // Delete version
   var del = function () {
+    // Get current name
+    var params = req.params[0].split('/');
+    var name = params[1];
+
+    // Ensure name specified
+    if (!name) {
+      res.send(400, 'Bad request');
+      return false;
+    }
+
+    // Ensure exists
+    if (!fs.existsSync(base + name)) {
+      res.send(404, 'Resource not found');
+      return false;
+    }
+
+    // Remove
+    fs.remove(base + name, function (err) {
+      if (err) {
+        res.send(500, 'Server error');
+        return false;
+      }
+      // Delete success
+      res.send(200, 'Resource deleted');
+    });
 
   };
 
