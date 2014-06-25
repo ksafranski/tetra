@@ -1,4 +1,5 @@
 var passwordHash = require('password-hash');
+var _ = require('underscore');
 var fs = require('fs');
 
 module.exports = function (req) {
@@ -102,6 +103,26 @@ module.exports = function (req) {
 
   // Update user
   var update = function () {
+
+    var params = req.params[0];
+    var username = params.split('/').pop();
+
+    // Ensure user exists
+    if (!users.hasOwnProperty(username)) {
+      self.respond(404);
+      return false;
+    }
+
+    // Encrypt password (if applicable)
+    if (req.body.hasOwnProperty('password')) {
+      req.body.password = passwordHash.generate(req.body.password);
+    }
+
+    // Update
+    _.extend(users[username], req.body);
+
+    // Save
+    saveData(200);
 
   };
 

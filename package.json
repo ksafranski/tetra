@@ -15,7 +15,8 @@
     "grunt-contrib-jshint": "~0.6.4",
     "grunt-jsbeautifier": "~0.2.0",
     "fs-extra": "^0.9.1",
-    "body-parser": "^1.4.3"
+    "body-parser": "^1.4.3",
+    "underscore": "^1.6.0"
   },
   "scripts": {
     "preinstall": "npm i -g forever",
