@@ -1,6 +1,6 @@
 var express = require('express');
 var output = require('./output');
-var api = require('./api');
+var processor = require('./processor');
 var authentication = require('./authentication');
 var config = require('./config');
 var bodyParser = require('body-parser');
@@ -28,7 +28,7 @@ Service.prototype.start = function () {
     app.use(authentication);
   }
   // Bind endpoints to api module
-  app.all('/*', api);
+  app.all('/*', processor);
   // Start listener
   app.listen(config.service.port);
   output('success', 'Service running over ' + config.service.port);
