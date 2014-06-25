@@ -104,6 +104,7 @@ module.exports = function (req) {
   // Update user
   var update = function () {
 
+    // Get param
     var params = req.params[0];
     var username = params.split('/').pop();
 
@@ -128,7 +129,21 @@ module.exports = function (req) {
 
   // Delete user
   var del = function () {
+    // Get param
+    var params = req.params[0];
+    var username = params.split('/').pop();
 
+    // Ensure user exists
+    if (!users.hasOwnProperty(username)) {
+      self.respond(404);
+      return false;
+    }
+
+    // Remove
+    delete users[username];
+
+    // Save
+    saveData(200);
   };
 
   // Check method
