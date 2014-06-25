@@ -1,7 +1,12 @@
 {
   "admin": {
-      "password": "sha1$91bdac47$1$0fd7fba6812b4f5ecfd6d91543cb0cc87b14d6db",
-      "type": 0,
-      "data": {}
+    "password": "sha1$91bdac47$1$0fd7fba6812b4f5ecfd6d91543cb0cc87b14d6db",
+    "type": 0,
+    "data": {}
+  },
+  "test": {
+    "password": "sha1$391a0d02$1$b06500d4aee98b12c3eeaf60915dc605eb0ccf42",
+    "data": {},
+    "type": 1
   }
 }

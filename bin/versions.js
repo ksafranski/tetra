@@ -78,7 +78,7 @@ module.exports = function (req) {
         return false;
       }
       // Created
-      self.respond(201, 'Created');
+      self.respond(201);
     });
   };
 
@@ -115,7 +115,7 @@ module.exports = function (req) {
         return false;
       }
       // Mod successful
-      self.respond(200, 'Resource modified');
+      self.respond(200);
     });
 
   };

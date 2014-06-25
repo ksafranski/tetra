@@ -33,7 +33,7 @@ module.exports = function (req, res) {
     }
 
     // Send response
-    if (code === 200 || code === 201) {
+    if (data) {
       // Success responses, include data
       res.send(code, data);
     } else {
@@ -105,12 +105,12 @@ module.exports = function (req, res) {
   switch (type) {
   case 'user':
     checkPerms(function () {
-      users.call(self, req, res);
+      users.call(self, req);
     });
     break;
   case 'version':
     checkPerms(function () {
-      versions.call(self, req, res);
+      versions.call(self, req);
     });
     break;
   case 'schema':
