@@ -23,9 +23,11 @@ module.exports = function (req) {
   });
 
   if (!users) {
+    // User FAIL
     self.respond(500);
     return false;
   } else {
+    // Convert to object
     users = JSON.parse(users);
   }
 
@@ -44,6 +46,21 @@ module.exports = function (req) {
 
   // Read single user or list
   var read = function () {
+    var params = req.params[0];
+    var username = params.split('/').pop();
+
+    // Check type
+    if (username) {
+      // Single entity request
+      if (users.hasOwnProperty(username)) {
+        self.respond(200, users[username]);
+      } else {
+        self.respond(404);
+      }
+    } else {
+      // Full request
+      self.respond(200, users);
+    }
 
   };
 
