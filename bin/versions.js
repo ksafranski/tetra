@@ -82,6 +82,39 @@ module.exports = function (req, res) {
 
   // Update version
   var update = function () {
+    // Get current name
+    var params = req.params[0].split('/');
+    var existing = params[1];
+    // Get new name
+    var name = req.body.name;
+
+    // Ensure name specified
+    if (!name || !existing) {
+      res.send(400, 'Bad request');
+      return false;
+    }
+
+    // Check that CURRENT resource exists
+    if (!fs.existsSync(base + existing)) {
+      res.send(404, 'Resource not found');
+      return false;
+    }
+
+    // Check that NEW recource DNE
+    if (fs.existsSync(base + name)) {
+      res.send(409, 'Resource already exists');
+      return false;
+    }
+
+    // Update
+    fs.rename(base + existing, base + name, function (err) {
+      if (err) {
+        res.send(500, 'Server error');
+        return false;
+      }
+      // Mod successful
+      res.send(200, 'Resource modified');
+    });
 
   };
 
