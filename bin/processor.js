@@ -11,6 +11,38 @@ methods.DELETE = require('./methods/delete');
 
 module.exports = function (req, res) {
 
+  var self = this;
+
+  // Global response handler
+  this.respond = function (code, data) {
+    // Error codes
+    var codes = {
+      '200': 'Success',
+      '201': 'Resource created',
+      '400': 'Bad request',
+      '403': 'Forbidden',
+      '404': 'Resource not found',
+      '405': 'Method not supported',
+      '409': 'Resource conflict',
+      '500': 'Internal error'
+    };
+
+    // Set allow-methods header on 405
+    if (code === 405) {
+      res.headers('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+    }
+
+    // Send response
+    if (code === 200 || code === 201) {
+      // Success responses, include data
+      res.send(code, data);
+    } else {
+      // Failure responses, include error message
+      res.send(code, codes[code]);
+    }
+
+  };
+
   // Check for userType (authentication)
   if (!req.hasOwnProperty('userType')) {
     // DNE, set to 0 (full access, no auth)
@@ -31,31 +63,30 @@ module.exports = function (req, res) {
     if (config.versions.hasOwnProperty(version)) {
       schemas = config.versions[version];
     } else {
-      res.send(404, 'Resource not found');
+      self.respond(404);
       return false;
     }
 
     // Check permissions on schema edit
     if (type === 'schema' && req.userType !== 0) {
       // Not valid to access/modify schemas
-      res.send(403, 'Forbidden');
+      self.respond(403);
       return false;
     }
 
     // Ensure schema/endpoint exists
     if (schemas.indexOf(schema) === -1) {
-      res.send(404, 'Resource not found');
+      self.respond(404);
       return false;
     }
 
     // Process
     if (methods.hasOwnProperty(req.method)) {
       // Method exists, process
-      methods[req.method](type, req, res);
+      methods[req.method].call(self, type, req, res);
     } else {
       // Unsupported method
-      res.headers('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-      res.send(405, 'Method not supported');
+      self.respond(405);
       return false;
     }
   };
@@ -63,7 +94,7 @@ module.exports = function (req, res) {
   // Checks auth permissions, then runs function (or returns false)
   var checkPerms = function (cb) {
     if (req.userType !== 0) {
-      res.send(403, 'Forbidden');
+      self.respond(403);
       return false;
     }
     // Fire callback
@@ -74,12 +105,12 @@ module.exports = function (req, res) {
   switch (type) {
   case 'user':
     checkPerms(function () {
-      users(req, res);
+      users.call(self, req, res);
     });
     break;
   case 'version':
     checkPerms(function () {
-      versions(req, res);
+      versions.call(self, req, res);
     });
     break;
   case 'schema':
@@ -92,7 +123,7 @@ module.exports = function (req, res) {
     break;
   default:
     // Not valid type
-    res.send(404, 'Resource not found');
+    self.respond(404);
     return false;
   }
 

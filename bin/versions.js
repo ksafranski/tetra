@@ -1,6 +1,8 @@
 var fs = require('fs-extra');
 
-module.exports = function (req, res) {
+module.exports = function (req) {
+
+  var self = this;
 
   var base = __dirname + '/../conf/schemas/';
 
@@ -25,7 +27,7 @@ module.exports = function (req, res) {
           }
         }
       } else {
-        res.send(404, 'Resource not found');
+        self.respond(404);
         return false;
       }
     } else {
@@ -49,7 +51,7 @@ module.exports = function (req, res) {
       }
     }
     // No failures, send output
-    res.send(200, JSON.stringify(output));
+    self.respond(200, JSON.stringify(output));
   };
 
   // Create version
@@ -59,24 +61,24 @@ module.exports = function (req, res) {
 
     // Ensure name specified
     if (!name) {
-      res.send(400, 'Bad request');
+      self.respond(400);
       return false;
     }
 
     // Check that recource DNE
     if (fs.existsSync(base + name)) {
-      res.send(409, 'Resource already exists');
+      self.respond(409);
       return false;
     }
 
     // Create resource
     fs.mkdir(base + name, function (err) {
       if (err) {
-        res.send(500, 'Server error');
+        self.respond(500);
         return false;
       }
       // Created
-      res.send(201, 'Created');
+      self.respond(201, 'Created');
     });
   };
 
@@ -90,30 +92,30 @@ module.exports = function (req, res) {
 
     // Ensure name specified
     if (!name || !existing) {
-      res.send(400, 'Bad request');
+      self.respond(400);
       return false;
     }
 
     // Check that CURRENT resource exists
     if (!fs.existsSync(base + existing)) {
-      res.send(404, 'Resource not found');
+      self.respond(404);
       return false;
     }
 
     // Check that NEW recource DNE
     if (fs.existsSync(base + name)) {
-      res.send(409, 'Resource already exists');
+      self.respond(409);
       return false;
     }
 
     // Update
     fs.rename(base + existing, base + name, function (err) {
       if (err) {
-        res.send(500, 'Server error');
+        self.respond(500);
         return false;
       }
       // Mod successful
-      res.send(200, 'Resource modified');
+      self.respond(200, 'Resource modified');
     });
 
   };
@@ -126,24 +128,24 @@ module.exports = function (req, res) {
 
     // Ensure name specified
     if (!name) {
-      res.send(400, 'Bad request');
+      self.respond(400);
       return false;
     }
 
     // Ensure exists
     if (!fs.existsSync(base + name)) {
-      res.send(404, 'Resource not found');
+      self.respond(404);
       return false;
     }
 
     // Remove
     fs.remove(base + name, function (err) {
       if (err) {
-        res.send(500, 'Server error');
+        self.respond(500);
         return false;
       }
       // Delete success
-      res.send(200, 'Resource deleted');
+      self.respond(200, 'Resource deleted');
     });
 
   };
@@ -164,8 +166,7 @@ module.exports = function (req, res) {
     break;
   default:
     // Unsupported method
-    res.headers('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-    res.send(405, 'Method not supported');
+    self.respond(405);
     return false;
   }
 
