@@ -1,6 +1,7 @@
-var config = require('./config');
 var users = require('./users');
 var versions = require('./versions');
+var schemas = require('./schemas');
+var api = require('./api');
 
 // Method handlers
 var methods = {};
@@ -55,42 +56,6 @@ module.exports = function (req, res) {
   // Get type
   var type = params[0];
 
-  // Handles "standard" schema or api requests
-  var handleStandardReq = function (type, version, schema) {
-    var schemas;
-
-    // Ensure :version exists, set schemas
-    if (config.versions.hasOwnProperty(version)) {
-      schemas = config.versions[version];
-    } else {
-      self.respond(404);
-      return false;
-    }
-
-    // Check permissions on schema edit
-    if (type === 'schema' && req.userType !== 0) {
-      // Not valid to access/modify schemas
-      self.respond(403);
-      return false;
-    }
-
-    // Ensure schema/endpoint exists
-    if (schemas.indexOf(schema) === -1) {
-      self.respond(404);
-      return false;
-    }
-
-    // Process
-    if (methods.hasOwnProperty(req.method)) {
-      // Method exists, process
-      methods[req.method].call(self, type, req, res);
-    } else {
-      // Unsupported method
-      self.respond(405);
-      return false;
-    }
-  };
-
   // Checks auth permissions, then runs function (or returns false)
   var checkPerms = function (cb) {
     if (req.userType !== 0) {
@@ -115,11 +80,11 @@ module.exports = function (req, res) {
     break;
   case 'schema':
     checkPerms(function () {
-      handleStandardReq(type, params[1], params[2]);
+      schemas.call(self, req);
     });
     break;
   case 'api':
-    handleStandardReq(type, params[1], params[2]);
+    api.call(self, req);
     break;
   default:
     // Not valid type
