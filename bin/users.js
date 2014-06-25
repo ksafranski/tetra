@@ -49,6 +49,11 @@ module.exports = function (req) {
     var params = req.params[0];
     var username = params.split('/').pop();
 
+    // Strip passwords
+    for (var u in users) {
+      delete users[u].password;
+    }
+
     // Check type
     if (username) {
       // Single entity request
