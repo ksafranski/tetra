@@ -3,13 +3,6 @@ var versions = require('./versions');
 var schemas = require('./schemas');
 var api = require('./api');
 
-// Method handlers
-var methods = {};
-methods.GET = require('./methods/get');
-methods.POST = require('./methods/post');
-methods.PUT = require('./methods/put');
-methods.DELETE = require('./methods/delete');
-
 module.exports = function (req, res) {
 
   var self = this;
