@@ -9,6 +9,7 @@ module.exports = function (req) {
   var params = req.params[0].split('/');
   var version = params[1];
   var schema = params[2];
+  var doc = req.body.document;
 
   // Ensure version
   if (!fs.existsSync(base + version)) {
@@ -17,12 +18,30 @@ module.exports = function (req) {
     return false;
   }
 
+  // Ensure schema exists
   var schemaExists = function () {
-    if (!fs.exists(base + version + '/' + schema + '.json')) {
+    if (!fs.existsSync(base + version + '/' + schema + '.json')) {
       // Nope
       return false;
     }
     // YAY!
+    return true;
+  };
+
+  // Check valid schema attributes and format
+  var validFormat = function () {
+    // Ensure JSON
+    try {
+      doc = JSON.parse(doc);
+    } catch (e) {
+      return false;
+    }
+    // Check each property
+    for (var prop in doc) {
+      if (!doc[prop].hasOwnProperty('type')) {
+        return false;
+      }
+    }
     return true;
   };
 
@@ -63,6 +82,31 @@ module.exports = function (req) {
   // Create a new schema
   var create = function () {
 
+    // Set schema
+    schema = req.body.name;
+
+    // Ensure schema doesn't already exist
+    if (schemaExists()) {
+      // Already exists
+      self.respond(409);
+      return false;
+    }
+
+    // Make sure valid format
+    if (!validFormat()) {
+      self.respond(400);
+      return false;
+    }
+
+    // Create
+    fs.writeFile(base + version + '/' + schema + '.json', JSON.stringify(doc), 'utf8', function (err) {
+      if (err) {
+        self.respond(500);
+        return false;
+      }
+      // All good
+      self.respond(201);
+    });
   };
 
   // Update an existing schema
