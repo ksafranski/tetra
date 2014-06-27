@@ -14,7 +14,7 @@ module.exports = function (req) {
 
   // Ensure version
   if (!fs.existsSync(base + version)) {
-    self.respond(404);
+    self.respond(404, 'Version does not exist');
     return false;
   }
 
@@ -59,7 +59,7 @@ module.exports = function (req) {
           self.respond(200, data);
         });
       } else {
-        self.respond(404);
+        self.respond(404, 'Schema does not exist');
         return false;
       }
     } else {
@@ -88,13 +88,13 @@ module.exports = function (req) {
     // Ensure schema doesn't already exist
     if (schemaExists()) {
       // Already exists
-      self.respond(409);
+      self.respond(409, 'Schema already exists');
       return false;
     }
 
     // Make sure valid format
     if (!validFormat()) {
-      self.respond(400);
+      self.respond(400, 'Not valid format');
       return false;
     }
 
@@ -114,7 +114,7 @@ module.exports = function (req) {
     // Ensure schema exists
     if (!schemaExists()) {
       // Already exists
-      self.respond(404);
+      self.respond(404, 'Schema does not exist');
       return false;
     }
 
@@ -123,7 +123,7 @@ module.exports = function (req) {
 
     // Make sure valid format
     if (!validFormat()) {
-      self.respond(400);
+      self.respond(400, 'Not valid format');
       return false;
     }
 
@@ -147,7 +147,7 @@ module.exports = function (req) {
     // Ensure schema exists
     if (!schemaExists()) {
       // Already exists
-      self.respond(404);
+      self.respond(404, 'Schema does not exist');
       return false;
     }
 

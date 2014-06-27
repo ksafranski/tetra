@@ -38,7 +38,7 @@ module.exports = function (req, res) {
       // No data property
       res.send(code, {
         message: codes[code],
-        data: false
+        data: null
       });
     }
 

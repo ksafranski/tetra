@@ -25,7 +25,7 @@ module.exports = function (req) {
 
   if (!users) {
     // User FAIL
-    self.respond(500);
+    self.respond(500, 'Missing user data');
     return false;
   } else {
     // Convert to object
@@ -61,7 +61,7 @@ module.exports = function (req) {
       if (users.hasOwnProperty(username)) {
         self.respond(200, users[username]);
       } else {
-        self.respond(404);
+        self.respond(404, 'User does not exist');
       }
     } else {
       // Full request
@@ -76,14 +76,14 @@ module.exports = function (req) {
     // Ensure mandatory data
     if (!req.body.username || !req.body.password) {
       // Malformed
-      self.respond(400);
+      self.respond(400, 'Not a valid request body');
       return false;
     }
 
     // Ensure account doesn't already exist
     if (users.hasOwnProperty(req.body.username)) {
       // Already exists
-      self.respond(409);
+      self.respond(409, 'User already exists');
       return false;
     }
 
@@ -110,7 +110,7 @@ module.exports = function (req) {
 
     // Ensure user exists
     if (!users.hasOwnProperty(username)) {
-      self.respond(404);
+      self.respond(404, 'User does not exist');
       return false;
     }
 
@@ -135,7 +135,7 @@ module.exports = function (req) {
 
     // Ensure user exists
     if (!users.hasOwnProperty(username)) {
-      self.respond(404);
+      self.respond(404, 'User does not exist');
       return false;
     }
 

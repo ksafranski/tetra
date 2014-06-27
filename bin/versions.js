@@ -61,13 +61,13 @@ module.exports = function (req) {
 
     // Ensure name specified
     if (!name) {
-      self.respond(400);
+      self.respond(400, 'No name specified');
       return false;
     }
 
     // Check that recource DNE
     if (fs.existsSync(base + name)) {
-      self.respond(409);
+      self.respond(409, 'Version already exists');
       return false;
     }
 
@@ -92,19 +92,19 @@ module.exports = function (req) {
 
     // Ensure name specified
     if (!name || !existing) {
-      self.respond(400);
+      self.respond(400, 'No name specified');
       return false;
     }
 
     // Check that CURRENT resource exists
     if (!fs.existsSync(base + existing)) {
-      self.respond(404);
+      self.respond(404, 'Version does not exist');
       return false;
     }
 
     // Check that NEW recource DNE
     if (fs.existsSync(base + name)) {
-      self.respond(409);
+      self.respond(409, 'Version already exists');
       return false;
     }
 
@@ -128,13 +128,13 @@ module.exports = function (req) {
 
     // Ensure name specified
     if (!name) {
-      self.respond(400);
+      self.respond(400, 'No name specified');
       return false;
     }
 
     // Ensure exists
     if (!fs.existsSync(base + name)) {
-      self.respond(404);
+      self.respond(404, 'Version does not exist');
       return false;
     }
 
@@ -145,7 +145,7 @@ module.exports = function (req) {
         return false;
       }
       // Delete success
-      self.respond(200, 'Resource deleted');
+      self.respond(200);
     });
 
   };
