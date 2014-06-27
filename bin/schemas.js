@@ -145,7 +145,22 @@ module.exports = function (req) {
 
   // Delete an existing schema
   var del = function () {
+    // Ensure schema exists
+    if (!schemaExists()) {
+      // Already exists
+      self.respond(404);
+      return false;
+    }
 
+    // Delete
+    fs.unlink(base + version + '/' + schema + '.json', function (err) {
+      if (err) {
+        self.respond(500);
+        return false;
+      }
+      // Success
+      self.respond(200);
+    });
   };
 
   // Check method
