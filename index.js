@@ -1,4 +1,4 @@
 // Just initializes service
-var Service = require('./bin/service.js');
+var Service = require('./libs/service.js');
 var instance = new Service();
 instance.start();
