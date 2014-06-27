@@ -29,11 +29,17 @@ module.exports = function (req, res) {
 
     // Send response
     if (data) {
-      // Success responses, include data
-      res.send(code, data);
+      // If data property
+      res.send(code, {
+        message: codes[code],
+        data: data
+      });
     } else {
-      // Failure responses, include error message
-      res.send(code, codes[code]);
+      // No data property
+      res.send(code, {
+        message: codes[code],
+        data: false
+      });
     }
 
   };

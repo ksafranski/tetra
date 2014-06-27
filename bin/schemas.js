@@ -14,7 +14,6 @@ module.exports = function (req) {
 
   // Ensure version
   if (!fs.existsSync(base + version)) {
-    console.log('here?');
     self.respond(404);
     return false;
   }
