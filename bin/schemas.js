@@ -1,4 +1,5 @@
 var fs = require('fs');
+var _ = require('underscore');
 
 module.exports = function (req) {
 
@@ -99,7 +100,7 @@ module.exports = function (req) {
     }
 
     // Create
-    fs.writeFile(base + version + '/' + schema + '.json', JSON.stringify(doc), 'utf8', function (err) {
+    fs.writeFile(base + version + '/' + schema + '.json', JSON.stringify(doc, null, 4), 'utf8', function (err) {
       if (err) {
         self.respond(500);
         return false;
@@ -111,7 +112,35 @@ module.exports = function (req) {
 
   // Update an existing schema
   var update = function () {
+    // Ensure schema exists
+    if (!schemaExists()) {
+      // Already exists
+      self.respond(404);
+      return false;
+    }
 
+    // Get current
+    var current = JSON.parse(fs.readFileSync(base + version + '/' + schema + '.json', 'utf8'));
+
+    // Make sure valid format
+    if (!validFormat()) {
+      self.respond(400);
+      return false;
+    }
+
+    // Merge
+    doc = _.extend(current, doc);
+
+    // Save
+    // Create
+    fs.writeFile(base + version + '/' + schema + '.json', JSON.stringify(doc, null, 4), 'utf8', function (err) {
+      if (err) {
+        self.respond(500);
+        return false;
+      }
+      // All good
+      self.respond(200);
+    });
   };
 
   // Delete an existing schema
