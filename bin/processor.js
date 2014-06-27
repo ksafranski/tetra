@@ -76,8 +76,8 @@ module.exports = function (req, res) {
       schemas.call(self, req);
     });
     break;
-  case 'api':
-    api.call(self, req);
+  case 'document':
+    document.call(self, req);
     break;
   default:
     // Not valid type

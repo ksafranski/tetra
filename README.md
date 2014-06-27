@@ -150,17 +150,18 @@ DELETE: http://yourserver.com:NNNN/schema/v1/example1
 
 ---
 
-### Documents (API)
+### Documents
 
-After defining schemas, the documents can then be accessed. All actions will be 
-tested against the schemas to ensure data structure and property values.
+After defining schemas, the documents can then be accessed and modified. All 
+actions will be tested against the schemas to ensure data structure and property 
+values.
 
 #### Read
 
 To read all documents in v1's `example` schema, use the following:
 
 ```
-GET: http://yourserver.com:NNNN/api/v1/example
+GET: http://yourserver.com:NNNN/document/v1/example
 ```
 
 To read a specific, or subset of documents there are several methods:
@@ -171,7 +172,7 @@ Each document will have an `_id` parameter common amongst NoSQL document stores
 which can be used to access a specific document:
 
 ```
-GET: http://yourserber.com:NNNN/api/v1/example/1234567890
+GET: http://yourserber.com:NNNN/document/v1/example/1234567890
 ```
 
 ##### By Search
@@ -179,7 +180,7 @@ GET: http://yourserber.com:NNNN/api/v1/example/1234567890
 To query for documents matching certain parameters, supply a querystring:
 
 ```
-GET: http://yourserver.com:NNNN/api/v1/example?foo=1
+GET: http://yourserver.com:NNNN/document/v1/example?foo=1
 ```
 
 The above would return all documents where `foo=1`. Additionally, parameters for 
@@ -190,7 +191,7 @@ searching can be appended using `&`.
 To create a new document, use the following:
 
 ```
-POST: http://yourserver.com:NNNN/api/v1/example
+POST: http://yourserver.com:NNNN/document/v1/example
 BODY:
   foo = 'apple'
   bar = 'orange'
@@ -207,7 +208,7 @@ requests can be used in the URI to specify which documents to update, i.e. all,
 a specific document (by ID), or a subset based on search.
 
 ```
-PUT: http://yourserver.com:NNNN/api/v1/example/1234567890
+PUT: http://yourserver.com:NNNN/document/v1/example/1234567890
 BODY:
   foo = 'banana'
 ```
@@ -222,10 +223,59 @@ Documents can be deleted using the same format of URI as shown in the `GET` exam
 specifying all, by ID, or by query.
 
 ```
-DELETE: http://yourserver.com:NNNN/api/v1/example/1234567890
+DELETE: http://yourserver.com:NNNN/document/v1/example/1234567890
 ```
 
 The above would delete the record with `_id = 1234567890`.
+
+---
+
+### Blobs
+
+Blob storage can be used for storing documents in binary format. They can not 
+be searched and have no schema or version, but support all other methods.
+
+#### Read
+
+To read out a blob it can be accessed by its name.
+
+```
+GET: http://yourserver.com:NNNN/blob/some_file
+```
+
+#### Create
+
+To create (add) a new blob, simply `POST` with request body `blob`:
+
+```
+POST: http://yourserver.com:NNNN/blob
+BODY:
+  name = some_file
+  file = [BINARY]
+```
+
+#### Update
+
+The update (`PUT`) method follows the `POST`, simply replacing the blob:
+
+```
+PUT: http://yourserver.com:NNNN/blob/some_file
+BODY:
+  name = new_name
+  file = [BINARY]
+```
+
+Updates can be partials, allowing changing of only the name or the file.
+
+#### Delete
+
+The delete simply removes the blob from the server:
+
+```
+DELETE: http://youserver.com:NNNN/blob/some_file
+```
+
+---
 
 ## License
 
