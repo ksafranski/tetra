@@ -1,7 +1,8 @@
 var users = require('./users');
 var versions = require('./versions');
 var schemas = require('./schemas');
-var api = require('./api');
+var documents = require('./documents');
+var blobs = require('./blobs');
 
 module.exports = function (req, res) {
 
@@ -77,7 +78,10 @@ module.exports = function (req, res) {
     });
     break;
   case 'document':
-    document.call(self, req);
+    documents.call(self, req);
+    break;
+  case 'blob':
+    blobs.call(self, req);
     break;
   default:
     // Not valid type
