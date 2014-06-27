@@ -113,9 +113,10 @@ GET: http://yourserver.com:NNNN/schema/v1/example
 To create a new schema on v1 named `example1`, use the following:
 
 ```
-POST: http://yourserver.com:NNNN/schema/v1/example1
+POST: http://yourserver.com:NNNN/schema/v1
 BODY:
-  document= 
+  name = example1
+  document = 
     {
       "foo": "string",
       "bar": "boolean",
