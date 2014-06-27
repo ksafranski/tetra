@@ -1,5 +1,12 @@
 {
   "name": "API",
   "port": 8000,
-  "authentication": true
+  "authentication": true,
+  "conn": {
+    "adapter": "mongo",
+    "host": "http://localhost",
+    "user": "mongouser",
+    "pass": "mongopass",
+    "db": "mongotest"
+  }
 }

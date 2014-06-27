@@ -15,6 +15,7 @@ module.exports = function (req) {
   
   // Check for query
   if (Object.keys(req.query).length > 0) {
+    // We have a query!
     query = req.query;
   } else if (id) {
     // By ID
