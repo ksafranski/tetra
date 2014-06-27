@@ -7,6 +7,6 @@
     "host": "http://localhost",
     "user": "mongouser",
     "pass": "mongopass",
-    "db": "mongotest"
+    "db": "test"
   }
 }
