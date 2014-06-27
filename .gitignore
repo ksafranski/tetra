@@ -12,4 +12,10 @@ pids
 node_modules
 
 # Conf files
-conf/schemas/**/*.json
+*.json
+!conf/service.json
+!conf/user.json
+
+# Blob
+blobs/*
+!blobs/.gitkeep
