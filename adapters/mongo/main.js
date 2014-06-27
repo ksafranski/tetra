@@ -9,20 +9,36 @@ var Conn = function () {
 
 };
 
-Conn.prototype.find = function () {
-  
+Conn.prototype.find = function (coll, query, cb) {
+  var self = this;
+  self.db.collection(coll).find(query).toArray(function (err, docs) {
+    cb(err, docs);
+    self.db.close();
+  });
 };
 
-Conn.prototype.create = function () {
-  
+Conn.prototype.create = function (coll, data, cb) {
+  var self = this;
+  self.db.collection(coll).insert(data, function (err) {
+    cb(err);
+    self.db.close();
+  });
 };
 
-Conn.prototype.update = function () {
-  
+Conn.prototype.update = function (coll, query, data, cb) {
+  var self = this;
+  self.db.collection(coll).update(query, data, function (err, docs) {
+    cb(err, docs);
+    self.db.close();
+  });
 };
 
-Conn.prototype.delete = function () {
-  
+Conn.prototype.delete = function (coll, query, cb) {
+  var self = this;
+  self.db.collection(coll).remove(query, function (err) {
+    cb(err);
+    self.db.close();
+  });
 };
 
 module.exports = Conn;
