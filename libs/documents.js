@@ -10,21 +10,15 @@ module.exports = function (req) {
   var params = req.params[0].split('/');
   var version = params[1];
   var endpoint = params[2];
+  var id = params[3] || false;
   var query = {};
   
-  // Split QS
-  if (endpoint.indexOf('?') !== -1) {
-    // query = {};
-    var qsparams = endpoint.split('?');
-    endpoint = qsparams[0];
-    var sections = qsparams[1].split('&');
-    for (var i=0, z=sections.length; i<z; i++) {
-        var pair = sections[i].split('=');
-        query[pair[0]] = pair[1];
-    }
-  } else {
+  // Check for query
+  if (Object.keys(req.query).length > 0) {
+    query = req.query;
+  } else if (id) {
     // By ID
-    query = { id: query };
+    query['_id'] = id;
   }
 
   var schema;
