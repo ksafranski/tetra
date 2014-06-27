@@ -4,6 +4,7 @@ var processor = require('./processor');
 var authentication = require('./authentication');
 var config = require('./config');
 var bodyParser = require('body-parser');
+var connectDomain = require('connect-domain');
 
 // Service constructor
 var Service = function () {
@@ -13,11 +14,16 @@ var Service = function () {
 // Start the service
 Service.prototype.start = function () {
   var app = express();
+  var errorHandler = function (err, req, res) {
+    res.send(500, 'Internal error');
+    console.log(err);
+  };
   // Check and load config
   if (!config.service) {
     output('error', 'Missing config file: /conf/service.json');
     return false;
   }
+  app.use(connectDomain());
   // Body parser
   app.use(bodyParser.urlencoded({
     extended: true
@@ -28,7 +34,7 @@ Service.prototype.start = function () {
     app.use(authentication);
   }
   // Bind endpoints to api module
-  app.all('/*', processor);
+  app.all('/*', processor).use(errorHandler);
   // Start listener
   app.listen(config.service.port);
   output('success', 'Service running over ' + config.service.port);
