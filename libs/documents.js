@@ -10,7 +10,22 @@ module.exports = function (req) {
   var params = req.params[0].split('/');
   var version = params[1];
   var endpoint = params[2];
-  var id = params[3];
+  var query = {};
+  
+  // Split QS
+  if (endpoint.indexOf('?') !== -1) {
+    // query = {};
+    var qsparams = endpoint.split('?');
+    endpoint = qsparams[0];
+    var sections = qsparams[1].split('&');
+    for (var i=0, z=sections.length; i<z; i++) {
+        var pair = sections[i].split('=');
+        query[pair[0]] = pair[1];
+    }
+  } else {
+    // By ID
+    query = { id: query };
+  }
 
   var schema;
 
@@ -34,11 +49,18 @@ module.exports = function (req) {
       return false;
     }
   }
+  
+  // Build query
+  var buildQuery = function() {
+    
+  };
 
   // Get single or multiple documents
   var read = function () {
-    if (id) {
-      console.log(id);
+    if (!query) {
+      // Get all
+    } else {
+      // Build query
     }
   };
 
