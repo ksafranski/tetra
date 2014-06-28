@@ -1,10 +1,29 @@
 var fs = require('fs');
+var config = require('./config');
 
 module.exports = function (req) {
 
   var self = this;
-
+  var Conn;
   var base = __dirname + '/../conf/';
+  var adapters = __dirname+'/../adapters/';
+  
+  // Ensure connection settings
+  if (!config.hasOwnProperty('conn')) {
+    self.respond(500, 'No document connection specified');
+    return false;
+  }
+  
+  // Ensure adapter
+  if (!config.hasOwnProperty('adapter') || !fs.exists(adapters+config.conn.adapter+'/main.js')) {
+    self.respond(500, 'Missing connection adapter');
+    return false;
+  }
+  
+  // Load adapter
+  Conn = require('./../adapters/'+adapters.config.conn.adapter+'/main.js');
+  // Instantiate db instance
+  var db = new Conn();
 
   // Get params
   var params = req.params[0].split('/');
