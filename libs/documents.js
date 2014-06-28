@@ -11,15 +11,26 @@ module.exports = function (req) {
   var version = params[1];
   var endpoint = params[2];
   var id = params[3] || false;
-  var query = {};
+  var cursor = {};
   
   // Check for query
   if (Object.keys(req.query).length > 0) {
-    // We have a query!
-    query = req.query;
-  } else if (id) {
-    // By ID
-    query['_id'] = id;
+    // Check page property
+    if (req.query.hasOwnProperty('page')) {
+      // Set
+      cursor.page = req.query.page;
+    } else {
+      // Default
+      cursor.page = 1;
+    }
+    // Check count property
+    if (req.query.hasOwnProperty('count')) {
+      // Set
+      cursor.count = req.query.count;
+    } else {
+      // Default
+      cursor.count = 10;
+    }
   }
 
   var schema;
@@ -44,18 +55,11 @@ module.exports = function (req) {
       return false;
     }
   }
-  
-  // Build query
-  var buildQuery = function() {
-    
-  };
 
   // Get single or multiple documents
   var read = function () {
-    if (!query) {
-      // Get all
-    } else {
-      // Build query
+    if (id) {
+      
     }
   };
 

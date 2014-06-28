@@ -175,16 +175,15 @@ which can be used to access a specific document:
 GET: http://yourserber.com:NNNN/document/v1/example/1234567890
 ```
 
-##### By Search
+##### Multiples
 
-To query for documents matching certain parameters, supply a querystring:
+Querying a collection can be controlled through two quesrysting parameters:
 
 ```
-GET: http://yourserver.com:NNNN/document/v1/example?foo=1
+GET: http://yourserver.com:NNNN/document/v1/example?count=10&page=1
 ```
 
-The above would return all documents where `foo=1`. Additionally, parameters for 
-searching can be appended using `&`.
+The above would return 10 documents starting at page 1.
 
 #### Create
 
