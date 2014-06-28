@@ -28,7 +28,7 @@ module.exports = function (req) {
   // Get params
   var params = req.params[0].split('/');
   var version = params[1];
-  var endpoint = params[2];
+  var collection = params[2];
   var id = params[3] || false;
   var cursor = {};
   
@@ -61,13 +61,13 @@ module.exports = function (req) {
   }
 
   // Ensure schema exists, load into memory
-  if (!fs.existsSync(base + version + '/' + endpoint + '.json')) {
+  if (!fs.existsSync(base + version + '/' + collection + '.json')) {
     self.respond(404, 'Schema does not exist');
     return false;
   } else {
     try {
       // Load into object
-      schema = JSON.parse(fs.readFileSync(base + version + '/' + endpoint + '.json', 'utf8'));
+      schema = JSON.parse(fs.readFileSync(base + version + '/' + collection + '.json', 'utf8'));
     } catch (e) {
       // No dice
       self.respond(500, 'Error loading schema');
@@ -78,7 +78,34 @@ module.exports = function (req) {
   // Get single or multiple documents
   var read = function () {
     if (id) {
-      
+      // Find by ID
+      db.find(collection, cursor, { _id: id }, function (err, data) {
+        if (err) {
+          self.respond(500, err);
+          return false;
+        }
+        // Data?
+        if (!Object.keys(data).length) {
+          self.respond(404);
+          return false;
+        }
+        // Yup!
+        self.respond(200, data);
+      });
+    } else {
+      // Find multiple
+      db.find(collection, cursor, {}, function (err, data) {
+        if (err) {
+          self.respond(500, err);
+        }
+        // Data?
+        if (!Object.keys(data).length) {
+          self.respond(404);
+          return false;
+        }
+        // Yup!
+        self.respond(200, data);
+      });
     }
   };
 
