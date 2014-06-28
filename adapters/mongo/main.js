@@ -1,43 +1,93 @@
 var config = require('./../../conf/service.json');
-var mongo = require('mongoskin');
+var mongoskin = require('mongoskin');
+var ObjectID = require('mongoskin').ObjectID;
 
-// Constructor
+// DozerJS NeDB component
 var Conn = function () {
-
-  // DB Setup
-  this.db = mongo.db(config.conn.user+':'+config.conn.pass+'@'+config.conn.host+'/'+config.conn.db);
-
+  this.store = mongoskin.db(config.conn.host, {
+    username: config.conn.user,
+    password: config.conn.pass,
+    database: config.comm.db,
+    safe: false
+  });
 };
 
+// Correctly formats ID values
+Conn.prototype.formatIds = function (query) {
+  if (query.hasOwnProperty('_id')) {
+    query._id = ObjectID.createFromHexString(query._id);
+  }
+  return query;
+};
+
+// Returns count of fields based on query
+Conn.prototype.count = function (coll, query, cb) {
+  var self = this;
+  try {
+    query = self.formatIds(query);
+  } catch (err) {
+    cb(null, 0);
+    return;
+  }
+  self.store.collection(coll).count(query, function (err, data) {
+    cb(err, data);
+  });
+};
+
+// Finds specific entry
 Conn.prototype.find = function (coll, query, cb) {
   var self = this;
-  self.db.collection(coll).find(query).toArray(function (err, docs) {
-    cb(err, docs);
-    self.db.close();
+  try {
+    query = self.formatIds(query);
+  } catch (e) {
+    cb(false, []);
+    return;
+  }
+  self.store.collection(coll).find(query).toArray(function (err, data) {
+    cb(err, data);
   });
 };
 
-Conn.prototype.create = function (coll, data, cb) {
+// Inserts new record, generates _id
+Conn.prototype.insert = function (coll, data, cb) {
   var self = this;
-  self.db.collection(coll).insert(data, function (err) {
-    cb(err);
-    self.db.close();
+  try {
+    data = self.formatIds(data);
+  } catch (e) {
+    cb("Invalid _id provided");
+    return;
+  }
+  self.store.collection(coll).insert(data, function (err, data) {
+    cb(err, data);
   });
 };
 
+// Updates existing record
 Conn.prototype.update = function (coll, query, data, cb) {
   var self = this;
-  self.db.collection(coll).update(query, data, function (err, docs) {
-    cb(err, docs);
-    self.db.close();
+  try {
+    query = self.formatIds(query);
+    data = self.formatIds(data);
+  } catch (e) {
+    cb("Invalid _id provided");
+    return;
+  }
+  self.store.collection(coll).update(query, { $set: data }, function (err, data) {
+    cb(err, data);
   });
 };
 
-Conn.prototype.delete = function (coll, query, cb) {
+// Removes existing record
+Conn.prototype.remove = function (coll, query, cb) {
   var self = this;
-  self.db.collection(coll).remove(query, function (err) {
-    cb(err);
-    self.db.close();
+  try {
+    query = self.formatIds(query);
+  } catch (e) {
+    cb("Invalid _id provided");
+    return;
+  }
+  self.store.collection(coll).remove(query, function (err, data) {
+    cb(err, data);
   });
 };
 
