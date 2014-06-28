@@ -43,7 +43,9 @@ Conn.prototype.find = function (coll, cursor, query, cb) {
     cb(false, []);
     return;
   }
-  self.store.collection(coll).find(query, null, { limit: cursor.count, skip: (cursor.count*cursor.page) }).toArray(function (err, data) {
+  // Set skip
+  var skip = (cursor.page === 1) ? 0 : (cursor.count*(cursor.page-1))-1;
+  self.store.collection(coll).find(query, null, { limit: cursor.count, skip: skip }).toArray(function (err, data) {
     cb(err, data);
   });
 };
