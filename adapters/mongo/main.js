@@ -35,7 +35,7 @@ Conn.prototype.count = function (coll, query, cb) {
 };
 
 // Finds specific entry
-Conn.prototype.find = function (coll, query, cb) {
+Conn.prototype.find = function (coll, cursor, query, cb) {
   var self = this;
   try {
     query = self.formatIds(query);
@@ -43,7 +43,7 @@ Conn.prototype.find = function (coll, query, cb) {
     cb(false, []);
     return;
   }
-  self.store.collection(coll).find(query).toArray(function (err, data) {
+  self.store.collection(coll).find(query, null, { limit: cursor.count, skip: (cursor.count*cursor.page) }).toArray(function (err, data) {
     cb(err, data);
   });
 };
@@ -54,8 +54,8 @@ Conn.prototype.insert = function (coll, data, cb) {
   try {
     data = self.formatIds(data);
   } catch (e) {
-    cb("Invalid _id provided");
-    return;
+    cb('Invalid _id provided');
+    return false;
   }
   self.store.collection(coll).insert(data, function (err, data) {
     cb(err, data);
@@ -69,8 +69,8 @@ Conn.prototype.update = function (coll, query, data, cb) {
     query = self.formatIds(query);
     data = self.formatIds(data);
   } catch (e) {
-    cb("Invalid _id provided");
-    return;
+    cb('Invalid _id provided');
+    return false;
   }
   self.store.collection(coll).update(query, { $set: data }, function (err, data) {
     cb(err, data);
@@ -83,8 +83,8 @@ Conn.prototype.remove = function (coll, query, cb) {
   try {
     query = self.formatIds(query);
   } catch (e) {
-    cb("Invalid _id provided");
-    return;
+    cb('Invalid _id provided');
+    return false;
   }
   self.store.collection(coll).remove(query, function (err, data) {
     cb(err, data);
