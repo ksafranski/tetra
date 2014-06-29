@@ -134,12 +134,38 @@ module.exports = function (req) {
 
   // Update a document
   var update = function () {
-
+    // Validate against scheam
+    validate('create', req.body, schema, function (err) {
+      if (err) {
+        self.respond(400, err);
+        return false;
+      }
+      // Passed, run insert
+      db.update(collection, {
+        _id: id
+      }, req.body, function (err, data) {
+        if (err) {
+          self.respond(500, err);
+          return false;
+        }
+        // All good
+        self.respond(201, data);
+      });
+    });
   };
 
   // Delete a document
   var del = function () {
-
+    db.remove(collection, {
+      _id: id
+    }, function (err) {
+      if (err) {
+        self.respond(500, err);
+        return false;
+      }
+      // Success
+      self.respond(200);
+    });
   };
 
   // Check method
