@@ -12,7 +12,7 @@ module.exports = function (type, data, schema, cb) {
   // Loop through schema
   for (var prop in schema) {
     // Check required
-    if (schema[prop].hasOwnProperty('required') && schema[prop].required && type === 'insert') {
+    if (schema[prop].hasOwnProperty('required') && schema[prop].required && type === 'create') {
       if (!data.hasOwnProperty(prop)) {
         failures[prop] = 'required';
         return false;
