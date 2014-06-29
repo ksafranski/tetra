@@ -2,6 +2,7 @@
   "name": "API",
   "port": 8000,
   "authentication": true,
+  "cors": "*",
   "conn": {
     "adapter": "mongo",
     "host": "http://localhost",
