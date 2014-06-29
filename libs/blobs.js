@@ -21,7 +21,7 @@ module.exports = function (req, res) {
       return false;
     }
     // Success
-    res.download(base + blob);
+    res.sendfile(base + blob);
   };
 
   // Create new blob
