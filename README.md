@@ -261,7 +261,7 @@ To create (add) a new blob, simply `POST` with request body `blob`:
 POST: http://yourserver.com:NNNN/blob
 BODY:
   name = some_file
-  file = [BINARY]
+  blob = [BINARY]
 ```
 
 #### Update
@@ -272,7 +272,7 @@ The update (`PUT`) method follows the `POST`, simply replacing the blob:
 PUT: http://yourserver.com:NNNN/blob/some_file
 BODY:
   name = new_name
-  file = [BINARY]
+  blob = [BINARY]
 ```
 
 Updates can be partials, allowing changing of only the name or the file.

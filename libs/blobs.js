@@ -26,7 +26,25 @@ module.exports = function (req, res) {
 
   // Create new blob
   var create = function () {
+    // Get file
+    var file = req.files.blob;
+    var name = req.body.name;
 
+    // Ensure blob DNE
+    if (fs.existsSync(base + name)) {
+      self.respond(409, 'Blob already exists');
+      return false;
+    }
+
+    // Move file
+    fs.rename(file.path, base + name, function (err) {
+      if (err) {
+        self.respond(500, err);
+        return false;
+      }
+      // Success
+      self.respond(201);
+    });
   };
 
   // Update existing blob
