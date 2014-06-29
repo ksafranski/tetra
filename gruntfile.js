@@ -9,7 +9,7 @@ module.exports = function (grunt) {
     // JSBeatuify
     jsbeautifier: {
       server: {
-        src: ['index.js', 'bin/**/*.js'],
+        src: ['index.js', 'libs/**/*.js'],
         options: {
           config: '.jsbeautifyrc'
         }
@@ -23,7 +23,7 @@ module.exports = function (grunt) {
           jshintrc: '.jshintrc'
         },
         files: {
-          src: ['index.js', 'bin/**/*.js']
+          src: ['index.js', 'libs/**/*.js']
         }
       }
     }

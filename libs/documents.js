@@ -7,22 +7,22 @@ module.exports = function (req) {
   var self = this;
   var Conn;
   var base = __dirname + '/../conf/';
-  var adapters = __dirname+'/../adapters/';
-  
+  var adapters = __dirname + '/../adapters/';
+
   // Ensure connection settings
   if (!config.hasOwnProperty('conn')) {
     self.respond(500, 'No document connection specified');
     return false;
   }
-  
+
   // Ensure adapter
-  if (!config.hasOwnProperty('adapter') || !fs.exists(adapters+config.conn.adapter+'/main.js')) {
+  if (!config.hasOwnProperty('adapter') || !fs.exists(adapters + config.conn.adapter + '/main.js')) {
     self.respond(500, 'Missing connection adapter');
     return false;
   }
-  
+
   // Load adapter
-  Conn = require('./../adapters/'+adapters.config.conn.adapter+'/main.js');
+  Conn = require('./../adapters/' + adapters.config.conn.adapter + '/main.js');
   // Instantiate db instance
   var db = new Conn();
 
@@ -32,7 +32,7 @@ module.exports = function (req) {
   var collection = params[2];
   var id = params[3] || false;
   var cursor = {};
-  
+
   // Check for query
   if (Object.keys(req.query).length > 0) {
     // Check page property
@@ -80,7 +80,9 @@ module.exports = function (req) {
   var read = function () {
     if (id) {
       // Find by ID
-      db.find(collection, cursor, { _id: id }, function (err, data) {
+      db.find(collection, cursor, {
+        _id: id
+      }, function (err, data) {
         if (err) {
           self.respond(500, err);
           return false;
@@ -120,12 +122,12 @@ module.exports = function (req) {
       }
       // Passed, run insert
       db.insert(collection, req.body, function (err, data) {
-       if (err) {
-         self.respond(500, err);
-         return false;
-       } 
-       // All good
-       self.respond(201, data);
+        if (err) {
+          self.respond(500, err);
+          return false;
+        }
+        // All good
+        self.respond(201, data);
       });
     });
   };
