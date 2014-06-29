@@ -118,9 +118,16 @@ BODY:
   name = example1
   document = 
     {
-      "foo": "string",
-      "bar": "boolean",
-      "quz": "array"
+      "foo": {
+        "required": true,
+        "type": "string"
+      },
+      "bar": 
+        "type": "boolean"
+      },
+      "quz": {
+        "type": "array"
+      }
     }
 ```
 
@@ -135,7 +142,9 @@ PUT: http://youserver.com:NNNN/schema/v1/example1
 BODY:
   document=
     {
-      "foo": "number"
+      "foo": {
+        "type": "number"
+      }
     }
 ```
 
