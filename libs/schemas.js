@@ -36,9 +36,11 @@ module.exports = function (req) {
     } catch (e) {
       return false;
     }
+    var types = ['string', 'number', 'boolean', 'array', 'json'];
     // Check each property
     for (var prop in doc) {
-      if (!doc[prop].hasOwnProperty('type')) {
+      // Missing or incorrect type?
+      if (!doc[prop].hasOwnProperty('type') || types.indexOf(doc[prop].type) === -1) {
         return false;
       }
     }
