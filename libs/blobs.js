@@ -49,7 +49,47 @@ module.exports = function (req, res) {
 
   // Update existing blob
   var update = function () {
-
+    // Get file and name
+    var file = req.files.blob;
+    var name = req.body.name;
+    // Check that blob exists
+    if (!fs.exists(base + blob)) {
+      self.respond(404);
+      return false;
+    }
+    // Rename only
+    if (!file && name) {
+      fs.rename(base + blob, base + name, function (err) {
+        if (err) {
+          self.respond(500, err);
+          return false;
+        }
+        // Success
+        self.respond(200);
+      });
+    }
+    // Replace
+    if (file && !name) {
+      fs.rename(base + file, base + blob, function (err) {
+        if (err) {
+          self.respond(500, err);
+          return false;
+        }
+        // Success
+        self.respond(200);
+      });
+    }
+    // Rename and replace
+    if (file && name) {
+      fs.rename(base + file, base + name, function (err) {
+        if (err) {
+          self.respond(500, err);
+          return false;
+        }
+        // Success
+        self.respond(200);
+      });
+    }
   };
 
   // Delete blob
