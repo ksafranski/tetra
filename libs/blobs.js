@@ -57,39 +57,37 @@ module.exports = function (req, res) {
       self.respond(404);
       return false;
     }
-    // Rename only
+
+    // Vars
+    var pathOld, pathNew;
+
     if (!file && name) {
-      fs.rename(base + blob, base + name, function (err) {
-        if (err) {
-          self.respond(500, err);
-          return false;
-        }
-        // Success
-        self.respond(200);
-      });
+      // Rename
+      pathOld = base + blob;
+      pathNew = base + name;
+    } else if (file && !name) {
+      // Replace
+      pathOld = base + file;
+      pathNew = base + blob;
+    } else if (file && name) {
+      // Both
+      pathOld = base + file;
+      pathNew = base + name;
+    } else {
+      // Huh?
+      self.respond(400, 'No condition matches request');
+      return false;
     }
-    // Replace
-    if (file && !name) {
-      fs.rename(base + file, base + blob, function (err) {
-        if (err) {
-          self.respond(500, err);
-          return false;
-        }
-        // Success
-        self.respond(200);
-      });
-    }
-    // Rename and replace
-    if (file && name) {
-      fs.rename(base + file, base + name, function (err) {
-        if (err) {
-          self.respond(500, err);
-          return false;
-        }
-        // Success
-        self.respond(200);
-      });
-    }
+
+    // Process
+    fs.rename(pathOld, pathNew, function (err) {
+      if (err) {
+        self.respond(500, err);
+        return false;
+      }
+      // Success
+      self.respond(200);
+    });
   };
 
   // Delete blob
