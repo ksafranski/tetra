@@ -1,5 +1,6 @@
 var fs = require('fs');
 var config = require('./config');
+var validate = require('./validate');
 
 module.exports = function (req) {
 
@@ -111,7 +112,22 @@ module.exports = function (req) {
 
   // Create a document
   var create = function () {
-
+    // Validate against scheam
+    validate('create', req.body, schema, function (err) {
+      if (err) {
+        self.respond(400, err);
+        return false;
+      }
+      // Passed, run insert
+      db.insert(collection, req.body, function (err, data) {
+       if (err) {
+         self.respond(500, err);
+         return false;
+       } 
+       // All good
+       self.respond(201, data);
+      });
+    });
   };
 
   // Update a document

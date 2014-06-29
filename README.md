@@ -124,6 +124,8 @@ BODY:
     }
 ```
 
+Supported types are `string`, `number`, `boolean`, `array`, and `json`.
+
 #### Update
 
 To update the `example1` schema created in the previous example, use the following: 
