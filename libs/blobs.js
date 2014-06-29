@@ -26,7 +26,7 @@ module.exports = function (req, res) {
 
   // Create new blob
   var create = function () {
-    // Get file
+    // Get file and name
     var file = req.files.blob;
     var name = req.body.name;
 
@@ -54,7 +54,20 @@ module.exports = function (req, res) {
 
   // Delete blob
   var del = function () {
-
+    // Check that blob exists
+    if (!fs.exists(base + blob)) {
+      self.respond(404);
+      return false;
+    }
+    // Delete
+    fs.unlink(base + blob, function (err) {
+      if (err) {
+        self.respond(500, err);
+        return false;
+      }
+      // Success
+      self.respond(200);
+    });
   };
 
   // Check method
