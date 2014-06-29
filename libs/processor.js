@@ -87,7 +87,7 @@ module.exports = function (req, res) {
     documents.call(self, req);
     break;
   case 'blob':
-    blobs.call(self, req);
+    blobs.call(self, req, res);
     break;
   default:
     // Not valid type
