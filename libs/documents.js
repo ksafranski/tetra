@@ -57,6 +57,15 @@ module.exports = function (req) {
     // Check search
     if (req.query.hasOwnProperty('search')) {
       search = req.query.search;
+      var operators = ['$ne', '$lt', '$lte', '$gt', '$gte'];
+      // Verify comparison operators
+      for (var q in search) {
+        if (typeof search[q] === 'object') {
+          if (operators.indexOf(Object.keys(search[q])[0]) === -1) {
+            self.respond(400, 'Invalid query operator');
+          }
+        }
+      }
     }
     // Check order
     if (req.query.hasOwnProperty('orderby')) {

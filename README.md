@@ -205,7 +205,7 @@ GET: http://yourserver.com:NNNN/document/v1/example?search={foo:"bar"}
 ```
 
 Queries follow the Mongo-style operations such as `{ field: { $gt: 4 } }` allowing 
-for `$gt`, `$lt`, `$gte`, `$lte`, `$not`.
+for `$gt`, `$lt`, `$gte`, `$lte`, `$ne`.
 
 ##### Order
 
