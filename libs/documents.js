@@ -33,7 +33,8 @@ module.exports = function (req) {
   var schema;
   var id = params[3] || false;
   var cursor = {};
-  var search;
+  var search = {};
+  var orderby = false;
 
   // Check for query
   if (Object.keys(req.query).length > 0) {
@@ -57,9 +58,11 @@ module.exports = function (req) {
     if (req.query.hasOwnProperty('search')) {
       search = req.query.search;
     }
+    // Check order
+    if (req.query.hasOwnProperty('orderby')) {
+      orderby = req.query.orderby;
+    }
   }
-
-  console.log(search);
 
   // Ensure version exists
   if (!fs.existsSync(base + version)) {
@@ -103,7 +106,7 @@ module.exports = function (req) {
       });
     } else {
       // Find multiple
-      db.find(collection, cursor, {}, function (err, data) {
+      db.find(collection, cursor, search, function (err, data) {
         if (err) {
           self.respond(500, err);
         }
