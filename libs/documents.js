@@ -135,7 +135,7 @@ module.exports = function (req) {
   // Update a document
   var update = function () {
     // Validate against scheam
-    validate('create', req.body, schema, function (err) {
+    validate('update', req.body, schema, function (err) {
       if (err) {
         self.respond(400, err);
         return false;
@@ -149,7 +149,7 @@ module.exports = function (req) {
           return false;
         }
         // All good
-        self.respond(201, data);
+        self.respond(200, data);
       });
     });
   };

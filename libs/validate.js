@@ -20,7 +20,7 @@ module.exports = function (type, data, schema, cb) {
     }
 
     // Validate types
-    if (schema[prop].hasOwnProperty('type')) {
+    if (schema[prop].hasOwnProperty('type') && data.hasOwnProperty(prop)) {
       switch (schema[prop].type) {
       case 'string':
         if (toType(data[prop]) !== 'string') {
