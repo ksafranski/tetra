@@ -106,7 +106,7 @@ module.exports = function (req) {
       });
     } else {
       // Find multiple
-      db.find(collection, cursor, search, function (err, data) {
+      db.find(collection, cursor, search, orderby, function (err, data) {
         if (err) {
           self.respond(500, err);
         }

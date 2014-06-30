@@ -21,7 +21,7 @@ Conn.prototype.formatIds = function (query) {
 };
 
 // Finds specific entry
-Conn.prototype.find = function (coll, cursor, query, cb) {
+Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
   var self = this;
   try {
     query = self.formatIds(query);
@@ -29,11 +29,18 @@ Conn.prototype.find = function (coll, cursor, query, cb) {
     cb(false, []);
     return;
   }
+  // Translate orderby
+  if (orderby) {
+    for (var key in orderby) {
+      orderby[key] = (orderby[key] === 'asc') ? 1 : -1;
+    }
+  }
   // Set skip
   var skip = (cursor.page === 1) ? 0 : (cursor.count * (cursor.page - 1)) - 1;
   self.store.collection(coll).find(query, null, {
     limit: cursor.count,
-    skip: skip
+    skip: skip,
+    sort: orderby
   }).toArray(function (err, data) {
     cb(err, data);
   });
