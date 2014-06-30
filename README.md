@@ -249,6 +249,9 @@ The above would update the document with `_id = 1234567890` with the `BODY`
 parameters specified. The service supports partials so the full document is not 
 required.
 
+Additionally, updates can be made on multiple records by providing the `search` 
+querystring in the same format utilized by the `GET` method.
+
 #### Delete
 
 Documents can be deleted using the same format of URI as shown in the `GET` examples; 
@@ -259,6 +262,9 @@ DELETE: http://yourserver.com:NNNN/document/v1/example/1234567890
 ```
 
 The above would delete the record with `_id = 1234567890`.
+
+Additionally, deletions can be made on multiple records by providing the `search` 
+querystring in the same format utilized by the `GET` method.
 
 ---
 

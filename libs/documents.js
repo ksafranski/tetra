@@ -153,6 +153,19 @@ module.exports = function (req) {
 
   // Update a document
   var update = function () {
+    // Determine query
+    var query;
+    if (id) {
+      // Single record update
+      query = {
+        _id: id
+      };
+    } else if (search !== {}) {
+      query = search;
+    } else {
+      // Not valid
+      self.respond(400, 'Invalid query');
+    }
     // Validate against scheam
     validate('update', req.body, schema, function (err) {
       if (err) {
@@ -160,9 +173,7 @@ module.exports = function (req) {
         return false;
       }
       // Passed, run insert
-      db.update(collection, {
-        _id: id
-      }, req.body, function (err, data) {
+      db.update(collection, query, req.body, function (err, data) {
         if (err) {
           self.respond(500, err);
           return false;
@@ -175,9 +186,20 @@ module.exports = function (req) {
 
   // Delete a document
   var del = function () {
-    db.remove(collection, {
-      _id: id
-    }, function (err) {
+    // Determine query
+    var query;
+    if (id) {
+      // Single record update
+      query = {
+        _id: id
+      };
+    } else if (search !== {}) {
+      query = search;
+    } else {
+      // Not valid
+      self.respond(400, 'Invalid query');
+    }
+    db.remove(collection, query, function (err) {
       if (err) {
         self.respond(500, err);
         return false;
