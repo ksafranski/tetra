@@ -11,6 +11,9 @@ module.exports = function (req, res) {
   var params = req.params[0].split('/');
   var blob = params[1];
 
+  // Create form object
+  var form = new multiparty.Form();
+
   // Retrieve a blob
   var read = function () {
     if (!blob) {
@@ -28,10 +31,14 @@ module.exports = function (req, res) {
 
   // Create new blob
   var create = function () {
-    var form = new multiparty.Form();
-
-    // Parse multiparty form
+    // Parse multipart form
     form.parse(req, function (err, fields, files) {
+      // Handle err
+      if (err) {
+        self.respond(500, err);
+        return false;
+      }
+
       // Get data
       var name = fields.name[0];
       var file = files.blob[0];
@@ -56,51 +63,69 @@ module.exports = function (req, res) {
 
   // Update existing blob
   var update = function () {
-    // Get file and name
-    var file = req.files.blob;
-    var name = req.body.name;
-    // Check that blob exists
-    if (!fs.exists(base + blob)) {
-      self.respond(404);
-      return false;
-    }
-
-    // Vars
-    var pathOld, pathNew;
-
-    if (!file && name) {
-      // Rename
-      pathOld = base + blob;
-      pathNew = base + name;
-    } else if (file && !name) {
-      // Replace
-      pathOld = base + file;
-      pathNew = base + blob;
-    } else if (file && name) {
-      // Both
-      pathOld = base + file;
-      pathNew = base + name;
-    } else {
-      // Huh?
-      self.respond(400, 'No condition matches request');
-      return false;
-    }
-
-    // Process
-    fs.rename(pathOld, pathNew, function (err) {
+    // Parse multiparty form
+    form.parse(req, function (err, fields, files) {
+      // Handle error
       if (err) {
         self.respond(500, err);
         return false;
       }
-      // Success
-      self.respond(200);
+
+      // Get data
+      var name = (fields.hasOwnProperty('name')) ? fields.name[0] : false;
+      var file = (files.hasOwnProperty('blob')) ? files.blob[0] : false;
+
+      // Check that blob exists
+      if (!fs.existsSync(base + blob)) {
+        self.respond(404);
+        return false;
+      }
+
+      // Vars
+      var pathOld, pathNew;
+
+      if (!file && name) {
+        // Rename
+        pathOld = base + blob;
+        pathNew = base + name;
+      } else if (file && !name) {
+        // Replace
+        // Remove
+        fs.unlinkSync(base + blob);
+        // Set
+        pathOld = file.path;
+        pathNew = base + blob;
+      } else if (file && name) {
+        // Both
+        // Remove
+        fs.unlinkSync(base + blob);
+        // Set
+        pathOld = file.path;
+        pathNew = base + name;
+      } else {
+        // Huh?
+        self.respond(400, 'No condition matches request');
+        return false;
+      }
+
+      // Process
+      fs.rename(pathOld, pathNew, function (err) {
+        if (err) {
+          self.respond(500, err);
+          return false;
+        }
+        // Success
+        self.respond(200);
+      });
+
     });
+
   };
 
   // Delete blob
   var del = function () {
     // Check that blob exists
-    if (!fs.exists(base + blob)) {
+    if (!fs.existsSync(base + blob)) {
       self.respond(404);
       return false;
     }
