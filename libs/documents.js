@@ -103,7 +103,7 @@ module.exports = function (req) {
         }
         // Data?
         if (!Object.keys(data).length) {
-          self.respond(404);
+          self.respond(200, {});
           return false;
         }
         // Yup!
