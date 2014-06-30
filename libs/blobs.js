@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require('path');
 
 module.exports = function (req, res) {
 
@@ -21,7 +22,7 @@ module.exports = function (req, res) {
       return false;
     }
     // Success
-    res.sendfile(base + blob);
+    res.sendfile(path.resolve(base + blob));
   };
 
   // Create new blob

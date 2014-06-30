@@ -103,6 +103,7 @@ module.exports = function (req) {
         }
         // Data?
         if (!Object.keys(data).length) {
+          // Endpoint exists, but no data...
           self.respond(200, {});
           return false;
         }
