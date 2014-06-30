@@ -30,8 +30,11 @@ Conn.prototype.find = function (coll, cursor, query, cb) {
     return;
   }
   // Set skip
-  var skip = (cursor.page === 1) ? 0 : (cursor.count*(cursor.page-1))-1;
-  self.store.collection(coll).find(query, null, { limit: cursor.count, skip: skip }).toArray(function (err, data) {
+  var skip = (cursor.page === 1) ? 0 : (cursor.count * (cursor.page - 1)) - 1;
+  self.store.collection(coll).find(query, null, {
+    limit: cursor.count,
+    skip: skip
+  }).toArray(function (err, data) {
     cb(err, data);
   });
 };
@@ -60,7 +63,9 @@ Conn.prototype.update = function (coll, query, data, cb) {
     cb('Invalid _id provided');
     return false;
   }
-  self.store.collection(coll).update(query, { $set: data }, function (err, data) {
+  self.store.collection(coll).update(query, {
+    $set: data
+  }, function (err, data) {
     cb(err, data);
   });
 };
