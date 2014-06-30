@@ -243,7 +243,8 @@ The above would delete the record with `_id = 1234567890`.
 ### Blobs
 
 Blob storage can be used for storing documents in binary format. They can not 
-be searched and have no schema or version, but support all other methods.
+be searched and have no schema or version, but support all other methods. Blob 
+requests for `POST` and `PUT` should be made as `multipart` submissions.
 
 #### Read
 
@@ -261,7 +262,7 @@ To create (add) a new blob, simply `POST` with request body `blob`:
 POST: http://yourserver.com:NNNN/blob
 BODY:
   name = some_file
-  blob = [BINARY]
+  blob = [FILE]
 ```
 
 #### Update
@@ -272,7 +273,7 @@ The update (`PUT`) method follows the `POST`, simply replacing the blob:
 PUT: http://yourserver.com:NNNN/blob/some_file
 BODY:
   name = new_name
-  blob = [BINARY]
+  blob = [FILE]
 ```
 
 Updates can be partials, allowing changing of only the name or the file.
