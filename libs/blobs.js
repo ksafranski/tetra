@@ -32,37 +32,26 @@ module.exports = function (req, res) {
 
     // Parse multiparty form
     form.parse(req, function (err, fields, files) {
-      res.writeHead(200, {
-        'content-type': 'text/plain'
-      });
-      res.write('received upload:\n\n');
-      //res.end(util.inspect({fields: fields, files: files}));
+      // Get data
       var name = fields.name[0];
       var file = files.blob[0];
-      console.log('NAME:', name);
-      console.log('FILE:', file);
-    });
-    /*
-    // Get file and name
-    var file = req.files.blob;
-    var name = req.body.name;
 
-    // Ensure blob DNE
-    if (fs.existsSync(base + name)) {
-      self.respond(409, 'Blob already exists');
-      return false;
-    }
-
-    // Move file
-    fs.rename(file.path, base + name, function (err) {
-      if (err) {
-        self.respond(500, err);
+      // Ensure blob DNE
+      if (fs.existsSync(base + name)) {
+        self.respond(409, 'Blob already exists');
         return false;
       }
-      // Success
-      self.respond(201);
+
+      fs.rename(file.path, base + name, function (err) {
+        if (err) {
+          self.respond(500, err);
+          return false;
+        }
+        // Success
+        self.respond(201);
+      });
+
     });
-    */
   };
 
   // Update existing blob
