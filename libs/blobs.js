@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var multiparty = require('multiparty');
 
 module.exports = function (req, res) {
 
@@ -27,6 +28,21 @@ module.exports = function (req, res) {
 
   // Create new blob
   var create = function () {
+    var form = new multiparty.Form();
+
+    // Parse multiparty form
+    form.parse(req, function (err, fields, files) {
+      res.writeHead(200, {
+        'content-type': 'text/plain'
+      });
+      res.write('received upload:\n\n');
+      //res.end(util.inspect({fields: fields, files: files}));
+      var name = fields.name[0];
+      var file = files.blob[0];
+      console.log('NAME:', name);
+      console.log('FILE:', file);
+    });
+    /*
     // Get file and name
     var file = req.files.blob;
     var name = req.body.name;
@@ -46,6 +62,7 @@ module.exports = function (req, res) {
       // Success
       self.respond(201);
     });
+    */
   };
 
   // Update existing blob
