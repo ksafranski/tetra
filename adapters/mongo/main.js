@@ -1,13 +1,13 @@
-var config = require('./../../conf/service.json');
+var config = require('./../../libs/config');
 var mongoskin = require('mongoskin');
 var ObjectID = require('mongoskin').ObjectID;
 
 // DozerJS NeDB component
 var Conn = function () {
-  this.store = mongoskin.db(config.conn.host, {
-    username: config.conn.user,
-    password: config.conn.pass,
-    database: config.comm.db,
+  this.store = mongoskin.db(config.service.conn.host, {
+    username: config.service.conn.user,
+    password: config.service.conn.pass,
+    database: config.service.conn.db,
     safe: false
   });
 };
