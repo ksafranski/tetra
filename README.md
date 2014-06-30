@@ -57,7 +57,7 @@ schema:
 
 The key is the username/login, the password is an SHA encrypted password string, 
 type can be either `0` (administrative) or `1` (standard), and the `data` property 
-is a schema-less object for storing and user information required.
+is a schema-less object for storing any additional user information required.
 
 **Administrative**: Has the ability to access all data, including users and schemas
 
