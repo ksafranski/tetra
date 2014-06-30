@@ -205,7 +205,18 @@ GET: http://yourserver.com:NNNN/document/v1/example?search={foo:"bar"}
 ```
 
 Queries follow the Mongo-style operations such as `{ field: { $gt: 4 } }` allowing 
-for `$gt`, `$lt`, `$gte`, `$lte`, `$not`, `$nor`, etc.
+for `$gt`, `$lt`, `$gte`, `$lte`, `$not`.
+
+##### Order
+
+To return based on a specific order, the `orderby` parameter can be used:
+
+```
+GET: http://yourserver.com:NNNN/document/v1/example?orderby={foo:"asc"}
+```
+
+The above would return data in ascending order based on the `foo` field. The 
+inverse (descending) is called by changing the value to `desc`.
 
 #### Create
 
