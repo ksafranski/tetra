@@ -20,20 +20,6 @@ Conn.prototype.formatIds = function (query) {
   return query;
 };
 
-// Returns count of fields based on query
-Conn.prototype.count = function (coll, query, cb) {
-  var self = this;
-  try {
-    query = self.formatIds(query);
-  } catch (err) {
-    cb(null, 0);
-    return;
-  }
-  self.store.collection(coll).count(query, function (err, data) {
-    cb(err, data);
-  });
-};
-
 // Finds specific entry
 Conn.prototype.find = function (coll, cursor, query, cb) {
   var self = this;
