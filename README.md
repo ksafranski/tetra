@@ -61,7 +61,7 @@ is a schema-less object for storing any additional user information required.
 
 **Administrative**: Has the ability to access all data, including users and schemas
 
-**Standard**: Only has access to API (data) endpoints
+**Standard**: Only has access to API (document & blob) endpoints
 
 #### Update
 
@@ -188,13 +188,24 @@ GET: http://yourserber.com:NNNN/document/v1/example/1234567890
 
 ##### Multiples
 
-Querying a collection can be controlled through two quesrysting parameters:
+Querying a collection can be controlled through quesrysting parameters:
 
 ```
 GET: http://yourserver.com:NNNN/document/v1/example?count=10&page=1
 ```
 
 The above would return 10 documents starting at page 1.
+
+##### Search
+
+Querying for a specific match can be done with the `search` parameter:
+
+```
+GET: http://yourserver.com:NNNN/document/v1/example?search={foo:"bar"}
+```
+
+Queries follow the Mongo-style operations such as `{ field: { $gt: 4 } }` allowing 
+for `$gt`, `$lt`, `$gte`, `$lte`, `$not`, `$nor`, etc.
 
 #### Create
 

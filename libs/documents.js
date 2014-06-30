@@ -30,8 +30,10 @@ module.exports = function (req) {
   var params = req.params[0].split('/');
   var version = params[1];
   var collection = params[2];
+  var schema;
   var id = params[3] || false;
   var cursor = {};
+  var search;
 
   // Check for query
   if (Object.keys(req.query).length > 0) {
@@ -51,9 +53,13 @@ module.exports = function (req) {
       // Default
       cursor.count = 10;
     }
+    // Check search
+    if (req.query.hasOwnProperty('search')) {
+      search = req.query.search;
+    }
   }
 
-  var schema;
+  console.log(search);
 
   // Ensure version exists
   if (!fs.existsSync(base + version)) {
