@@ -33,6 +33,14 @@ module.exports = function (req, res) {
 
     // Send response
     if (data) {
+      // Ensure JSON response
+      try {
+        JSON.parse(data);
+      } catch (e) {
+        data = {
+          response: data
+        };
+      }
       // If data property
       res.send(code, data);
     } else {
