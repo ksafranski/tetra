@@ -34,12 +34,6 @@ module.exports = function (req, res) {
     // Send response
     if (data) {
       // If data property
-      if (typeof data === 'string') {
-        // Format for JSON respond
-        data = {
-          response: data
-        };
-      }
       res.send(code, data);
     } else {
       // No data property
