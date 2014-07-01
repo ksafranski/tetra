@@ -35,8 +35,10 @@ module.exports = function (type, data, schema, cb) {
         }
         break;
       case 'boolean':
-        if (data[prop] != 'true' || data[prop] != 'false') {
+        if (data[prop] != 'true' && data[prop] != 'false') {
           failures[prop] = 'Type failure: boolean';
+        } else {
+          data[prop] = Boolean(data[prop]);
         }
         break;
       case 'array':
