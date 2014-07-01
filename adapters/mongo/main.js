@@ -22,7 +22,6 @@ Conn.prototype.formatIds = function (query) {
 
 // Finds specific entry
 Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
-  console.log(arguments);
   var self = this;
   try {
     query = self.formatIds(query);
