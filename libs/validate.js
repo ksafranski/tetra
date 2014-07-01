@@ -1,3 +1,4 @@
+/* jshint eqeqeq: false */
 var config = require('./config');
 // type = create or update
 module.exports = function (type, data, schema, cb) {
@@ -29,13 +30,12 @@ module.exports = function (type, data, schema, cb) {
         }
         break;
       case 'number':
-        data[prop] = parseInt(data[prop], 2);
-        if (toType(data[prop]) !== 'number') {
+        if (!/^\d+$/.test(data[prop])) {
           failures[prop] = 'Type failure: number';
         }
         break;
       case 'boolean':
-        if (toType(data[prop]) !== 'boolean') {
+        if (data[prop] != 'true' || data[prop] != 'false') {
           failures[prop] = 'Type failure: boolean';
         }
         break;
