@@ -22,6 +22,33 @@ request by supplying the `username` and `password` via BasicAuthentication heade
 
 ---
 
+### Service Configuration
+
+The service can be configured via `/conf/service.json` which should look similar 
+to the following:
+
+```javascript
+{
+  "name": "API",
+  "port": 8000,
+  "authentication": true,
+  "cors": "*",
+  "schemas": {
+    "strict": true,
+    "types": ["string", "number", "boolean", "array", "json"]
+  },
+  "conn": {
+    "adapter": "mongo",
+    "host": "http://localhost",
+    "user": "mongouser",
+    "pass": "mongopass",
+    "db": "test"
+  }
+}
+```
+
+---
+
 ### Users
 
 The built-in user system allows creation and management of users who are authorized 
@@ -98,7 +125,12 @@ accessed or modified at that particular endpoint. Editing schemas can be done
 using RESTful calls.
 
 While defining the structure of documents, schemas also provide basic validation 
-for types `string`, `number`, `boolean`, `array`, and `json`.
+for types `string`, `number`, `boolean`, `array`, and `json`. This list can be 
+adjusted in the `/conf/service.json` config file.
+
+Additionally schemas can be set to `strict` in the `service.json` config file 
+which will enforce that all data submitted match the key values in the schema (i.e. 
+a user cannot submit data to keys NOT in the schema).
 
 #### Read
 
