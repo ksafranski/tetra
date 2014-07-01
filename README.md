@@ -165,6 +165,9 @@ BODY:
 
 Supported types are `string`, `number`, `boolean`, `array`, and `json`.
 
+*Note: The system parses requests as `urlencoded` so when submitting an 
+array the field should be specified with appended `[]` such as `quz[] = [ ... ]`.*
+
 #### Update
 
 To update the `example1` schema created in the previous example, use the following: 
