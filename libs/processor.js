@@ -30,16 +30,10 @@ module.exports = function (req, res) {
     // Send response
     if (data) {
       // If data property
-      res.send(code, {
-        message: codes[code],
-        data: data
-      });
+      res.send(code, data);
     } else {
       // No data property
-      res.send(code, {
-        message: codes[code],
-        data: null
-      });
+      res.send(code, codes[code]);
     }
 
   };
