@@ -7,7 +7,7 @@
     "strict": true,
     "types": ["string", "number", "boolean", "array", "json"]
   },
-  "conn": {
+  "documents": {
     "adapter": "mongo",
     "host": "http://localhost",
     "user": "mongouser",

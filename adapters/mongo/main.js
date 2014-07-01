@@ -4,10 +4,10 @@ var ObjectID = require('mongoskin').ObjectID;
 
 // DozerJS NeDB component
 var Conn = function () {
-  this.store = mongoskin.db(config.service.conn.host, {
-    username: config.service.conn.user,
-    password: config.service.conn.pass,
-    database: config.service.conn.db,
+  this.store = mongoskin.db(config.service.documents.host, {
+    username: config.service.documents.user,
+    password: config.service.documents.pass,
+    database: config.service.documents.db,
     safe: false
   });
 };
