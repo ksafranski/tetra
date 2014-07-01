@@ -80,7 +80,7 @@ module.exports = function (req, res) {
     break;
   case 'schema':
     checkPerms(function () {
-      schemas.call(self, req);
+      schemas.call(self, req, res);
     });
     break;
   case 'document':

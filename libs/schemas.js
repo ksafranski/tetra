@@ -2,10 +2,11 @@ var fs = require('fs');
 var _ = require('underscore');
 var config = require('./config');
 
-module.exports = function (req) {
+module.exports = function (req, res) {
 
   var self = this;
   var base = __dirname + '/../conf/schemas/';
+  var uri = req.protocol + '://' + req.get('host') + req.originalUrl;
 
   // Get params
   var params = req.params[0].split('/');
@@ -99,6 +100,7 @@ module.exports = function (req) {
         return false;
       }
       // All good
+      res.headers('Location', uri + '/' + schema);
       self.respond(201);
     });
   };
