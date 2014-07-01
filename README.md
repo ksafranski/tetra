@@ -147,9 +147,9 @@ To create a new schema on v1 named `example1`, use the following:
 ```
 POST: http://yourserver.com:NNNN/schema/v1
 BODY:
-  name = example1
-  document = 
-    {
+  { 
+    "name": "example1",
+    "document": {
       "foo": {
         "required": true,
         "type": "string"
@@ -161,6 +161,7 @@ BODY:
         "type": "array"
       }
     }
+  }
 ```
 
 Supported types are `string`, `number`, `boolean`, `array`, and `json`.
@@ -175,12 +176,11 @@ To update the `example1` schema created in the previous example, use the followi
 ```
 PUT: http://youserver.com:NNNN/schema/v1/example1
 BODY:
-  document=
-    {
-      "foo": {
-        "type": "number"
-      }
+  {
+    "foo": {
+      "type": "number"
     }
+  }
 ```
 
 The above would change the `foo` property from a `string` to a `number`. The 

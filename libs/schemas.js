@@ -31,12 +31,6 @@ module.exports = function (req) {
 
   // Check valid schema attributes and format
   var validFormat = function () {
-    // Ensure JSON
-    try {
-      doc = JSON.parse(doc);
-    } catch (e) {
-      return false;
-    }
     var types = config.service.schemas.types;
     // Check each property
     for (var prop in doc) {
@@ -85,9 +79,6 @@ module.exports = function (req) {
   // Create a new schema
   var create = function () {
 
-    // Set schema
-    schema = req.body.name;
-
     // Ensure schema doesn't already exist
     if (schemaExists()) {
       // Already exists
@@ -114,6 +105,7 @@ module.exports = function (req) {
 
   // Update an existing schema
   var update = function () {
+
     // Ensure schema exists
     if (!schemaExists()) {
       // Already exists

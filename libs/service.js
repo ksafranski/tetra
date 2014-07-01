@@ -38,9 +38,9 @@ Service.prototype.start = function () {
   app.use(allowCrossDomain);
   app.use(connectDomain());
   // Body parser
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }));
+  /*app.use(bodyParser.urlencoded({
+    //extended: true
+  }));*/
   app.use(bodyParser.json());
   // Check authentication
   if (config.service.authentication) {
