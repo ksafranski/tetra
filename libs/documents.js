@@ -2,12 +2,15 @@ var fs = require('fs');
 var config = require('./config');
 var validate = require('./validate');
 
-module.exports = function (req) {
+module.exports = function (req, res) {
 
   var self = this;
   var Conn;
   var base = __dirname + '/../conf/schemas/';
   var adapters = __dirname + '/../adapters/';
+  var uri = req.protocol + '://' + req.get('host') + req.originalUrl;
+  // Add URI trailing slash
+  uri = (uri.substr(-1) === '/') ? uri : uri + '/';
 
   // Ensure connection settings
   if (!config.service.hasOwnProperty('conn')) {
@@ -148,6 +151,7 @@ module.exports = function (req) {
           return false;
         }
         // All good
+        res.header('Location', uri + data._id);
         self.respond(201, data);
       });
     });
