@@ -1,5 +1,6 @@
 var fs = require('fs');
 var _ = require('underscore');
+var config = require('./config');
 
 module.exports = function (req) {
 
@@ -36,7 +37,7 @@ module.exports = function (req) {
     } catch (e) {
       return false;
     }
-    var types = ['string', 'number', 'boolean', 'array', 'json'];
+    var types = config.schemas.types;
     // Check each property
     for (var prop in doc) {
       // Missing or incorrect type?

@@ -3,6 +3,10 @@
   "port": 8000,
   "authentication": true,
   "cors": "*",
+  "schemas": {
+    "strict": true,
+    "types": ["string", "number", "boolean", "array", "json"]
+  },
   "conn": {
     "adapter": "mongo",
     "host": "http://localhost",
