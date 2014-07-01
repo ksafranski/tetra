@@ -37,7 +37,7 @@ module.exports = function (req) {
     } catch (e) {
       return false;
     }
-    var types = config.schemas.types;
+    var types = config.service.schemas.types;
     // Check each property
     for (var prop in doc) {
       // Missing or incorrect type?

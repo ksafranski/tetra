@@ -1,3 +1,4 @@
+var config = require('./config');
 // type = create or update
 module.exports = function (type, data, schema, cb) {
 
@@ -49,6 +50,16 @@ module.exports = function (type, data, schema, cb) {
           failures[prop] = 'Type failure: json';
         }
         break;
+      }
+    }
+  }
+
+  // Check strict schemas
+  if (config.service.schemas.strict) {
+    for (var key in data) {
+      if (Object.keys(schema).indexOf(key) === -1) {
+        // Not in schema
+        failures[key] = 'Invalid key, not in schema';
       }
     }
   }
