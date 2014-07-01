@@ -19,6 +19,7 @@ module.exports = function (req, res) {
       '404': 'Resource not found',
       '405': 'Method not supported',
       '409': 'Resource conflict',
+      '415': 'Unsupported media type',
       '500': 'Internal error'
     };
 
@@ -73,6 +74,12 @@ module.exports = function (req, res) {
     // Fire callback
     cb();
   };
+
+  // Ensure Content-Type header is set
+  if (type !== 'blob' && req.header('Content-Type') !== 'application/json') {
+    self.respond(415);
+    return false;
+  }
 
   // Determine params
   switch (type) {

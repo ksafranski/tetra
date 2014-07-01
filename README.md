@@ -14,14 +14,6 @@ install all dependencies.
 The system works off a version-schema system which allows easy development 
 of versioned RESTful APIs.
 
-### Authentication
-
-The `users` system allows setting up of users which have the ability to access 
-different methods based on their type. User authentication is done during the 
-request by supplying the `username` and `password` via BasicAuthentication header.
-
----
-
 ### Service Configuration
 
 The service can be configured via `/conf/service.json` which should look similar 
@@ -37,7 +29,7 @@ to the following:
     "strict": true,
     "types": ["string", "number", "boolean", "array", "json"]
   },
-  "conn": {
+  "documents": {
     "adapter": "mongo",
     "host": "http://localhost",
     "user": "mongouser",
@@ -46,6 +38,23 @@ to the following:
   }
 }
 ```
+
+### Requests / Responses
+
+All requests (except to `blob` endpoints) require that the header 
+`Content-Type` is set to `application/json`. The system will return a `415` 
+error if this is not correctly set.
+
+Responses will come back in one of two formats:
+
+1. JSON data response (success)
+2. JSON envelope (error) with `response` property containing details
+
+### Authentication
+
+The `users` system allows setting up of users which have the ability to access 
+different methods based on their type. User authentication is done during the 
+request by supplying the `username` and `password` via BasicAuth header.
 
 ---
 
@@ -71,7 +80,7 @@ http://youserver.com:NNNN/user/jsmith
 
 #### Create
 
-Sending a `POST` request to the user endpoint will create a user. Users follow the 
+Sending a `POST` request to the user endpoint will create a user. User's follow the 
 schema:
 
 ```json
@@ -84,7 +93,7 @@ schema:
 }
 ```
 
-The key is the username/login, the password is an SHA encrypted password string, 
+The key is the username/login, the password is a string (encrypted by the server), 
 type can be either `0` (administrative) or `1` (standard), and the `data` property 
 is a schema-less object for storing any additional user information required.
 
@@ -106,25 +115,72 @@ should be specified in the last place on the URL.
 
 ### Versions
 
-To support ongoing development the system supports a basic versioning system. 
+To support ongoing development the system supports a basic versioning system. Versions 
+are directory with their contents being the schemas for all available endpoints.
+
 Versions can be manipulated using REST calls against the following:
+
+#### Read
+
+Any `GET` request made will read either all available versions:
 
 ```
 http://yourserver.com:NNNN/version
 ```
 
-* `GET` can retrieve all, or by appending to URI; a specific version and its schemas.
-* `POST` will create a new schema by providing `name` in the request body (JSON).
-* `PUT` will edit the `name` based on the request body property `name` (JSON).
-* `DELETE` will delete a version (and all it's schemas) by specifying the name appended to the URL.
+Or can specify a specific version:
+
+```
+http://yourserver.com:NNNN/version/v1
+```
+
+The `GET` call (on success) will return the schemas associated with the versions
+returned.
+
+#### Create
+
+A new version can be created by running:
+
+```
+POST: http://yourserver.com:NNNN/version
+BODY: 
+  {
+    "name": "v2"
+  }
+```
+
+Which would create the container/directory for a `v2` version.
+
+#### Update
+
+Versions can be updated by using the following:
+
+```
+PUT: http://youserver.com:NNNN/version/v2
+BODY:
+  {
+    "name": "v3"
+  }
+```
+
+Which would change the `v2` version to `v3`.
+
+#### Delete
+
+Versions (and their schemas) can be deleted via:
+
+```
+DELETE: http://yourserver.com:NNNN/version/v2
+```
+
+Which would delete the `v2` version.
 
 ---
 
 ### Schemas
 
-Schemas are simply JSON documents that specify the format of data being 
-accessed or modified at that particular endpoint. Editing schemas can be done 
-using RESTful calls.
+Schemas are JSON documents that specify the format of data being accessed or 
+modified at that particular endpoint.
 
 While defining the structure of documents, schemas also provide basic validation 
 for types `string`, `number`, `boolean`, `array`, and `json`. This list can be 
@@ -166,11 +222,6 @@ BODY:
   }
 ```
 
-Supported types are `string`, `number`, `boolean`, `array`, and `json`.
-
-*Note: The system parses requests as `urlencoded` so when submitting an 
-array the field should be specified with appended `[]` such as `quz[] = [ ... ]`.*
-
 #### Update
 
 To update the `example1` schema created in the previous example, use the following: 
@@ -179,14 +230,18 @@ To update the `example1` schema created in the previous example, use the followi
 PUT: http://youserver.com:NNNN/schema/v1/example1
 BODY:
   {
-    "foo": {
-      "type": "number"
+    "name": "example2",
+    "document": {
+      "foo": {
+        "type": "number"
+      }
     }
   }
 ```
 
-The above would change the `foo` property from a `string` to a `number`. The 
-system supports partials so the full schema is not required in the `document`.
+The above would change the name of the schema to `example2` and the `foo` property 
+from a `string` to a `number`. The system supports partials so the full schema is 
+not required in the `document`.
 
 #### Delete
 
