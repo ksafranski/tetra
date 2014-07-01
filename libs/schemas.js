@@ -59,7 +59,7 @@ module.exports = function (req) {
             return false;
           }
           // Success
-          self.respond(200, data);
+          self.respond(200, JSON.parse(data));
         });
       } else {
         self.respond(404, 'Schema does not exist');

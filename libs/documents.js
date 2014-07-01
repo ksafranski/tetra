@@ -32,7 +32,10 @@ module.exports = function (req) {
   var collection = params[2];
   var schema;
   var id = params[3] || false;
-  var cursor = {};
+  var cursor = {
+    page: 1,
+    count: 50
+  };
   var search = {};
   var orderby = false;
 
@@ -42,17 +45,11 @@ module.exports = function (req) {
     if (req.query.hasOwnProperty('page')) {
       // Set
       cursor.page = req.query.page;
-    } else {
-      // Default
-      cursor.page = 1;
     }
     // Check count property
     if (req.query.hasOwnProperty('count')) {
       // Set
       cursor.count = req.query.count;
-    } else {
-      // Default
-      cursor.count = 10;
     }
     // Check search
     if (req.query.hasOwnProperty('search')) {

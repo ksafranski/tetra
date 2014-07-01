@@ -22,6 +22,7 @@ Conn.prototype.formatIds = function (query) {
 
 // Finds specific entry
 Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
+  console.log(arguments);
   var self = this;
   try {
     query = self.formatIds(query);
@@ -31,9 +32,15 @@ Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
   }
   // Translate orderby
   if (orderby) {
+    // Set orderby
     for (var key in orderby) {
       orderby[key] = (orderby[key] === 'asc') ? 1 : -1;
     }
+  } else {
+    // Default
+    orderby = {
+      _id: 1
+    };
   }
   // Set skip
   var skip = (cursor.page === 1) ? 0 : (cursor.count * (cursor.page - 1)) - 1;
