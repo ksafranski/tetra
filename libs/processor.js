@@ -64,12 +64,12 @@ module.exports = function (req, res) {
   switch (type) {
   case 'user':
     checkPerms(function () {
-      users.call(self, req);
+      users.call(self, req, res);
     });
     break;
   case 'version':
     checkPerms(function () {
-      versions.call(self, req);
+      versions.call(self, req, res);
     });
     break;
   case 'schema':

@@ -3,5 +3,10 @@
     "password": "sha1$91bdac47$1$0fd7fba6812b4f5ecfd6d91543cb0cc87b14d6db",
     "type": 0,
     "data": {}
+  },
+  "jsmith": {
+    "password": "sha1$ebdae054$1$fe7a1c8b92ac3117a4fe12e123b3c2a4246f219c",
+    "data": {},
+    "type": 1
   }
 }

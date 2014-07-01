@@ -1,10 +1,13 @@
 var fs = require('fs-extra');
 
-module.exports = function (req) {
+module.exports = function (req, res) {
 
   var self = this;
 
   var base = __dirname + '/../conf/schemas/';
+  var uri = req.protocol + '://' + req.get('host') + req.originalUrl;
+  // Add URI trailing slash
+  uri = (uri.substr(-1) === '/') ? uri : uri + '/';
 
   // Read single version or list
   var read = function () {
@@ -78,6 +81,7 @@ module.exports = function (req) {
         return false;
       }
       // Created
+      res.header('Location', uri + name);
       self.respond(201);
     });
   };

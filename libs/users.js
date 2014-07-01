@@ -2,12 +2,16 @@ var passwordHash = require('password-hash');
 var _ = require('underscore');
 var fs = require('fs');
 
-module.exports = function (req) {
+module.exports = function (req, res) {
 
   var self = this;
 
   // Users record file
   var usersFile = __dirname + '/../conf/users.json';
+
+  var uri = req.protocol + '://' + req.get('host') + req.originalUrl;
+  // Add URI trailing slash
+  uri = (uri.substr(-1) === '/') ? uri : uri + '/';
 
   // Get data
   var users = fs.readFileSync(usersFile, 'utf8', function (err, data) {
@@ -34,6 +38,7 @@ module.exports = function (req) {
 
   // Save data back to users file
   var saveData = function (code) {
+    var name = Object.keys(users)[0];
     // Write to file
     fs.writeFile(usersFile, JSON.stringify(users, null, 2), 'utf8', function (err) {
       if (err) {
@@ -41,6 +46,9 @@ module.exports = function (req) {
         return false;
       }
       // Send proper response (201 or 200)
+      if (code === 201) {
+        res.header('Location', uri + name);
+      }
       self.respond(code);
     });
   };
@@ -73,15 +81,17 @@ module.exports = function (req) {
   // Create user
   var create = function () {
 
+    var name = Object.keys(req.body)[0];
+
     // Ensure mandatory data
-    if (!req.body.username || !req.body.password) {
+    if (!req.body[name] || !req.body[name].hasOwnProperty('password')) {
       // Malformed
       self.respond(400, 'Not a valid request body');
       return false;
     }
 
     // Ensure account doesn't already exist
-    if (users.hasOwnProperty(req.body.username)) {
+    if (users.hasOwnProperty(name)) {
       // Already exists
       self.respond(409, 'User already exists');
       return false;
@@ -90,12 +100,12 @@ module.exports = function (req) {
     // Set insert object
     var input = {};
     // Encrypt password
-    input.password = passwordHash.generate(req.body.password);
-    input.data = req.body.data || {};
-    input.type = req.body.type || 1;
+    input.password = passwordHash.generate(req.body[name].password);
+    input.data = req.body[name].data || {};
+    input.type = req.body[name].type || 1;
 
     // Add to users
-    users[req.body.username] = input;
+    users[name] = input;
 
     // Save
     saveData(201);

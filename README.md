@@ -75,10 +75,12 @@ Sending a `POST` request to the user endpoint will create a user. Users follow t
 schema:
 
 ```json
-"jsmith": {
-  "password": "XXXXXXXXXXX",
-  "type": 0,
-  "data": { ... }
+{
+  "jsmith": {
+    "password": "XXXXXXXXXXX",
+    "type": 0,
+    "data": { ... }
+  }
 }
 ```
 
@@ -112,8 +114,8 @@ http://yourserver.com:NNNN/version
 ```
 
 * `GET` can retrieve all, or by appending to URI; a specific version and its schemas.
-* `POST` will create a new schema by providing `name` in the request body.
-* `PUT` will edit the `name` based on the request body property `name`.
+* `POST` will create a new schema by providing `name` in the request body (JSON).
+* `PUT` will edit the `name` based on the request body property `name` (JSON).
 * `DELETE` will delete a version (and all it's schemas) by specifying the name appended to the URL.
 
 ---
