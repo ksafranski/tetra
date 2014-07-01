@@ -53,7 +53,12 @@ module.exports = function (req) {
     }
     // Check search
     if (req.query.hasOwnProperty('search')) {
-      search = req.query.search;
+      try {
+        search = JSON.parse(req.query.search);
+      } catch (e) {
+        self.respond(400, 'Invalid search query format');
+        return false;
+      }
       var operators = ['$ne', '$lt', '$lte', '$gt', '$gte'];
       // Verify comparison operators
       for (var q in search) {

@@ -236,11 +236,13 @@ The above would return 10 documents starting at page 1.
 Querying for a specific match can be done with the `search` parameter:
 
 ```
-GET: http://yourserver.com:NNNN/document/v1/example?search={foo:"bar"}
+GET: http://yourserver.com:NNNN/document/v1/example?search={"foo":"bar"}
 ```
 
-Queries follow the Mongo-style operations such as `{ field: { $gt: 4 } }` allowing 
+Queries follow the Mongo-style operations such as `{ "field": { "$gt": 4 } }` allowing 
 for `$gt`, `$lt`, `$gte`, `$lte`, `$ne`.
+
+*Note: the search query must be formatted as JSON*
 
 ##### Order
 

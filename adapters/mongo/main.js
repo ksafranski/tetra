@@ -43,7 +43,8 @@ Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
   }
   // Set skip
   var skip = (cursor.page === 1) ? 0 : (cursor.count * (cursor.page)) - 1;
-  self.store.collection(coll).find(query, null, {
+  // Run query
+  self.store.collection(coll).find(query, {
     limit: cursor.count,
     skip: skip,
     sort: orderby
