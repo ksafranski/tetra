@@ -22,18 +22,30 @@ module.exports = function (req, res) {
       '500': 'Internal error'
     };
 
+    // Set headers
+    res.header('Content-Type', 'application/json');
+    res.header('X-Powered-By', 'Gremlins on Unicycles');
+
     // Set allow-methods header on 405
     if (code === 405) {
-      res.headers('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+      res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
     }
 
     // Send response
     if (data) {
       // If data property
+      if (typeof data === 'string') {
+        // Format for JSON respond
+        data = {
+          response: data
+        };
+      }
       res.send(code, data);
     } else {
       // No data property
-      res.send(code, codes[code]);
+      res.send(code, {
+        response: codes[code]
+      });
     }
 
   };
