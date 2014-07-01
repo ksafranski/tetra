@@ -29,6 +29,7 @@ module.exports = function (type, data, schema, cb) {
         }
         break;
       case 'number':
+        data[prop] = parseInt(data[prop], 2);
         if (toType(data[prop]) !== 'number') {
           failures[prop] = 'Type failure: number';
         }

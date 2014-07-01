@@ -42,7 +42,7 @@ Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
     };
   }
   // Set skip
-  var skip = (cursor.page === 1) ? 0 : (cursor.count * (cursor.page - 1)) - 1;
+  var skip = (cursor.page === 1) ? 0 : (cursor.count * (cursor.page)) - 1;
   self.store.collection(coll).find(query, null, {
     limit: cursor.count,
     skip: skip,
