@@ -41,7 +41,7 @@ to the following:
 
 ### Requests / Responses
 
-All requests (except to `blob` endpoints) require that the header 
+All `POST` and `PUT` requests (except to `blob` endpoints) require that the header 
 `Content-Type` is set to `application/json`. The system will return a `415` 
 error if this is not correctly set.
 
