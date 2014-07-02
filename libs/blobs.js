@@ -67,7 +67,7 @@ module.exports = function (req, res) {
         if (err) {
           self.respond(err.code, err.message);
         } else {
-          res.headers('Location', uri + name);
+          res.header('Location', uri + name);
           self.respond(201);
         }
       });

@@ -16,6 +16,6 @@
   },
   "blobs": {
     "adapter": "local",
-    "path": "/blobs"
+    "path": "blobs/"
   }
 }

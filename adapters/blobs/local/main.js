@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 
 var Conn = function () {
-  this.base = './../../..' + config.service.blobs.path;
+  this.base = __dirname + '/../../../' + config.service.blobs.path;
 };
 
 Conn.prototype.find = function (blob, cb) {
@@ -15,13 +15,13 @@ Conn.prototype.find = function (blob, cb) {
       message: 'Blob not found'
     });
   } else {
-    cb(false, path.resolve(false, this.base + blob));
+    cb(false, path.resolve(this.base + blob));
   }
 };
 
 Conn.prototype.create = function (name, file, cb) {
   // Ensure blob DNE
-  if (fs.existsSync(this.base + name)) {
+  if (fs.existsSync(__dirname + this.base + name)) {
     cb({
       code: 409,
       message: 'Blob already exists'
