@@ -165,8 +165,6 @@ module.exports = function (req, res) {
     create();
     break;
   case 'PUT':
-    update();
-    break;
   case 'PATCH':
     update();
     break;

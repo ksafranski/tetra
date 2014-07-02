@@ -106,6 +106,8 @@ is a schema-less object for storing any additional user information required.
 Update (`PUT`) requests can be made by specifying the user in the URL then posting 
 the data to be modified.
 
+*NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
+
 #### Delete
 
 Deleting (`DELETE`) requests are similar to update where the username to delete 
@@ -164,6 +166,8 @@ BODY:
 ```
 
 Which would change the `v2` version to `v3`.
+
+*NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
 
 #### Delete
 
@@ -240,8 +244,9 @@ BODY:
 ```
 
 The above would change the name of the schema to `example2` and the `foo` property 
-from a `string` to a `number`. The system supports partials so the full schema is 
-not required in the `document`.
+from a `string` to a `number`.
+
+*NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
 
 #### Delete
 
@@ -340,11 +345,12 @@ BODY:
 ```
 
 The above would update the document with `_id = 1234567890` with the `BODY` 
-parameters specified. The service supports partials so the full document is not 
-required.
+parameters specified.
 
 Additionally, updates can be made on multiple records by providing the `search` 
 querystring in the same format utilized by the `GET` method.
+
+*NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
 
 #### Delete
 
@@ -398,7 +404,7 @@ BODY:
   blob = [FILE]
 ```
 
-Updates can be partials, allowing changing of only the name or the file.
+*NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
 
 #### Delete
 
