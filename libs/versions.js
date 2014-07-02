@@ -163,7 +163,6 @@ module.exports = function (req, res) {
     create();
     break;
   case 'PUT':
-  case 'PATCH':
     update();
     break;
   case 'DELETE':
