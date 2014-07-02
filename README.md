@@ -41,6 +41,10 @@ to the following:
     "user": "mongouser",
     "pass": "mongopass",
     "db": "test"
+  },
+  "blobs": {
+    "adapter": "local",
+    "path": "/blobs"
   }
 }
 ```
