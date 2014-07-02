@@ -10,6 +10,9 @@ module.exports = function (req, res) {
   var adapters = __dirname + '/../adapters/blobs/';
   var params = req.params[0].split('/');
   var blob = params[1];
+  var uri = req.protocol + '://' + req.get('host') + req.originalUrl;
+  // Add URI trailing slash
+  uri = (uri.substr(-1) === '/') ? uri : uri + '/';
 
   // Ensure connection settings
   if (!config.service.hasOwnProperty('blobs')) {
@@ -40,7 +43,7 @@ module.exports = function (req, res) {
 
     store.find(blob, function (err, data) {
       if (err) {
-        self.respond(404, err);
+        self.respond(err.code, err.message);
       } else {
         res.sendfile(data);
       }
@@ -61,19 +64,13 @@ module.exports = function (req, res) {
       var name = fields.name[0];
       var file = files.blob[0];
 
-      // Ensure blob DNE
-      if (fs.existsSync(base + name)) {
-        self.respond(409, 'Blob already exists');
-        return false;
-      }
-
-      fs.rename(file.path, base + name, function (err) {
+      store.create(name, file, function (err) {
         if (err) {
-          self.respond(500, err);
-          return false;
+          self.respond(err.code, err.message);
+        } else {
+          res.headers('Location', uri + name);
+          self.respond(201);
         }
-        // Success
-        self.respond(201);
       });
 
     });
@@ -93,47 +90,12 @@ module.exports = function (req, res) {
       var name = (fields.hasOwnProperty('name')) ? fields.name[0] : false;
       var file = (files.hasOwnProperty('blob')) ? files.blob[0] : false;
 
-      // Check that blob exists
-      if (!fs.existsSync(base + blob)) {
-        self.respond(404);
-        return false;
-      }
-
-      // Vars
-      var pathOld, pathNew;
-
-      if (!file && name) {
-        // Rename
-        pathOld = base + blob;
-        pathNew = base + name;
-      } else if (file && !name) {
-        // Replace
-        // Remove
-        fs.unlinkSync(base + blob);
-        // Set
-        pathOld = file.path;
-        pathNew = base + blob;
-      } else if (file && name) {
-        // Both
-        // Remove
-        fs.unlinkSync(base + blob);
-        // Set
-        pathOld = file.path;
-        pathNew = base + name;
-      } else {
-        // Huh?
-        self.respond(400, 'No condition matches request');
-        return false;
-      }
-
-      // Process
-      fs.rename(pathOld, pathNew, function (err) {
+      store.update(blob, name, file, function (err) {
         if (err) {
-          self.respond(500, err);
-          return false;
+          self.respond(err.code, err.message);
+        } else {
+          self.respond(200);
         }
-        // Success
-        self.respond(200);
       });
 
     });
