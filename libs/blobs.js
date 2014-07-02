@@ -1,15 +1,32 @@
-var fs = require('fs');
-var path = require('path');
 var multiparty = require('multiparty');
+var config = require('./config');
+var fs = require('fs');
 
 module.exports = function (req, res) {
 
   var self = this;
-
+  var Conn;
   var base = __dirname + '/../blobs/';
-
+  var adapters = __dirname + '/../adapters/blobs/';
   var params = req.params[0].split('/');
   var blob = params[1];
+
+  // Ensure connection settings
+  if (!config.service.hasOwnProperty('blobs')) {
+    self.respond(500, 'No blob connection specified');
+    return false;
+  }
+
+  // Ensure adapter
+  if (!config.service.blobs.hasOwnProperty('adapter') || !fs.existsSync(adapters + config.service.blobs.adapter + '/main.js')) {
+    self.respond(500, 'Missing connection adapter: ' + adapters + config.service.blobs.adapter + '/main.js');
+    return false;
+  }
+
+  // Load adapter
+  Conn = require('./../adapters/blobs/' + config.service.blobs.adapter + '/main.js');
+  // Instantiate db instance
+  var store = new Conn();
 
   // Create form object
   var form = new multiparty.Form();
@@ -20,13 +37,14 @@ module.exports = function (req, res) {
       // Needs to define a blob
       self.respond(404, 'No blob specified');
     }
-    // Check exists
-    if (!fs.existsSync(base + blob)) {
-      self.respond(404);
-      return false;
-    }
-    // Success
-    res.sendfile(path.resolve(base + blob));
+
+    store.find(blob, function (err, data) {
+      if (err) {
+        self.respond(404, err);
+      } else {
+        res.sendfile(data);
+      }
+    });
   };
 
   // Create new blob
