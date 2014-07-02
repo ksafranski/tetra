@@ -4,6 +4,44 @@
 
 RESTful Back-End as a Service platform built in Node.JS.
 
+## Contents
+
+* [Installation](#installation)
+* [Adapters](#adapters)
+* [Usage](#usage)
+* [Req/Req](#requests--responses)
+* [Authentication](#authentication)
+* [Users](#users)
+  * [Read](#read)
+  * [Create](#create)
+  * [Update](#update)
+  * [Delete](#delete)
+* [Versions](#versions)
+  * [Read](#read-1)
+  * [Create](#create-1)
+  * [Update](#update-1)
+  * [Delete](#delete-1)
+* [Schemas](#schemas)
+  * [Read](#read-2)
+  * [Create](#create-2)
+  * [Update](#update-2)
+  * [Delete](#delete-2)
+* [Documents](#documents)
+  * [Read](#read-3)
+    * [By ID](#by-id)
+    * [Multiples](#multiples)
+    * [Search](#search)
+    * [Order](#order)
+  * [Create](#create-3)
+  * [Update](#update-3)
+  * [Delete](#delete-3)
+* [Blobs](#blobs)
+  * [Read](#read-4)
+  * [Create](#create-4)
+  * [Update](#update-4)
+  * [Delete](#delete-4)
+* [License](#license)
+  
 ## Installation
 
 After cloning or pulling the contents of the system, run `npm install` to 
