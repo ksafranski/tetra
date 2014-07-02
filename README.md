@@ -106,12 +106,24 @@ is a schema-less object for storing any additional user information required.
 Update (`PUT`) requests can be made by specifying the user in the URL then posting 
 the data to be modified.
 
+```
+PUT: http://yourserver.com:NNNN/user/jsmith
+BODY:
+  {
+    "password": "YYYYYYYYYYY"
+  }
+```
+
 *NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
 
 #### Delete
 
 Deleting (`DELETE`) requests are similar to update where the username to delete 
-should be specified in the last place on the URL.
+should be specified in the last place on the URL:
+
+```
+DELETE: http://yourserver.com:NNNN/user/jsmith
+```
 
 ---
 
