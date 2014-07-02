@@ -30,15 +30,13 @@ module.exports = function (type, data, schema, cb) {
         }
         break;
       case 'number':
-        if (!/^\d+$/.test(data[prop])) {
+        if (toType(data[prop]) !== 'number') {
           failures[prop] = 'Type failure: number';
         }
         break;
       case 'boolean':
-        if (data[prop] != 'true' && data[prop] != 'false') {
+        if (toType(data[prop]) !== 'boolean') {
           failures[prop] = 'Type failure: boolean';
-        } else {
-          data[prop] = Boolean(data[prop]);
         }
         break;
       case 'array':
