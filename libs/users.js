@@ -167,6 +167,9 @@ module.exports = function (req, res) {
   case 'PUT':
     update();
     break;
+  case 'PATCH':
+    update();
+    break;
   case 'DELETE':
     del();
     break;

@@ -104,7 +104,7 @@ is a schema-less object for storing any additional user information required.
 #### Update
 
 Update (`PUT`) requests can be made by specifying the user in the URL then posting 
-the data to be modified (supports partials).
+the data to be modified.
 
 #### Delete
 
