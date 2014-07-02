@@ -104,7 +104,7 @@ module.exports = function (req, res) {
         _id: id
       }, function (err, data) {
         if (err) {
-          self.respond(500, err);
+          self.respond(err.code, err.message);
           return false;
         }
         // Data?
@@ -119,7 +119,7 @@ module.exports = function (req, res) {
       // Find multiple
       db.find(collection, cursor, search, orderby, function (err, data) {
         if (err) {
-          self.respond(500, err);
+          self.respond(err.code, err.message);
         }
         // Data?
         if (!Object.keys(data).length) {
@@ -144,7 +144,7 @@ module.exports = function (req, res) {
       // Passed, run insert
       db.insert(collection, req.body, function (err, data) {
         if (err) {
-          self.respond(500, err);
+          self.respond(err.code, err.message);
           return false;
         }
         // All good
@@ -178,7 +178,7 @@ module.exports = function (req, res) {
       // Passed, run insert
       db.update(collection, query, req.body, function (err, data) {
         if (err) {
-          self.respond(500, err);
+          self.respond(err.code, err.message);
           return false;
         }
         // All good
@@ -204,7 +204,7 @@ module.exports = function (req, res) {
     }
     db.remove(collection, query, function (err) {
       if (err) {
-        self.respond(500, err);
+        self.respond(err.code, err.message);
         return false;
       }
       // Success

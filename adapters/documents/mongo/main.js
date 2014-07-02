@@ -49,7 +49,15 @@ Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
     skip: skip,
     sort: orderby
   }).toArray(function (err, data) {
-    cb(err, data);
+    if (err) {
+      cb({
+        code: 500,
+        message: err
+      });
+      return false;
+    }
+    // Success
+    cb(false, data);
   });
 };
 
@@ -59,11 +67,22 @@ Conn.prototype.insert = function (coll, data, cb) {
   try {
     data = self.formatIds(data);
   } catch (e) {
-    cb('Invalid _id provided');
+    cb({
+      code: 400,
+      message: 'Invalid _id provided'
+    });
     return false;
   }
   self.store.collection(coll).insert(data, function (err, data) {
-    cb(err, data);
+    if (err) {
+      cb({
+        code: 500,
+        message: err
+      });
+      return false;
+    }
+    // Success
+    cb(false, data);
   });
 };
 
@@ -74,13 +93,24 @@ Conn.prototype.update = function (coll, query, data, cb) {
     query = self.formatIds(query);
     data = self.formatIds(data);
   } catch (e) {
-    cb('Invalid _id provided');
+    cb({
+      code: 400,
+      message: 'Invalid _id provided'
+    });
     return false;
   }
   self.store.collection(coll).update(query, {
     $set: data
   }, function (err, data) {
-    cb(err, data);
+    if (err) {
+      cb({
+        code: 500,
+        message: err
+      });
+      return false;
+    }
+    // Success
+    cb(false, data);
   });
 };
 
@@ -90,11 +120,22 @@ Conn.prototype.remove = function (coll, query, cb) {
   try {
     query = self.formatIds(query);
   } catch (e) {
-    cb('Invalid _id provided');
+    cb({
+      code: 400,
+      message: 'Invalid _id provided'
+    });
     return false;
   }
   self.store.collection(coll).remove(query, function (err, data) {
-    cb(err, data);
+    if (err) {
+      cb({
+        code: 500,
+        message: err
+      });
+      return false;
+    }
+    // Success
+    cb(false, data);
   });
 };
 
