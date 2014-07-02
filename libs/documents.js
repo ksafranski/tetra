@@ -7,7 +7,7 @@ module.exports = function (req, res) {
   var self = this;
   var Conn;
   var base = __dirname + '/../conf/schemas/';
-  var adapters = __dirname + '/../adapters/';
+  var adapters = __dirname + '/../adapters/documents/';
   var uri = req.protocol + '://' + req.get('host') + req.originalUrl;
   // Add URI trailing slash
   uri = (uri.substr(-1) === '/') ? uri : uri + '/';

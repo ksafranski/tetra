@@ -2,7 +2,7 @@ var config = require('./../../libs/config');
 var mongoskin = require('mongoskin');
 var ObjectID = require('mongoskin').ObjectID;
 
-// DozerJS NeDB component
+// Mongo connection constructor
 var Conn = function () {
   this.store = mongoskin.db(config.service.documents.host, {
     username: config.service.documents.user,
