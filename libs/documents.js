@@ -8,9 +8,6 @@ module.exports = function (req, res) {
   var Conn;
   var base = __dirname + '/../conf/schemas/';
   var adapters = __dirname + '/../adapters/documents/';
-  var uri = req.protocol + '://' + req.get('host') + req.originalUrl;
-  // Add URI trailing slash
-  uri = (uri.substr(-1) === '/') ? uri : uri + '/';
 
   // Ensure connection settings
   if (!config.service.hasOwnProperty('documents')) {
@@ -151,7 +148,7 @@ module.exports = function (req, res) {
           return false;
         }
         // All good
-        res.header('Location', uri + data[0]._id);
+        res.header('Location', self.uri + data[0]._id);
         self.respond(201, data[0]);
       });
     });

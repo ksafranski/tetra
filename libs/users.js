@@ -9,10 +9,6 @@ module.exports = function (req, res) {
   // Users record file
   var usersFile = __dirname + '/../conf/users.json';
 
-  var uri = req.protocol + '://' + req.get('host') + req.originalUrl;
-  // Add URI trailing slash
-  uri = (uri.substr(-1) === '/') ? uri : uri + '/';
-
   // Get data
   var users = fs.readFileSync(usersFile, 'utf8', function (err, data) {
     if (err) {
@@ -47,7 +43,7 @@ module.exports = function (req, res) {
       }
       // Send proper response (201 or 200)
       if (code === 201) {
-        res.header('Location', uri + name);
+        res.header('Location', self.uri + name);
       }
       self.respond(code);
     });

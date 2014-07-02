@@ -8,6 +8,11 @@ module.exports = function (req, res) {
 
   var self = this;
 
+  // Get URL
+  var url = req.protocol + '://' + req.get('host') + req.originalUrl;
+  // Add URI trailing slash
+  this.uri = (url.substr(-1) === '/') ? url : url + '/';
+
   // Global response handler
   this.respond = function (code, data) {
     // Error codes

@@ -9,9 +9,6 @@ module.exports = function (req, res) {
   var adapters = __dirname + '/../adapters/blobs/';
   var params = req.params[0].split('/');
   var blob = params[1];
-  var uri = req.protocol + '://' + req.get('host') + req.originalUrl;
-  // Add URI trailing slash
-  uri = (uri.substr(-1) === '/') ? uri : uri + '/';
 
   // Ensure connection settings
   if (!config.service.hasOwnProperty('blobs')) {
@@ -67,7 +64,7 @@ module.exports = function (req, res) {
         if (err) {
           self.respond(err.code, err.message);
         } else {
-          res.header('Location', uri + name);
+          res.header('Location', self.uri + name);
           self.respond(201);
         }
       });

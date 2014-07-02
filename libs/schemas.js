@@ -6,9 +6,6 @@ module.exports = function (req, res) {
 
   var self = this;
   var base = __dirname + '/../conf/schemas/';
-  var uri = req.protocol + '://' + req.get('host') + req.originalUrl;
-  // Add URI trailing slash
-  uri = (uri.substr(-1) === '/') ? uri : uri + '/';
 
   // Get params
   var params = req.params[0].split('/');
@@ -102,7 +99,7 @@ module.exports = function (req, res) {
         return false;
       }
       // All good
-      res.headers('Location', uri + schema);
+      res.headers('Location', self.uri + schema);
       self.respond(201);
     });
   };
