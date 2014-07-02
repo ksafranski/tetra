@@ -1,4 +1,4 @@
-var config = require('./../../libs/config');
+var config = require('./../../../libs/config');
 var mongoskin = require('mongoskin');
 var ObjectID = require('mongoskin').ObjectID;
 

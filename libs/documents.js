@@ -13,19 +13,19 @@ module.exports = function (req, res) {
   uri = (uri.substr(-1) === '/') ? uri : uri + '/';
 
   // Ensure connection settings
-  if (!config.service.hasOwnProperty('conn')) {
+  if (!config.service.hasOwnProperty('documents')) {
     self.respond(500, 'No document connection specified');
     return false;
   }
 
   // Ensure adapter
-  if (!config.service.conn.hasOwnProperty('adapter') || !fs.existsSync(adapters + config.service.conn.adapter + '/main.js')) {
-    self.respond(500, 'Missing connection adapter: ' + adapters + config.service.conn.adapter + '/main.js');
+  if (!config.service.documents.hasOwnProperty('adapter') || !fs.existsSync(adapters + config.service.documents.adapter + '/main.js')) {
+    self.respond(500, 'Missing connection adapter: ' + adapters + config.service.documents.adapter + '/main.js');
     return false;
   }
 
   // Load adapter
-  Conn = require('./../adapters/' + config.service.conn.adapter + '/main.js');
+  Conn = require('./../adapters/documents/' + config.service.documents.adapter + '/main.js');
   // Instantiate db instance
   var db = new Conn();
 
