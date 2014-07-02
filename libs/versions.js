@@ -149,7 +149,7 @@ module.exports = function (req, res) {
         return false;
       }
       // Delete success
-      self.respond(200);
+      self.respond(204);
     });
 
   };

@@ -157,7 +157,7 @@ module.exports = function (req, res) {
         return false;
       }
       // Success
-      self.respond(200);
+      self.respond(204);
     });
   };
 

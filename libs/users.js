@@ -153,7 +153,7 @@ module.exports = function (req, res) {
     delete users[username];
 
     // Save
-    saveData(200);
+    saveData(204);
   };
 
   // Check method

@@ -14,6 +14,7 @@ module.exports = function (req, res) {
     var codes = {
       '200': 'Success',
       '201': 'Resource created',
+      '204': 'No content',
       '400': 'Bad request',
       '403': 'Forbidden',
       '404': 'Resource not found',
