@@ -6,7 +6,6 @@ module.exports = function (req, res) {
 
   var self = this;
   var Conn;
-  var base = __dirname + '/../blobs/';
   var adapters = __dirname + '/../adapters/blobs/';
   var params = req.params[0].split('/');
   var blob = params[1];
@@ -104,19 +103,12 @@ module.exports = function (req, res) {
 
   // Delete blob
   var del = function () {
-    // Check that blob exists
-    if (!fs.existsSync(base + blob)) {
-      self.respond(404);
-      return false;
-    }
-    // Delete
-    fs.unlink(base + blob, function (err) {
+    store.remove(blob, function (err) {
       if (err) {
-        self.respond(500, err);
-        return false;
+        self.respond(err.code, err.message);
+      } else {
+        self.respond(204);
       }
-      // Success
-      self.respond(204);
     });
   };
 

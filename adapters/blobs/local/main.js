@@ -96,8 +96,27 @@ Conn.prototype.update = function (blob, name, file, cb) {
   });
 };
 
-Conn.prototype.remove = function (name, cb) {
-
+Conn.prototype.remove = function (blob, cb) {
+  // Check that blob exists
+  if (!fs.existsSync(this.base + blob)) {
+    cb({
+      code: 404,
+      message: 'Blob not found'
+    });
+    return false;
+  }
+  // Delete
+  fs.unlink(this.base + blob, function (err) {
+    if (err) {
+      cb({
+        code: 500,
+        message: err
+      });
+      return false;
+    }
+    // Success
+    cb(false);
+  });
 };
 
 module.exports = Conn;
