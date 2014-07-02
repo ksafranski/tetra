@@ -114,7 +114,7 @@ BODY:
   }
 ```
 
-*NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
+*NOTE: The `PUT` method supports partial updates*
 
 #### Delete
 
@@ -179,7 +179,7 @@ BODY:
 
 Which would change the `v2` version to `v3`.
 
-*NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
+*NOTE: The `PUT` method supports partial updates*
 
 #### Delete
 
@@ -258,7 +258,7 @@ BODY:
 The above would change the name of the schema to `example2` and the `foo` property 
 from a `string` to a `number`.
 
-*NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
+*NOTE: The `PUT` method supports partial updates*
 
 #### Delete
 
@@ -362,7 +362,7 @@ parameters specified.
 Additionally, updates can be made on multiple records by providing the `search` 
 querystring in the same format utilized by the `GET` method.
 
-*NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
+*NOTE: The `PUT` method supports partial updates*
 
 #### Delete
 
@@ -416,7 +416,7 @@ BODY:
   blob = [FILE]
 ```
 
-*NOTE: Both `PUT` and `PATCH` are supported, both support partial updates*
+*NOTE: The `PUT` method supports partial updates*
 
 #### Delete
 
