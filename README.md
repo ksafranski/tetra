@@ -9,6 +9,12 @@ RESTful Back-End as a Service platform built in Node.JS.
 After cloning or pulling the contents of the system, run `npm install` to 
 install all dependencies.
 
+## Adapters
+
+The system stores versions, schemas, and users locally. Adapters are used to 
+handle processing of documents and blobs. The `/adapters` folder contains 
+corresponding directories in which adapters can be installed.
+
 ## Usage
 
 The system works off a version-schema system which allows easy development 
