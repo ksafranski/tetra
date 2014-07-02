@@ -36,9 +36,7 @@ module.exports = function (req, res) {
     // Send response
     if (data) {
       // Ensure JSON response
-      try {
-        JSON.parse(data);
-      } catch (e) {
+      if (typeof data !== 'object') {
         data = {
           response: data
         };
@@ -102,7 +100,7 @@ module.exports = function (req, res) {
     });
     break;
   case 'document':
-    documents.call(self, req);
+    documents.call(self, req, res);
     break;
   case 'blob':
     blobs.call(self, req, res);

@@ -151,8 +151,8 @@ module.exports = function (req, res) {
           return false;
         }
         // All good
-        res.header('Location', uri + data._id);
-        self.respond(201, data);
+        res.header('Location', uri + data[0]._id);
+        self.respond(201, data[0]);
       });
     });
   };

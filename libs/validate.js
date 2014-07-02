@@ -21,36 +21,15 @@ module.exports = function (type, data, schema, cb) {
       }
     }
 
+    // Set json -> object
+    if (schema[prop].hasOwnProperty('type') && schema[prop].type === 'json') {
+      schema[prop].type = 'object';
+    }
+
     // Validate types
     if (schema[prop].hasOwnProperty('type') && data.hasOwnProperty(prop)) {
-      switch (schema[prop].type) {
-      case 'string':
-        if (toType(data[prop]) !== 'string') {
-          failures[prop] = 'Type failure: string';
-        }
-        break;
-      case 'number':
-        if (toType(data[prop]) !== 'number') {
-          failures[prop] = 'Type failure: number';
-        }
-        break;
-      case 'boolean':
-        if (toType(data[prop]) !== 'boolean') {
-          failures[prop] = 'Type failure: boolean';
-        }
-        break;
-      case 'array':
-        if (toType(data[prop]) !== 'array') {
-          failures[prop] = 'Type failure: array';
-        }
-        break;
-      case 'json':
-        try {
-          JSON.parse(data[prop]);
-        } catch (e) {
-          failures[prop] = 'Type failure: json';
-        }
-        break;
+      if (toType(data[prop]) !== schema[prop].type) {
+        failures[prop] = 'Type failure: ' + schema[prop].type;
       }
     }
   }
