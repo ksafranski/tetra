@@ -2,12 +2,12 @@
 
 # NBaaS
 
-RESTful Back-End as a Service platform built in Node.JS.
+Back-End as a Service platform built in Node.JS and developed to allow 
+for simplified deployment, versioning and management of RESTful APIs.
 
 ## Contents
 
 * [Installation](#installation)
-* [Adapters](#adapters)
 * [Usage](#usage)
 * [Req/Req](#requests--responses)
 * [Authentication](#authentication)
@@ -28,16 +28,20 @@ RESTful Back-End as a Service platform built in Node.JS.
 After cloning or pulling the contents of the system, run `npm install` to 
 install all dependencies.
 
-## Adapters
-
-The system stores versions, schemas, and users locally. Adapters are used to 
-handle processing of documents and blobs. The `/adapters` folder contains 
-corresponding directories in which adapters can be installed.
+Starting the service can be done by running `node index.js`. For running the 
+service continuously it is suggested you install the [forever](https://github.com/nodejitsu/forever) 
+npm globally (`npm install forever -g`) and then run the service via 
+`forever start index.js`.
 
 ## Usage
 
 The system works off a version-schema system which allows easy development 
-of versioned RESTful APIs.
+of versioned RESTful APIs. The workflow involves 
+
+1. Creating and managing [users](#users) who can access and administer the service
+2. Creating and managing [versions](#versions) which house schema sets
+3. Creating and managing [schemas](#schemas) which control data endpoints for the API
+4. Working with [documents](#documents) and [blobs](#blobs) via RESTful interactions with the API
 
 ### Service Configuration
 
@@ -68,7 +72,19 @@ to the following:
 }
 ```
 
+By default, the system includes adapters for:
+
+* Documents via a Mongo adapter
+* Blobs via a local (node-fs) adapter
+
+For more information on adapters and writing custom adapters for other data or 
+document storage services, see the [adapters documentation](/adapters).
+
 ### Requests / Responses
+
+If `/conf/service.json` has `authentication` set to `true` (strongly recommended) 
+BasicAuth is required to access the API. Users can be created/modified/deleted via 
+the [user](#users) endpoint.
 
 All `POST` and `PUT` requests (except to `blob` endpoints) require that the header 
 `Content-Type` is set to `application/json`. The system will return a `415` 
@@ -79,15 +95,11 @@ Responses will come back in one of two formats:
 1. JSON data response (success)
 2. JSON envelope (error) with `response` property containing details
 
-### Authentication
-
-The `users` system allows setting up of users which have the ability to access 
-different methods based on their type. User authentication is done during the 
-request by supplying the `username` and `password` via BasicAuth header.
-
 ---
 
 ### Users
+
+**DEFAULT ACCOUNT: username: admin, password: password123**
 
 The built-in user system allows creation and management of users who are authorized 
 to access the API.
