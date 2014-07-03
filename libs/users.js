@@ -1,6 +1,11 @@
 var passwordHash = require('password-hash');
 var _ = require('underscore');
 var fs = require('fs');
+var Datastore = require('nedb');
+var db = new Datastore({
+  filename: './../conf/users',
+  autoload: true
+});
 
 module.exports = function (req, res) {
 
@@ -77,34 +82,48 @@ module.exports = function (req, res) {
   // Create user
   var create = function () {
 
-    var name = Object.keys(req.body)[0];
-
     // Ensure mandatory data
-    if (!req.body[name] || !req.body[name].hasOwnProperty('password')) {
+    if (!req.body.hasOwnProperty('username') || !req.body.hasOwnProperty('password')) {
       // Malformed
       self.respond(400, 'Not a valid request body');
       return false;
     }
 
-    // Ensure account doesn't already exist
-    if (users.hasOwnProperty(name)) {
-      // Already exists
-      self.respond(409, 'User already exists');
-      return false;
-    }
+    // Ensure new user
+    db.find({
+      username: req.body.username
+    }, function (err, data) {
+      if (err) {
+        self.respond(500, err);
+        return false;
+      }
 
-    // Set insert object
-    var input = {};
-    // Encrypt password
-    input.password = passwordHash.generate(req.body[name].password);
-    input.data = req.body[name].data || {};
-    input.type = req.body[name].type || 1;
+      // User already exists
+      if (data.length) {
+        self.respond(409, 'User already exists');
+        return false;
+      }
 
-    // Add to users
-    users[name] = input;
+      // Set insert object
+      var input = {};
+      input.username = req.body.username;
+      // Encrypt password
+      input.password = passwordHash.generate(req.body.password);
+      input.data = req.body.data || {};
+      input.type = req.body.type || 1;
 
-    // Save
-    saveData(201);
+      // Add to users
+      db.insert(input, function (err, data) {
+        if (err) {
+          self.respond(500, err);
+          return false;
+        }
+        // Success
+        res.header('Location', self.uri + data._id);
+        self.respond(201, data);
+      });
+
+    });
   };
 
   // Update user
