@@ -11,6 +11,21 @@ be added as needed.
 Each adapter has 4 primary methods of a constructor function with which the 
 service will interact and utilize to process requests and responses.
 
+The adapters' methods all include a callback which uses the error-first (Node-style) 
+format to return arguments.
+
+The `error` argument should either return `false` on success, or an object on failure:
+
+```javascript
+{
+  code: 555, // HTTP status code returned
+  message: 'LOREM IPSUM...' // String/Object/Array with error details
+}
+```
+
+The `data` (second arg) should contain raw (non-enveloped) data in object/JSON 
+format.
+
 ---
 
 ## Documents
