@@ -4,7 +4,7 @@ var Datastore = require('nedb');
 module.exports = function (req, res) {
 
   var db = new Datastore({
-    filename: './../conf/users',
+    filename: 'conf/users.db',
     autoload: true
   });
 
@@ -93,7 +93,7 @@ module.exports = function (req, res) {
       // Encrypt password
       input.password = passwordHash.generate(req.body.password);
       input.data = req.body.data || {};
-      input.type = req.body.type || 1;
+      input.type = (req.body.type === 0) ? 0 : 1;
 
       // Add to users
       db.insert(input, function (err, data) {
