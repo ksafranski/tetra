@@ -105,7 +105,7 @@ module.exports = function (req, res) {
         return false;
       }
       // All good
-      res.headers('Location', self.uri + schema);
+      res.setHeader('Location', self.uri + schema);
       self.respond(201);
     });
   };
