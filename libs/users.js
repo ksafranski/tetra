@@ -27,6 +27,16 @@ module.exports = function (req, res) {
       self.respond(400, 'Invalid query');
       return false;
     }
+    var operators = ['$ne', '$lt', '$lte', '$gt', '$gte'];
+    // Verify comparison operators
+    for (var q in query) {
+      if (typeof query[q] === 'object') {
+        if (operators.indexOf(Object.keys(query[q])[0]) === -1) {
+          self.respond(400, 'Invalid query operator');
+          return false;
+        }
+      }
+    }
   } else {
     query = {};
   }

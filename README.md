@@ -110,7 +110,7 @@ proper use of verbs/methods, proper use of req/res headers, etc.
 **DEFAULT ACCOUNT: username: admin, password: password123**
 
 The built-in user system allows creation and management of users who are authorized 
-to access the API.
+to access the API. The user database is maintained using [NeDB](https://github.com/louischatriot/nedb).
 
 Requests to the user system can be made against:
 
@@ -158,6 +158,13 @@ GET: http://yourserver.com:NNNN/user?search={ "type": 1 }
 ```
 
 The above would return all users with `type` set to `1` (standard users).
+
+To maintain consistency with the [documents](#documents) API, the supported 
+query types are `$gt`, `$lt`, `$gte`, `$lte`, `$ne`, for example:
+
+```
+GET: http://yourserver.com:NNNN/user?search={ "type": { "$ne": 0 }}
+```
 
 #### Update
 
