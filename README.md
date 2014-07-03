@@ -28,6 +28,10 @@ for simplified deployment, versioning and management of RESTful APIs.
 After cloning or pulling the contents of the system, run `npm install` to 
 install all dependencies.
 
+The adapters by default support Mongo for documents and local (node-fs) for blob 
+storage. These should be configured in `/conf/service.json` before running the 
+service.
+
 Starting the service can be done by running `node index.js`. For running the 
 service continuously it is suggested you install the [forever](https://github.com/nodejitsu/forever) 
 npm globally (`npm install forever -g`) and then run the service via 
@@ -94,6 +98,10 @@ Responses will come back in one of two formats:
 
 1. JSON data response (success)
 2. JSON envelope (error) with `response` property containing details
+
+The system was developed to follow best practices for RESTful API's as closely as 
+possible, including accurate and diverse HTTP-Status codes, non-enveloped return data, 
+proper use of verbs/methods, proper use of req/res headers, etc.
 
 ---
 
