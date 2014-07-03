@@ -80,7 +80,8 @@ module.exports = function (req, res) {
   };
 
   // Ensure Content-Type header is set
-  if (type !== 'blob' && req.header('Content-Type') !== 'application/json') {
+  var regX = new RegExp('\\bapplication/json\\b');
+  if (type !== 'blob' && !regX.test(req.header('Content-Type'))) {
     if (req.method === 'POST' || req.method === 'PUT') {
       self.respond(415);
       return false;

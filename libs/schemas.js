@@ -19,6 +19,14 @@ module.exports = function (req, res) {
     return false;
   }
 
+  // Get schema from POST / PUT
+  if (req.method === 'POST' || req.method === 'PUT') {
+    schema = req.body.name;
+    if (!schema) {
+      self.respond(404, 'Bad request body');
+    }
+  }
+
   // Ensure schema exists
   var schemaExists = function () {
     if (!fs.existsSync(base + version + '/' + schema + '.json')) {
@@ -99,7 +107,7 @@ module.exports = function (req, res) {
         return false;
       }
       // All good
-      res.headers('Location', self.uri + schema);
+      res.header('Location', self.uri + schema);
       self.respond(201);
     });
   };

@@ -270,19 +270,19 @@ To create a new schema on v1 named `example1`, use the following:
 ```
 POST: http://yourserver.com:NNNN/schema/v1
 BODY:
-  { 
+  {
     "name": "example1",
     "document": {
       "foo": {
         "required": true,
         "type": "string"
       },
-      "bar": 
+      "bar": {
         "type": "boolean"
-      },
-      "quz": {
-        "type": "array"
       }
+    },
+    "quz": {
+      "type": "array"
     }
   }
 ```
@@ -385,8 +385,10 @@ To create a new document, use the following:
 ```
 POST: http://yourserver.com:NNNN/document/v1/example
 BODY:
-  foo = 'apple'
-  bar = 'orange'
+  {
+    "foo": "apple",
+    "bar": true
+  }
   ...
 ```
 
@@ -402,7 +404,9 @@ a specific document (by ID), or a subset based on search.
 ```
 PUT: http://yourserver.com:NNNN/document/v1/example/1234567890
 BODY:
-  foo = 'banana'
+  {
+    "foo": "banana"
+  }
 ```
 
 The above would update the document with `_id = 1234567890` with the `BODY` 
