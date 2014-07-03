@@ -7,9 +7,12 @@ module.exports = function (req, res) {
     filename: 'conf/users.db',
     autoload: true
   });
-  
+
   // Ensure index
-  db.ensureIndex({ fieldName: 'username', unique: true }, function (err) {
+  db.ensureIndex({
+    fieldName: 'username',
+    unique: true
+  }, function (err) {
     if (err) {
       console.log(err);
     }

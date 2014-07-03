@@ -1,8 +1,25 @@
 var config = require('./config');
 var output = require('./output');
 var passwordHash = require('password-hash');
+var Datastore = require('nedb');
 
 module.exports = function (req, res, next) {
+
+  var db = new Datastore({
+    filename: 'conf/users.db',
+    autoload: true
+  });
+
+  // Ensure index
+  db.ensureIndex({
+    fieldName: 'username',
+    unique: true
+  }, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+
   var auth;
 
   var fail = function () {
