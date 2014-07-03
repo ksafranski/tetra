@@ -152,7 +152,7 @@ module.exports = function (req, res) {
         }
 
         // Success
-        self.respond(200);
+        self.respond(204);
 
       });
 
@@ -161,7 +161,16 @@ module.exports = function (req, res) {
 
   // Delete user
   var del = function () {
-
+    db.remove(query, {
+      multi: true
+    }, function (err) {
+      if (err) {
+        self.respond(500, err);
+        return false;
+      }
+      // Success
+      self.respond(204);
+    });
   };
 
   // Check method
