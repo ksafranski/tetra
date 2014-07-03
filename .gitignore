@@ -1,5 +1,6 @@
 # Logs
 logs
+!adapters/logs
 *.log
 
 # Runtime data
