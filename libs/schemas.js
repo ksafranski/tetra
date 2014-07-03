@@ -18,6 +18,12 @@ module.exports = function (req, res) {
     self.respond(404, 'Version does not exist');
     return false;
   }
+  
+  // Get schema from POST / PUT
+  if (req.method === 'POST' || req.method === 'PUT') {
+    schema = req.body.name;
+    (!schema) ? self.respond(404, 'Bad request body') : null;
+  }
 
   // Ensure schema exists
   var schemaExists = function () {
