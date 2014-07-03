@@ -10,27 +10,29 @@ module.exports = function (req, res) {
 
   var self = this;
 
+  // Params
+  var params = req.params[0];
+  var username = params.split('/').pop();
+  var query = {};
+
+  // Setup query
+  if (username !== 'user') {
+    query = {
+      username: username
+    };
+  } else if (req.query.search) {
+    try {
+      query = JSON.parse(req.query.search);
+    } catch (e) {
+      self.respond(400, 'Invalid query');
+      return false;
+    }
+  } else {
+    query = {};
+  }
+
   // Read single user or list
   var read = function () {
-    var params = req.params[0];
-    var username = params.split('/').pop();
-    var query = {};
-
-    // Setup query
-    if (username !== 'user') {
-      query = {
-        username: username
-      };
-    } else if (req.query.search) {
-      try {
-        query = JSON.parse(req.query.search);
-      } catch (e) {
-        self.respond(400, 'Invalid query');
-        return false;
-      }
-    } else {
-      query = {};
-    }
 
     // Run query
     db.find(query, function (err, data) {
@@ -111,7 +113,40 @@ module.exports = function (req, res) {
 
   // Update user
   var update = function () {
+    // Ensure user exists
+    db.find(query, function (err, data) {
+      if (err) {
+        self.respond(500, err);
+        return false;
+      }
 
+      // User already exists
+      if (!data.length) {
+        self.respond(404, 'poop');
+        return false;
+      }
+
+      var options = {};
+      if (data.length > 1) {
+        options.multi = true;
+      }
+
+      // Update
+      db.update(query, {
+        $set: req.body
+      }, options, function (err) {
+
+        if (err) {
+          self.respond(500, err);
+          return false;
+        }
+
+        // Success
+        self.respond(200);
+
+      });
+
+    });
   };
 
   // Delete user
