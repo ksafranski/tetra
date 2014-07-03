@@ -1,0 +1,2 @@
+{"username":"admin","password":"sha1$91d2b0a4$1$a815aaae15bbf1646c598b774adc0f399c9bc1d7","data":{"title":"Admin Account"},"type":0,"_id":"lszABTuQR0uWAoqQ"}
+{"$$indexCreated":{"fieldName":"username","unique":true,"sparse":false}}

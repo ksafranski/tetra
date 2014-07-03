@@ -1,56 +1,72 @@
-var config = require('./config');
-var output = require('./output');
 var passwordHash = require('password-hash');
+var Datastore = require('nedb');
 
 module.exports = function (req, res, next) {
-  var auth;
 
-  var fail = function () {
-    // Send an Basic Auth request (HTTP Code: 401 Unauthorized)
-    res.statusCode = 401;
-    // Send header
-    res.setHeader('WWW-Authenticate', 'Basic realm="' + config.service.name + '"');
-    // End with unauthorized
-    res.end('Unauthorized');
-  };
+  var db = new Datastore({
+    filename: 'conf/users.db',
+    autoload: true
+  });
 
-  // Get users function
-  var getUsers = function () {
-    try {
-      return require('./../conf/users.json');
-    } catch (err) {
-      return false;
+  // Ensure index
+  db.ensureIndex({
+    fieldName: 'username',
+    unique: true
+  }, function (err) {
+    if (err) {
+      console.log(err);
     }
+  });
+
+  var checkCreds = function (username, password, cb) {
+    db.find({
+      username: username
+    }, function (err, data) {
+      if (err) {
+        cb(false);
+        return false;
+      }
+      // Check username
+      if (!data.length) {
+        cb(false);
+        return false;
+      }
+
+      // Check data
+      if (!passwordHash.verify(password, data[0].password)) {
+        cb(false);
+        return false;
+      }
+
+      // Set user type in the request object
+      req.userType = data[0].type;
+      cb(true);
+      return true;
+
+    });
   };
 
-  // Get users
-  var users = getUsers();
+  // Grab the "Authorization" header.
+  var auth = req.get('authorization');
 
-  // Ensure users exists
-  if (!users) {
-    output('error', 'No users file or valid user accounts for authentication');
-    fail();
-    return false;
-  }
-
-  // Check authorization header
-  if (req.headers.authorization) {
-    // * Cut the starting "Basic " from the header
-    // * Decode the base64 encoded username:password
-    // * Split the string at the colon
-    auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
-  }
-
-  // Check for username
-  if (!auth || !users.hasOwnProperty(auth[0])) {
-    // Auth missing or username not found
-    fail();
-  } else if (!passwordHash.verify(auth[1], users[auth[0]].password)) {
-    // Incorrect password
-    fail();
+  // On the first request, the "Authorization" header won't exist, so we'll set a Response
+  // header that prompts the browser to ask for a username and password.
+  if (!auth) {
+    res.set('WWW-Authenticate', 'Basic realm="Authorization Required"');
+    // If the user cancels the dialog, or enters the password wrong too many times,
+    // show the Access Restricted error message.
+    return res.status(401).send('Authorization Required');
   } else {
-    // Set user type in request object
-    req.userType = users[auth[0]].type;
-    next();
+    // If the user enters a username and password, the browser re-requests the route
+    // and includes a Base64 string of those credentials.
+    var credentials = new Buffer(auth.split(' ').pop(), 'base64').toString('ascii').split(':');
+    checkCreds(credentials[0], credentials[1], function (result) {
+      if (result) {
+        next();
+      } else {
+        res.status(403).send('Access Denied (incorrect credentials)');
+      }
+    });
+
   }
 };

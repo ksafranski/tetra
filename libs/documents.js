@@ -65,6 +65,7 @@ module.exports = function (req, res) {
         if (typeof search[q] === 'object') {
           if (operators.indexOf(Object.keys(search[q])[0]) === -1) {
             self.respond(400, 'Invalid query operator');
+            return false;
           }
         }
       }

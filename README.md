@@ -110,12 +110,12 @@ proper use of verbs/methods, proper use of req/res headers, etc.
 **DEFAULT ACCOUNT: username: admin, password: password123**
 
 The built-in user system allows creation and management of users who are authorized 
-to access the API.
+to access the API. The user database is maintained using [NeDB](https://github.com/louischatriot/nedb).
 
 Requests to the user system can be made against:
 
 ```
-http://youserver.com:NNNN/user/
+GET: http://youserver.com:NNNN/user/
 ```
 
 #### Read
@@ -124,7 +124,7 @@ To read users simply make a `GET` request against the user endpoint. Additionall
 you can specify a username to only retrieve a certain user account:
 
 ```
-http://youserver.com:NNNN/user/jsmith
+GET: http://youserver.com:NNNN/user/jsmith
 ```
 
 #### Create
@@ -134,11 +134,10 @@ schema:
 
 ```json
 {
-  "jsmith": {
-    "password": "XXXXXXXXXXX",
-    "type": 0,
-    "data": { ... }
-  }
+  "username": "jsmith",  
+  "password": "XXXXXXXXXXX",
+  "type": 0,
+  "data": { ... }
 }
 ```
 
@@ -149,6 +148,23 @@ is a schema-less object for storing any additional user information required.
 **Administrative**: Has the ability to access all data, including users and schemas
 
 **Standard**: Only has access to API (document & blob) endpoints
+
+##### Queries
+
+Users can be queried by including a `search` querystring with JSON-formatted query:
+
+```
+GET: http://yourserver.com:NNNN/user?search={ "type": 1 }
+```
+
+The above would return all users with `type` set to `1` (standard users).
+
+To maintain consistency with the [documents](#documents) API, the supported 
+query types are `$gt`, `$lt`, `$gte`, `$lte`, `$ne`, for example:
+
+```
+GET: http://yourserver.com:NNNN/user?search={ "type": { "$ne": 0 }}
+```
 
 #### Update
 
