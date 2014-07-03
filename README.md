@@ -270,19 +270,19 @@ To create a new schema on v1 named `example1`, use the following:
 ```
 POST: http://yourserver.com:NNNN/schema/v1
 BODY:
-  { 
+  {
     "name": "example1",
     "document": {
       "foo": {
         "required": true,
         "type": "string"
       },
-      "bar": 
+      "bar": {
         "type": "boolean"
-      },
-      "quz": {
-        "type": "array"
       }
+    },
+    "quz": {
+      "type": "array"
     }
   }
 ```
