@@ -115,7 +115,7 @@ to access the API.
 Requests to the user system can be made against:
 
 ```
-http://youserver.com:NNNN/user/
+GET: http://youserver.com:NNNN/user/
 ```
 
 #### Read
@@ -124,7 +124,7 @@ To read users simply make a `GET` request against the user endpoint. Additionall
 you can specify a username to only retrieve a certain user account:
 
 ```
-http://youserver.com:NNNN/user/jsmith
+GET: http://youserver.com:NNNN/user/jsmith
 ```
 
 #### Create
@@ -148,6 +148,16 @@ is a schema-less object for storing any additional user information required.
 **Administrative**: Has the ability to access all data, including users and schemas
 
 **Standard**: Only has access to API (document & blob) endpoints
+
+##### Queries
+
+Users can be queried by including a `search` querystring with JSON-formatted query:
+
+```
+GET: http://yourserver.com:NNNN/user?search={ "type": 1 }
+```
+
+The above would return all users with `type` set to `1` (standard users).
 
 #### Update
 

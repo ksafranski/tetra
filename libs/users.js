@@ -1,81 +1,64 @@
 var passwordHash = require('password-hash');
-var _ = require('underscore');
-var fs = require('fs');
 var Datastore = require('nedb');
-var db = new Datastore({
-  filename: './../conf/users',
-  autoload: true
-});
 
 module.exports = function (req, res) {
 
-  var self = this;
-
-  // Users record file
-  var usersFile = __dirname + '/../conf/users.json';
-
-  // Get data
-  var users = fs.readFileSync(usersFile, 'utf8', function (err, data) {
-    if (err) {
-      return false;
-    }
-    // Ensure proper data
-    try {
-      JSON.parse(data);
-    } catch (e) {
-      return false;
-    }
-    return data;
+  var db = new Datastore({
+    filename: './../conf/users',
+    autoload: true
   });
 
-  if (!users) {
-    // User FAIL
-    self.respond(500, 'Missing user data');
-    return false;
-  } else {
-    // Convert to object
-    users = JSON.parse(users);
-  }
-
-  // Save data back to users file
-  var saveData = function (code) {
-    var name = Object.keys(users)[0];
-    // Write to file
-    fs.writeFile(usersFile, JSON.stringify(users, null, 2), 'utf8', function (err) {
-      if (err) {
-        self.respond(500);
-        return false;
-      }
-      // Send proper response (201 or 200)
-      if (code === 201) {
-        res.header('Location', self.uri + name);
-      }
-      self.respond(code);
-    });
-  };
+  var self = this;
 
   // Read single user or list
   var read = function () {
     var params = req.params[0];
     var username = params.split('/').pop();
+    var query = {};
 
-    // Strip passwords
-    for (var u in users) {
-      delete users[u].password;
-    }
-
-    // Check type
-    if (username) {
-      // Single entity request
-      if (users.hasOwnProperty(username)) {
-        self.respond(200, users[username]);
-      } else {
-        self.respond(404, 'User does not exist');
+    // Setup query
+    if (username !== 'user') {
+      query = {
+        username: username
+      };
+    } else if (req.query.search) {
+      try {
+        query = JSON.parse(req.query.search);
+      } catch (e) {
+        self.respond(400, 'Invalid query');
+        return false;
       }
     } else {
-      // Full request
-      self.respond(200, users);
+      query = {};
     }
+
+    // Run query
+    db.find(query, function (err, data) {
+      if (err) {
+        self.respond(500, err);
+        return false;
+      }
+
+      // No data
+      if (!data.length) {
+        self.respond(404);
+        return false;
+      }
+
+      // Don't return passwords
+      for (var i = 0, z = data.length; i < z; i++) {
+        delete data[i].password;
+      }
+
+      // Single item
+      if (username !== 'user') {
+        data = data[0];
+      }
+
+      // Success
+      self.respond(200, data);
+
+    });
 
   };
 
@@ -129,46 +112,11 @@ module.exports = function (req, res) {
   // Update user
   var update = function () {
 
-    // Get param
-    var params = req.params[0];
-    var username = params.split('/').pop();
-
-    // Ensure user exists
-    if (!users.hasOwnProperty(username)) {
-      self.respond(404, 'User does not exist');
-      return false;
-    }
-
-    // Encrypt password (if applicable)
-    if (req.body.hasOwnProperty('password')) {
-      req.body.password = passwordHash.generate(req.body.password);
-    }
-
-    // Update
-    _.extend(users[username], req.body);
-
-    // Save
-    saveData(200);
-
   };
 
   // Delete user
   var del = function () {
-    // Get param
-    var params = req.params[0];
-    var username = params.split('/').pop();
 
-    // Ensure user exists
-    if (!users.hasOwnProperty(username)) {
-      self.respond(404, 'User does not exist');
-      return false;
-    }
-
-    // Remove
-    delete users[username];
-
-    // Save
-    saveData(204);
   };
 
   // Check method
