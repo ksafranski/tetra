@@ -1,14 +1,12 @@
-var Conn = function () {
+module.exports = function (req, res, next) {
 
-};
-
-Conn.prototype.save = function (log) {
-  console.log(log);
-};
-
-Conn.prototype.process = function (req, res, next) {
   var send;
   var end;
+
+  // Save the log
+  var save = function (log) {
+    console.log(log);
+  };
 
   // Set start time
   if (!req._startTime) {
@@ -51,7 +49,6 @@ Conn.prototype.process = function (req, res, next) {
     if (req.headers) { // Headers?
       obj.headers = req.headers;
     }
-    // Additional log options...
     if (req.body) { // Body?
       obj.body = req.body;
     }
@@ -64,9 +61,10 @@ Conn.prototype.process = function (req, res, next) {
     if (req.files) { // Files?
       obj.files = Object.keys(req.files);
     }
+
+    save(obj);
+
   };
 
   return next();
 };
-
-module.exports = Conn;

@@ -45,9 +45,8 @@ Service.prototype.start = function () {
   }
   // Logging
   if (config.service.logs) {
-    var Logger = require('./../adapters/logs/' + config.service.logs.adapter + '/main.js');
-    var log = new Logger();
-    app.use(log.process);
+    var logger = require('./../adapters/logs/' + config.service.logs.adapter + '/main.js');
+    app.use(logger);
   }
   // Bind endpoints to api module
   app.all('/*', processor).use(errorHandler);
