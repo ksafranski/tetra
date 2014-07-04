@@ -148,11 +148,10 @@ schema:
 
 ```json
 {
-  "jsmith": {
-    "password": "XXXXXXXXXXX",
-    "type": 0,
-    "data": { ... }
-  }
+  "username": "jsmith",
+  "password": "XXXXXXXXXXX",
+  "type": 0,
+  "data": { ... }
 }
 ```
 
