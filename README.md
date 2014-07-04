@@ -11,17 +11,17 @@ for simplified deployment, versioning and management of RESTful APIs.
 * [Usage](#usage)
 * [Req/Req](#requests--responses)
 * [Logging](#logging)
-* [Users](#users) -> [Read](#read) / [Create](#create) / [Update](#update) / [Delete](#delete)
-* [Sessions](#sessions) -> [Read](#read-1) / [Create](#create-1) / [Update](#update-1) / [Delete](#delete-1)
-* [Versions](#versions) -> [Read](#read-2) / [Create](#create-2) / [Update](#update-2) / [Delete](#delete-2)
-* [Schemas](#schemas) -> [Read](#read-3) / [Create](#create-3) / [Update](#update-3) / [Delete](#delete-3)
-* [Documents](#documents) -> [Read](#read-4) / [Create](#create-4) / [Update](#update-4) / [Delete](#delete-4)
+* [Users](#users) -> [Read](#read-user) / [Create](#create-user) / [Update](#update-user) / [Delete](#delete-user)
+* [Sessions](#sessions) -> [Read](#read-session) / [Create](#create-session) / [Update](#update-session) / [Delete](#delete-session)
+* [Versions](#versions) -> [Read](#read-version) / [Create](#create-version) / [Update](#update-version) / [Delete](#delete-version)
+* [Schemas](#schemas) -> [Read](#read-schema) / [Create](#create-schema) / [Update](#update-schema) / [Delete](#delete-schema)
+* [Documents](#documents) -> [Read](#read-document) / [Create](#create-document) / [Update](#update-document) / [Delete](#delete-document)
   * [Queries](#read-4)
     * [By ID](#by-id)
     * [Multiples](#multiples)
     * [Search](#search)
     * [Order](#order)
-* [Blobs](#blobs) -> [Read](#read-5) / [Create](#create-5) / [Update](#update-5) / [Delete](#delete-5)
+* [Blobs](#blobs) -> [Read](#read-blob) / [Create](#create-blob) / [Update](#update-blob) / [Delete](#delete-blob)
 * [License](#license)
   
 ## Installation
@@ -133,7 +133,7 @@ Requests to the user system can be made against:
 GET: http://youserver.com:NNNN/user/
 ```
 
-#### Read
+#### Read User
 
 To read users simply make a `GET` request against the user endpoint. Additionally 
 you can specify a username to only retrieve a certain user account:
@@ -152,7 +152,7 @@ The above would retrieve users with `type` less than 1. To maintain consistency
 with other queries within the system the following operators are supported; 
 `$gt`, `$lt`, `$gte`, `$lte`, `$ne` as well as direct matches: `{ "username": "foo" }`.
 
-#### Create
+#### Create User
 
 Sending a `POST` request to the user endpoint will create a user. User's follow the 
 schema:
@@ -176,7 +176,7 @@ is a schema-less object for storing any additional user information required.
 
 **Standard**: Only has access to API (document & blob) endpoints
 
-#### Update
+#### Update User
 
 Update (`PUT`) requests can be made by specifying the user in the URL then posting 
 the data to be modified.
@@ -193,7 +193,7 @@ The `PUT` method supports the same queries as the `GET` method.
 
 *NOTE: The `PUT` method supports partial updates*
 
-#### Delete
+#### Delete User
 
 Deleting (`DELETE`) requests are similar to update where the username to delete 
 should be specified in the last place on the URL:
@@ -211,7 +211,7 @@ The `DELETE` method supports the same queries as the `GET` method.
 Instead of BasicAuth, sessions can be used to authenticate users on the system. 
 Sessions support `GET`, `POST`, and `DELETE` methods.
 
-#### Read
+#### Read Session
 
 To retrieve the current user session:
 
@@ -219,7 +219,7 @@ To retrieve the current user session:
 GET: http://yourserver.com:NNNN/session
 ```
 
-#### Create
+#### Create Session
 
 To create a new session (authenticate a user):
 
@@ -232,7 +232,7 @@ BODY:
   }
 ```
 
-#### Delete
+#### Delete Session
 
 To end a session (logout):
 
@@ -249,7 +249,7 @@ are directory with their contents being the schemas for all available endpoints.
 
 Versions can be manipulated using REST calls against the following:
 
-#### Read
+#### Read Version
 
 Any `GET` request made will read either all available versions:
 
@@ -266,7 +266,7 @@ http://yourserver.com:NNNN/version/v1
 The `GET` call (on success) will return the schemas associated with the versions
 returned.
 
-#### Create
+#### Create Version
 
 A new version can be created by running:
 
@@ -280,7 +280,7 @@ BODY:
 
 Which would create the container/directory for a `v2` version.
 
-#### Update
+#### Update Version
 
 Versions can be updated by using the following:
 
@@ -294,7 +294,7 @@ BODY:
 
 Which would change the `v2` version to `v3`.
 
-#### Delete
+#### Delete Version
 
 Versions (and their schemas) can be deleted via:
 
@@ -319,7 +319,7 @@ Additionally schemas can be set to `strict` in the `service.json` config file
 which will enforce that all data submitted match the key values in the schema (i.e. 
 a user cannot submit data to keys NOT in the schema).
 
-#### Read
+#### Read Schema
 
 To return the JSON schema for v1's `example` schema, use the following:
 
@@ -327,7 +327,7 @@ To return the JSON schema for v1's `example` schema, use the following:
 GET: http://yourserver.com:NNNN/schema/v1/example
 ```
 
-#### Create
+#### Create Schema
 
 To create a new schema on v1 named `example1`, use the following:
 
@@ -351,7 +351,7 @@ BODY:
   }
 ```
 
-#### Update
+#### Update Schema
 
 To update the `example1` schema created in the previous example, use the following: 
 
@@ -373,7 +373,7 @@ from a `string` to a `number`.
 
 *NOTE: The `PUT` method supports partial updates*
 
-#### Delete
+#### Delete Schema
 
 To delete the `example1` schema, use the following:
 
@@ -389,7 +389,7 @@ After defining schemas, the documents can then be accessed and modified. All
 actions will be tested against the schemas to ensure data structure and property 
 values.
 
-#### Read
+#### Read Document
 
 To read all documents in v1's `example` schema, use the following:
 
@@ -442,7 +442,7 @@ GET: http://yourserver.com:NNNN/document/v1/example?orderby={foo:"asc"}
 The above would return data in ascending order based on the `foo` field. The 
 inverse (descending) is called by changing the value to `desc`.
 
-#### Create
+#### Create Document
 
 To create a new document, use the following:
 
@@ -458,7 +458,7 @@ BODY:
 Any body parameters will be evaluated against the schema and passing data-sets 
 will be added as a document.
 
-#### Update
+#### Update Document
 
 Similar to the create method, documents can be updated. The format of the `GET` 
 requests can be used in the URI to specify which documents to update, i.e. all, 
@@ -480,7 +480,7 @@ querystring in the same format utilized by the `GET` method.
 
 *NOTE: The `PUT` method supports partial updates*
 
-#### Delete
+#### Delete Document
 
 Documents can be deleted using the same format of URI as shown in the `GET` examples; 
 specifying all, by ID, or by query.
@@ -502,7 +502,7 @@ Blob storage can be used for storing documents in binary format. They can not
 be searched and have no schema or version, but support all other methods. Blob 
 requests for `POST` and `PUT` should be made as `multipart` submissions.
 
-#### Read
+#### Read Blob
 
 To read out a blob it can be accessed by its name.
 
@@ -510,7 +510,7 @@ To read out a blob it can be accessed by its name.
 GET: http://yourserver.com:NNNN/blob/some_file
 ```
 
-#### Create
+#### Create Blob
 
 To create (add) a new blob, simply `POST` with request body `blob`:
 
@@ -521,7 +521,7 @@ BODY:
   blob = [FILE]
 ```
 
-#### Update
+#### Update Blob
 
 The update (`PUT`) method follows the `POST`, simply replacing the blob:
 
@@ -534,7 +534,7 @@ BODY:
 
 *NOTE: The `PUT` method supports partial updates*
 
-#### Delete
+#### Delete Blob
 
 The delete simply removes the blob from the server:
 
