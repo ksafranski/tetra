@@ -1,18 +1,19 @@
+var config = require('./../../../libs/config');
 var winston = require('winston');
 var path = require('path');
 var transports = [];
 var fs = require('fs');
-
+var logPath = __dirname + '/../../../' + config.service.logs.path;
 // Ensure log directory exists
-if (!fs.existsSync(__dirname + '/../../../logs')) {
-  fs.mkdirSync(__dirname + '/../../../logs');
+if (!fs.existsSync(logPath)) {
+  fs.mkdirSync(logPath);
 }
 
 // Create file transport
 transports.push(new winston.transports.DailyRotateFile({
   name: 'file',
   datePattern: '.yyyy-MM-ddTHH',
-  filename: path.join(__dirname, '/../../../logs', 'http.log')
+  filename: path.join(logPath, 'http.log')
 }));
 
 // Create new logger
