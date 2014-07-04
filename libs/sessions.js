@@ -62,6 +62,7 @@ module.exports = function (req, res) {
       }
 
       // Success
+      req.session.user = data[0];
       res.send(201);
     });
   };
