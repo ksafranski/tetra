@@ -1,3 +1,25 @@
+var winston = require('winston');
+var path = require('path');
+var transports = [];
+var fs = require('fs');
+
+// Ensure log directory exists
+if (!fs.existsSync(__dirname + '/../../../logs')) {
+  fs.mkdirSync(__dirname + '/../../../logs');
+}
+
+// Create file transport
+transports.push(new winston.transports.DailyRotateFile({
+  name: 'file',
+  datePattern: '.yyyy-MM-ddTHH',
+  filename: path.join(__dirname, '/../../../logs', 'http.log')
+}));
+
+// Create new logger
+var logger = new winston.Logger({
+  transports: transports
+});
+
 module.exports = function (req, res, next) {
 
   var send;
@@ -5,7 +27,7 @@ module.exports = function (req, res, next) {
 
   // Save the log
   var save = function (log) {
-    console.log(log);
+    logger.info(log);
   };
 
   // Set start time
