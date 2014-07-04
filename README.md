@@ -156,7 +156,7 @@ with other queries within the system the following operators are supported;
 Sending a `POST` request to the user endpoint will create a user. User's follow the 
 schema:
 
-```json
+```
 POST: http://yourserver.com:NNNN/user
 BODY:
   {
