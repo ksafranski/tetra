@@ -4,7 +4,7 @@ var Datastore = require('nedb');
 module.exports = function (req, res, next) {
 
   // Split params
-  var params = req.params[0].split('/');
+  var params = req.path.replace(/^\/|\/$/g, '').split('/');
 
   // Get type
   var type = params[0];
@@ -16,7 +16,7 @@ module.exports = function (req, res, next) {
   }
 
   // Check for session auth
-  if (req.session.user) {
+  if (req.session && req.session.hasOwnProperty('user')) {
     // Ensure type
     if (!res.session.user.hasOwnProperty('type')) {
       res.send(401, 'Invalid session');

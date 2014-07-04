@@ -23,7 +23,7 @@ module.exports = function (req, res) {
   // Get/Check session data
   var read = function () {
     // Ensure session
-    if (!req.session.user) {
+    if (!req.session || !req.session.hasOwnProperty('user')) {
       self.respond(401);
       return false;
     }
