@@ -4,6 +4,8 @@ var processor = require('./processor');
 var authentication = require('./authentication');
 var config = require('./config');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
 var connectDomain = require('connect-domain');
 
 // Service constructor
@@ -37,6 +39,13 @@ Service.prototype.start = function () {
   };
   app.use(allowCrossDomain);
   app.use(connectDomain());
+  // Sessions
+  app.use(cookieParser());
+  app.use(expressSession({
+    resave: true,
+    saveUninitialized: true,
+    secret: config.service.secret
+  }));
   // Body parser
   app.use(bodyParser.json());
   // Check authentication

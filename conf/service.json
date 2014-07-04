@@ -3,6 +3,7 @@
   "port": 8000,
   "authentication": true,
   "cors": "*",
+  "secret": "1aeb459cdde10ffd3a03efbb2",
   "schemas": {
     "strict": true,
     "types": ["string", "number", "boolean", "array", "json"]

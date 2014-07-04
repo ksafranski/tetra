@@ -62,6 +62,7 @@ module.exports = function (req, res) {
       }
 
       // Success
+      delete data[0].password;
       req.session.user = data[0];
       res.send(201);
     });

@@ -18,7 +18,7 @@ module.exports = function (req, res, next) {
   // Check for session auth
   if (req.session && req.session.hasOwnProperty('user')) {
     // Ensure type
-    if (!res.session.user.hasOwnProperty('type')) {
+    if (!req.session.user.hasOwnProperty('type')) {
       res.send(401, 'Invalid session');
       return false;
     }
