@@ -95,7 +95,8 @@ document storage services, see the [adapters documentation](/adapters).
 
 If `/conf/service.json` has `authentication` set to `true` (strongly recommended) 
 BasicAuth is required to access the API. Users can be created/modified/deleted via 
-the [user](#users) endpoint.
+the [user](#users) endpoint. Additionally, [sessions](#sessions) can be used for 
+authentication and user state maintenance.
 
 All `POST` and `PUT` requests (except to `blob` endpoints) require that the header 
 `Content-Type` is set to `application/json`. The system will return a `415` 
@@ -169,11 +170,16 @@ BODY:
   }
 ```
 
-The key is the username/login, the password is a string (encrypted by the server), 
-type can be either `0` (administrative) or `1` (standard), and the `data` property 
+The username must be unique, and the system will return a `409` if the specified 
+username already exists.
+
+The password is a plain-text string which will be encrypted by the service for 
+storage.
+ 
+Type can be either `0` (administrative) or `1` (standard), and the `data` property 
 is a schema-less object for storing any additional user information required.
 
-**Administrative**: Has the ability to access all data, including users and schemas
+**Administrative**: Has the ability to access all data, including users, version, and schemas
 
 **Standard**: Only has access to API (document & blob) endpoints
 
@@ -258,7 +264,7 @@ Any `GET` request made will read either all available versions:
 http://yourserver.com:NNNN/version
 ```
 
-Or can specify a specific version:
+Or can request a specific version:
 
 ```
 http://yourserver.com:NNNN/version/v1
@@ -303,7 +309,8 @@ Versions (and their schemas) can be deleted via:
 DELETE: http://yourserver.com:NNNN/version/v2
 ```
 
-Which would delete the `v2` version.
+Which would delete the `v2` version. **IMPORTANT**: This will also delete the 
+schemas associated with the version being deleted.
 
 ---
 
@@ -318,7 +325,7 @@ adjusted in the `/conf/service.json` config file.
 
 Additionally schemas can be set to `strict` in the `service.json` config file 
 which will enforce that all data submitted match the key values in the schema (i.e. 
-a user cannot submit data to keys NOT in the schema).
+a user cannot submit data to keys which are *NOT* in the schema).
 
 #### Read Schema
 
@@ -437,7 +444,7 @@ for `$gt`, `$lt`, `$gte`, `$lte`, `$ne`.
 To return based on a specific order, the `orderby` parameter can be used:
 
 ```
-GET: http://yourserver.com:NNNN/document/v1/example?orderby={foo:"asc"}
+GET: http://yourserver.com:NNNN/document/v1/example?orderby={ "foo": "asc" }
 ```
 
 The above would return data in ascending order based on the `foo` field. The 
