@@ -129,7 +129,7 @@ to access the API.
 Requests to the user system can be made against:
 
 ```
-http://youserver.com:NNNN/user/
+GET: http://youserver.com:NNNN/user/
 ```
 
 #### Read
@@ -138,8 +138,18 @@ To read users simply make a `GET` request against the user endpoint. Additionall
 you can specify a username to only retrieve a certain user account:
 
 ```
-http://youserver.com:NNNN/user/jsmith
+GET: http://youserver.com:NNNN/user/jsmith
 ```
+
+The user endpoint supports basic querying as well, for example:
+
+```
+GET: http://yourserver.com:NNNN/user?search={"type": { "$lt": 1 }}
+```
+
+The above would retrieve users with `type` less than 1. To maintain consistency 
+with other queries within the system the following operators are supported; 
+`$gt`, `$lt`, `$gte`, `$lte`, `$ne` as well as direct matches: `{ "username": "foo" }`.
 
 #### Create
 
@@ -147,12 +157,14 @@ Sending a `POST` request to the user endpoint will create a user. User's follow 
 schema:
 
 ```json
-{
-  "username": "jsmith",
-  "password": "XXXXXXXXXXX",
-  "type": 0,
-  "data": { ... }
-}
+POST: http://yourserver.com:NNNN/user
+BODY:
+  {
+    "username": "jsmith",
+    "password": "XXXXXXXXXXX",
+    "type": 0,
+    "data": { ... }
+  }
 ```
 
 The key is the username/login, the password is a string (encrypted by the server), 
@@ -176,6 +188,8 @@ BODY:
   }
 ```
 
+The `PUT` method supports the same queries as the `GET` method.
+
 *NOTE: The `PUT` method supports partial updates*
 
 #### Delete
@@ -186,6 +200,8 @@ should be specified in the last place on the URL:
 ```
 DELETE: http://yourserver.com:NNNN/user/jsmith
 ```
+
+The `DELETE` method supports the same queries as the `GET` method.
 
 ---
 
@@ -240,8 +256,6 @@ BODY:
 ```
 
 Which would change the `v2` version to `v3`.
-
-*NOTE: The `PUT` method supports partial updates*
 
 #### Delete
 
