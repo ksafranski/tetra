@@ -44,26 +44,15 @@ module.exports = function (req, res, next) {
       ip: ip,
       path: req.path || req.originalUrl || req.url,
       method: req.method,
-      respKb: Math.round(len * 10) / 10
+      respKb: Math.round(len * 10) / 10,
+      headers: (req.headers) ? req.headers : null,
+      body: (req.body) ? req.body : {},
+      qs: (req.query) ? req.query : {},
+      params: (req.params) ? req.params : {}
     };
-    if (req.headers) { // Headers?
-      obj.headers = req.headers;
-    }
-    if (req.body) { // Body?
-      obj.body = req.body;
-    }
-    if (req.query) { // Query?
-      obj.qs = req.query;
-    }
-    if (req.params) { // Params?
-      obj.params = req.params;
-    }
-    if (req.files) { // Files?
-      obj.files = Object.keys(req.files);
-    }
 
+    // Save to log
     save(obj);
-
   };
 
   return next();
