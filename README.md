@@ -205,6 +205,42 @@ The `DELETE` method supports the same queries as the `GET` method.
 
 ---
 
+### Sessions
+
+Instead of BasicAuth, sessions can be used to authenticate users on the system. 
+Sessions support `GET`, `POST`, and `DELETE` methods.
+
+#### Read
+
+To retrieve the current user session:
+
+```
+GET: http://yourserver.com:NNNN/session
+```
+
+#### Create
+
+To create a new session (authenticate a user):
+
+```
+POST: http://yourserver.com:NNNN/session
+BODY: 
+  {
+    "username": "jsmith",
+    "password": "XXXXXXXXXXX"
+  }
+```
+
+#### Delete
+
+To end a session (logout):
+
+```
+DELETE: http://yourserver.com:NNNN/session
+```
+
+---
+
 ### Versions
 
 To support ongoing development the system supports a basic versioning system. Versions 
