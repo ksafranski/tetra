@@ -3,6 +3,32 @@ var Datastore = require('nedb');
 
 module.exports = function (req, res, next) {
 
+  // Split params
+  var params = req.params[0].split('/');
+
+  // Get type
+  var type = params[0];
+
+  // Pass-through for session authentication
+  if (type === 'session' && req.method === 'POST') {
+    next();
+    return false;
+  }
+
+  // Check for session auth
+  if (req.session.user) {
+    // Ensure type
+    if (!res.session.user.hasOwnProperty('type')) {
+      res.send(401, 'Invalid session');
+      return false;
+    }
+    // Set type
+    req.userType = req.session.user.type;
+    next();
+    return false;
+  }
+
+  // Initiate database
   var db = new Datastore({
     filename: 'conf/users.db',
     autoload: true
