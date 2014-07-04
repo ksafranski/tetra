@@ -12,15 +12,16 @@ for simplified deployment, versioning and management of RESTful APIs.
 * [Req/Req](#requests--responses)
 * [Logging](#logging)
 * [Users](#users) -> [Read](#read) / [Create](#create) / [Update](#update) / [Delete](#delete)
-* [Versions](#versions) -> [Read](#read-1) / [Create](#create-1) / [Update](#update-1) / [Delete](#delete-1)
-* [Schemas](#schemas) -> [Read](#read-2) / [Create](#create-2) / [Update](#update-2) / [Delete](#delete-2)
-* [Documents](#documents) -> [Read](#read-3) / [Create](#create-3) / [Update](#update-3) / [Delete](#delete-3)
-  * [Queries](#read-3)
+* [Sessions](#sessions) -> [Read](#read-1) / [Create](#create-1) / [Update](#update-1) / [Delete](#delete-1)
+* [Versions](#versions) -> [Read](#read-2) / [Create](#create-2) / [Update](#update-2) / [Delete](#delete-2)
+* [Schemas](#schemas) -> [Read](#read-3) / [Create](#create-3) / [Update](#update-3) / [Delete](#delete-3)
+* [Documents](#documents) -> [Read](#read-4) / [Create](#create-4) / [Update](#update-4) / [Delete](#delete-4)
+  * [Queries](#read-4)
     * [By ID](#by-id)
     * [Multiples](#multiples)
     * [Search](#search)
     * [Order](#order)
-* [Blobs](#blobs) -> [Read](#read-4) / [Create](#create-4) / [Update](#update-4) / [Delete](#delete-4)
+* [Blobs](#blobs) -> [Read](#read-5) / [Create](#create-5) / [Update](#update-5) / [Delete](#delete-5)
 * [License](#license)
   
 ## Installation
@@ -202,6 +203,42 @@ DELETE: http://yourserver.com:NNNN/user/jsmith
 ```
 
 The `DELETE` method supports the same queries as the `GET` method.
+
+---
+
+### Sessions
+
+Instead of BasicAuth, sessions can be used to authenticate users on the system. 
+Sessions support `GET`, `POST`, and `DELETE` methods.
+
+#### Read
+
+To retrieve the current user session:
+
+```
+GET: http://yourserver.com:NNNN/session
+```
+
+#### Create
+
+To create a new session (authenticate a user):
+
+```
+POST: http://yourserver.com:NNNN/session
+BODY: 
+  {
+    "username": "jsmith",
+    "password": "XXXXXXXXXXX"
+  }
+```
+
+#### Delete
+
+To end a session (logout):
+
+```
+DELETE: http://yourserver.com:NNNN/session
+```
 
 ---
 
