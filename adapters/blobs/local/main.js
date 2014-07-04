@@ -5,6 +5,11 @@ var path = require('path');
 
 var Conn = function () {
   this.base = __dirname + '/../../../' + config.service.blobs.path;
+  // Ensure directory exists
+  if (!fs.existsSync(this.base)) {
+    // No? Well build it...
+    fs.mkdirSync(this.base);
+  }
 };
 
 Conn.prototype.find = function (blob, cb) {
