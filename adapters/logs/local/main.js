@@ -6,9 +6,7 @@ Conn.prototype.save = function (log) {
   console.log(log);
 };
 
-Conn.prototype.log = function (req, res, next) {
-
-  var self = this;
+Conn.prototype.process = function (req, res, next) {
   var send;
   var end;
 
@@ -66,9 +64,9 @@ Conn.prototype.log = function (req, res, next) {
     if (req.files) { // Files?
       obj.files = Object.keys(req.files);
     }
-
-    // Save
-    self.save(obj);
   };
+
   return next();
 };
+
+module.exports = Conn;
