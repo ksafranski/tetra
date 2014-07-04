@@ -1,4 +1,5 @@
 var users = require('./users');
+var sessions = require('./sessions');
 var versions = require('./versions');
 var schemas = require('./schemas');
 var documents = require('./documents');
@@ -94,6 +95,9 @@ module.exports = function (req, res) {
     checkPerms(function () {
       users.call(self, req, res);
     });
+    break;
+  case 'session':
+    sessions.call(self, req, res);
     break;
   case 'version':
     checkPerms(function () {
