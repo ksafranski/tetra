@@ -38,13 +38,15 @@ Service.prototype.start = function () {
   app.use(allowCrossDomain);
   app.use(connectDomain());
   // Body parser
-  /*app.use(bodyParser.urlencoded({
-    //extended: true
-  }));*/
   app.use(bodyParser.json());
   // Check authentication
   if (config.service.authentication) {
     app.use(authentication);
+  }
+  // Logging
+  if (config.service.logs) {
+    var logger = require('./../adapters/logs/' + config.service.logs.adapter + '/main.js');
+    app.use(logger);
   }
   // Bind endpoints to api module
   app.all('/*', processor).use(errorHandler);

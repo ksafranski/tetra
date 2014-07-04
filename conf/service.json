@@ -17,5 +17,9 @@
   "blobs": {
     "adapter": "local",
     "path": "blobs/"
+  },
+  "logs": {
+    "adapter": "local",
+    "path": "logs/"
   }
 }

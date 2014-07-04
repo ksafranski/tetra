@@ -10,7 +10,7 @@ for simplified deployment, versioning and management of RESTful APIs.
 * [Installation](#installation)
 * [Usage](#usage)
 * [Req/Req](#requests--responses)
-* [Authentication](#authentication)
+* [Logging](#logging)
 * [Users](#users) -> [Read](#read) / [Create](#create) / [Update](#update) / [Delete](#delete)
 * [Versions](#versions) -> [Read](#read-1) / [Create](#create-1) / [Update](#update-1) / [Delete](#delete-1)
 * [Schemas](#schemas) -> [Read](#read-2) / [Create](#create-2) / [Update](#update-2) / [Delete](#delete-2)
@@ -71,7 +71,11 @@ to the following:
   },
   "blobs": {
     "adapter": "local",
-    "path": "/blobs"
+    "path": "blobs/"
+  },
+  "logs": {
+    "adapter": "local",
+    "path": "logs/"
   }
 }
 ```
@@ -80,6 +84,7 @@ By default, the system includes adapters for:
 
 * Documents via a Mongo adapter
 * Blobs via a local (node-fs) adapter
+* Logs via a local (winston) adapter
 
 For more information on adapters and writing custom adapters for other data or 
 document storage services, see the [adapters documentation](/adapters).
@@ -105,17 +110,26 @@ proper use of verbs/methods, proper use of req/res headers, etc.
 
 ---
 
+### Logging
+
+The system includes a local logging system through Express middleware and Winston. 
+The log adapter is activated by its presence in the `/conf/service.json` file. If 
+the logging service is not needed simply remove the `logs` property from the 
+config file and the middleware will not run.
+
+---
+
 ### Users
 
 **DEFAULT ACCOUNT: username: admin, password: password123**
 
 The built-in user system allows creation and management of users who are authorized 
-to access the API. The user database is maintained using [NeDB](https://github.com/louischatriot/nedb).
+to access the API.
 
 Requests to the user system can be made against:
 
 ```
-GET: http://youserver.com:NNNN/user/
+http://youserver.com:NNNN/user/
 ```
 
 #### Read
@@ -124,7 +138,7 @@ To read users simply make a `GET` request against the user endpoint. Additionall
 you can specify a username to only retrieve a certain user account:
 
 ```
-GET: http://youserver.com:NNNN/user/jsmith
+http://youserver.com:NNNN/user/jsmith
 ```
 
 #### Create
@@ -134,10 +148,11 @@ schema:
 
 ```json
 {
-  "username": "jsmith",  
-  "password": "XXXXXXXXXXX",
-  "type": 0,
-  "data": { ... }
+  "jsmith": {
+    "password": "XXXXXXXXXXX",
+    "type": 0,
+    "data": { ... }
+  }
 }
 ```
 
@@ -148,23 +163,6 @@ is a schema-less object for storing any additional user information required.
 **Administrative**: Has the ability to access all data, including users and schemas
 
 **Standard**: Only has access to API (document & blob) endpoints
-
-##### Queries
-
-Users can be queried by including a `search` querystring with JSON-formatted query:
-
-```
-GET: http://yourserver.com:NNNN/user?search={ "type": 1 }
-```
-
-The above would return all users with `type` set to `1` (standard users).
-
-To maintain consistency with the [documents](#documents) API, the supported 
-query types are `$gt`, `$lt`, `$gte`, `$lte`, `$ne`, for example:
-
-```
-GET: http://yourserver.com:NNNN/user?search={ "type": { "$ne": 0 }}
-```
 
 #### Update
 
@@ -286,19 +284,19 @@ To create a new schema on v1 named `example1`, use the following:
 ```
 POST: http://yourserver.com:NNNN/schema/v1
 BODY:
-  {
+  { 
     "name": "example1",
     "document": {
       "foo": {
         "required": true,
         "type": "string"
       },
-      "bar": {
+      "bar": 
         "type": "boolean"
+      },
+      "quz": {
+        "type": "array"
       }
-    },
-    "quz": {
-      "type": "array"
     }
   }
 ```
@@ -401,10 +399,8 @@ To create a new document, use the following:
 ```
 POST: http://yourserver.com:NNNN/document/v1/example
 BODY:
-  {
-    "foo": "apple",
-    "bar": true
-  }
+  foo = 'apple'
+  bar = 'orange'
   ...
 ```
 
@@ -420,9 +416,7 @@ a specific document (by ID), or a subset based on search.
 ```
 PUT: http://yourserver.com:NNNN/document/v1/example/1234567890
 BODY:
-  {
-    "foo": "banana"
-  }
+  foo = 'banana'
 ```
 
 The above would update the document with `_id = 1234567890` with the `BODY` 

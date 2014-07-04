@@ -20,7 +20,8 @@
     "connect-domain": "^0.5.0",
     "mongoskin": "0.6.1",
     "multiparty": "^3.2.9",
-    "nedb": "^0.10.5"
+    "nedb": "^0.10.5",
+    "winston": "^0.7.3"
   },
   "scripts": {
     "preinstall": "npm i -g forever",

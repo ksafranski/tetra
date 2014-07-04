@@ -161,3 +161,17 @@ Conn.prototype.remove = function (blob, cb) {
   //         data: Return data object, no envelope
 };
 ```
+
+---
+
+## Logs
+
+The logging adapters utilize the same folder sturcture as the document and blob 
+adapters, however, they are simply Express middleware and should be written 
+as follows:
+
+```javascript
+module.exports = function (req, res, next) {
+  // Logging handler...
+};
+```
