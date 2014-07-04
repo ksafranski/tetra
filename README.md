@@ -11,12 +11,12 @@ for simplified deployment, versioning and management of RESTful APIs.
 * [Usage](#usage)
 * [Req/Req](#requests--responses)
 * [Logging](#logging)
-* [Users](#users) -> [Read](#read-user) / [Create](#create-user) / [Update](#update-user) / [Delete](#delete-user)
-* [Sessions](#sessions) -> [Read](#read-session) / [Create](#create-session) / [Update](#update-session) / [Delete](#delete-session)
-* [Versions](#versions) -> [Read](#read-version) / [Create](#create-version) / [Update](#update-version) / [Delete](#delete-version)
-* [Schemas](#schemas) -> [Read](#read-schema) / [Create](#create-schema) / [Update](#update-schema) / [Delete](#delete-schema)
-* [Documents](#documents) -> [Read](#read-document) / [Create](#create-document) / [Update](#update-document) / [Delete](#delete-document)
-  * [Queries](#read-4)
+* [Users](#users) > [Read](#read-user) / [Create](#create-user) / [Update](#update-user) / [Delete](#delete-user)
+* [Sessions](#sessions) > [Read](#read-session) / [Create](#create-session) / [Delete](#delete-session)
+* [Versions](#versions) > [Read](#read-version) / [Create](#create-version) / [Update](#update-version) / [Delete](#delete-version)
+* [Schemas](#schemas) > [Read](#read-schema) / [Create](#create-schema) / [Update](#update-schema) / [Delete](#delete-schema)
+* [Documents](#documents) > [Read](#read-document) / [Create](#create-document) / [Update](#update-document) / [Delete](#delete-document)
+  * [Queries](#read-document)
     * [By ID](#by-id)
     * [Multiples](#multiples)
     * [Search](#search)
@@ -59,6 +59,7 @@ to the following:
   "port": 8000,
   "authentication": true,
   "cors": "*",
+  "secret": "abcdef1234567890",
   "schemas": {
     "strict": true,
     "types": ["string", "number", "boolean", "array", "json"]
