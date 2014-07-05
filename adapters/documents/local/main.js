@@ -38,6 +38,18 @@ Conn.prototype.insert = function (coll, data, cb) {
   // cb => Callback which accepts (err, data) as arguments:
   //         err: { code: 404, message: 'Not found' } -or- false,
   //         data: Return data object, no envelope
+  this.setStore(coll);
+  this.store.insert(data, function (err, data) {
+    if (err) {
+      cb({
+        code: 500,
+        message: err
+      });
+      return false;
+    }
+    // Success
+    cb(false, data);
+  });
 };
 
 Conn.prototype.update = function (coll, query, data, cb) {
@@ -47,6 +59,22 @@ Conn.prototype.update = function (coll, query, data, cb) {
   // cb => Callback which accepts (err, data) as arguments:
   //         err: { code: 404, message: 'Not found' } -or- false,
   //         data: Return data object, no envelope
+  this.setStore(coll);
+  this.store.update(query, {
+    $set: data
+  }, {
+    multi: true
+  }, function (err) {
+    if (err) {
+      cb({
+        code: 500,
+        message: err
+      });
+      return false;
+    }
+    // Success
+    cb(false);
+  });
 };
 
 Conn.prototype.remove = function (coll, query, cb) {
@@ -55,6 +83,20 @@ Conn.prototype.remove = function (coll, query, cb) {
   // cb => Callback which accepts (err, data) as arguments:
   //         err: { code: 404, message: 'Not found' } -or- false,
   //         data: Return data object, no envelope
+  this.setStore(coll);
+  this.store.remove(query, {
+    multi: true
+  }, function (err) {
+    if (err) {
+      cb({
+        code: 500,
+        message: err
+      });
+      return false;
+    }
+    // Success
+    cb(false);
+  });
 };
 
 module.exports = Conn;
