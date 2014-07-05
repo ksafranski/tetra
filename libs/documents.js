@@ -177,13 +177,13 @@ module.exports = function (req, res) {
         return false;
       }
       // Passed, run insert
-      db.update(collection, query, req.body, function (err, data) {
+      db.update(collection, query, req.body, function (err) {
         if (err) {
           self.respond(err.code, err.message);
           return false;
         }
         // All good
-        self.respond(200, data);
+        self.respond(200);
       });
     });
   };
