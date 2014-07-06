@@ -29,6 +29,7 @@
   "scripts": {
     "preinstall": "npm i -g forever",
     "start": "node index.js",
-    "service": "forever start index.js"
+    "service": "forever start index.js",
+    "tests": "TESTS=true node index.js"
   }
 }
