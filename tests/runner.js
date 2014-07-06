@@ -36,14 +36,14 @@ proc.on('message', function () {
     var group = require('./groups/' + groups[i]);
     for (var test in group) {
       tests.push({
-        name: groups[i] + ' >> ' + test,
+        name: groups[i].toUpperCase() + ' >> ' + test,
         specs: group[test]
       });
     }
   }
-  output('success', 'Running tests');
+  // Run tests
   async.eachSeries(tests, function (test, callback) {
-    console.log('RUNNING ' + test.name);
+    output('success', 'Running: ' + test.name);
     callback();
   }, function (err) {
     if (err) {
