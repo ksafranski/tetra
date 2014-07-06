@@ -103,7 +103,7 @@ module.exports = function (req, res) {
       // Find by ID
       db.find(collection, cursor, {
         _id: id
-      }, function (err, data) {
+      }, orderby, function (err, data) {
         if (err) {
           self.respond(err.code, err.message);
           return false;
