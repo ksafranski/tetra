@@ -11,6 +11,7 @@ for simplified deployment, versioning and management of RESTful APIs.
 * [Usage](#usage)
 * [Req/Req](#requests--responses)
 * [Logging](#logging)
+* [SSL](#ssl)
 * [Users](#users) > [Read](#read-user) / [Create](#create-user) / [Update](#update-user) / [Delete](#delete-user)
 * [Sessions](#sessions) > [Read](#read-session) / [Create](#create-session) / [Delete](#delete-session)
 * [Versions](#versions) > [Read](#read-version) / [Create](#create-version) / [Update](#update-version) / [Delete](#delete-version)
@@ -65,11 +66,8 @@ to the following:
     "types": ["string", "number", "boolean", "array", "json"]
   },
   "documents": {
-    "adapter": "mongo",
-    "host": "http://localhost",
-    "user": "mongouser",
-    "pass": "mongopass",
-    "db": "test"
+    "adapter": "local",
+    "path": "documents/"
   },
   "blobs": {
     "adapter": "local",
@@ -121,6 +119,18 @@ the logging service is not needed simply remove the `logs` property from the
 config file and the middleware will not run.
 
 ---
+
+### SSL
+
+The service supports SSL, and in fact, it is highly recommended SSL's be utilized, 
+especially in production.
+
+To utilize SSL certificates simply place the key (`ssl.key`) and cert (`ssl.crt`) 
+files in the `conf/certs/` directory. Optionally, if your certificate uses a CA 
+certificate you can place it (`ssl.pem`) in the same directory.
+
+The system will automatically check for the presence of certificates and instruct 
+HTTPS services when the files are present.
 
 ### Users
 
