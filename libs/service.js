@@ -90,6 +90,12 @@ Service.prototype.start = function () {
     app.listen(config.service.port);
   }
   output('success', 'Service running over ' + config.service.port);
+  // Used for sending signal to tests when service started
+  if (process.hasOwnProperty('send')) {
+    process.send({
+      running: true
+    });
+  }
 };
 
 // Export

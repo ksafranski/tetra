@@ -15,3 +15,5 @@ while the test service is running.
 
 All other settings, such as adapters, will remain intact allowing the tests to 
 check conditions based on individual builds or configurations.
+
+**NOTE: This script needs the user account admin/password123 in order to run.**
