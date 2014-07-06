@@ -25,6 +25,32 @@ Conn.prototype.setStore = function (coll) {
 Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
   // Set store
   this.setStore();
+  // Translate orderby
+  if (orderby) {
+    // Set orderby
+    for (var key in orderby) {
+      orderby[key] = (orderby[key] === 'asc') ? 1 : -1;
+    }
+  } else {
+    // Default
+    orderby = {
+      _id: 1
+    };
+  }
+  // Set skip
+  var skip = (cursor.page === 1) ? 0 : (cursor.count * (cursor.page)) - 1;
+  // Find
+  this.store.find(query).skip(skip).limit(cursor.count).sort(orderby).exec(function (err, data) {
+    if (err) {
+      cb({
+        code: 500,
+        message: err
+      });
+      return false;
+    }
+    // Success
+    cb(false, data);
+  });
 };
 
 Conn.prototype.insert = function (coll, data, cb) {
