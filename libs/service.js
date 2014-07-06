@@ -1,4 +1,6 @@
 var express = require('express');
+var fs = require('fs');
+var https = require('https');
 var output = require('./output');
 var processor = require('./processor');
 var authentication = require('./authentication');
@@ -8,6 +10,12 @@ var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var connectDomain = require('connect-domain');
 
+// SSL App
+var sslApp = false;
+
+// Cert path
+var certPath = __dirname + '/../conf/certs/';
+
 // Service constructor
 var Service = function () {
   output('success', 'Starting service');
@@ -16,6 +24,20 @@ var Service = function () {
 // Start the service
 Service.prototype.start = function () {
   var app = express();
+  // SSL (Check and run)
+  if (fs.existsSync(certPath + 'ssl.key') && fs.existsSync(certPath + 'ssl.crt')) {
+    var opts = {
+      key: fs.readFileSync(certPath + 'ssl.key'),
+      cert: fs.readFileSync(certPath + 'ssl.crt')
+    };
+    // Check PEM
+    if (fs.existsSync(certPath + 'ssl.pem')) {
+      opts.ca = fs.readFileSync(certPath + 'ssl.crt');
+    }
+    // Use SSL
+    sslApp = https.createServer(opts, app);
+  }
+  // Error exception handler
   var errorHandler = function (err, req, res) {
     res.send(500, 'Internal error');
     console.log(err);
@@ -60,7 +82,11 @@ Service.prototype.start = function () {
   // Bind endpoints to api module
   app.all('/*', processor).use(errorHandler);
   // Start listener
-  app.listen(config.service.port);
+  if (sslApp) {
+    sslApp.listen(config.service.port);
+  } else {
+    app.listen(config.service.port);
+  }
   output('success', 'Service running over ' + config.service.port);
 };
 
