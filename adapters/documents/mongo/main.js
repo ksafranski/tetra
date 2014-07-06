@@ -82,7 +82,7 @@ Conn.prototype.insert = function (coll, data, cb) {
       return false;
     }
     // Success
-    cb(false, data);
+    cb(false, data[0]);
   });
 };
 

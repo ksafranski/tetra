@@ -10,7 +10,10 @@
   },
   "documents": {
     "adapter": "mongo",
-    "path": "documents/"
+    "host": "http://localhost",
+    "user": "mongouser",
+    "pass": "mongopass",
+    "db": "test"
   },
   "blobs": {
     "adapter": "local",

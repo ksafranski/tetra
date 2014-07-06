@@ -24,7 +24,7 @@ Conn.prototype.setStore = function (coll) {
 
 Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
   // Set store
-  this.setStore();
+  this.setStore(coll);
   // Translate orderby
   if (orderby) {
     // Set orderby
@@ -56,7 +56,7 @@ Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
 Conn.prototype.insert = function (coll, data, cb) {
   this.setStore(coll);
   // Insert
-  this.store.insert(data, function (err, data) {
+  this.store.insert(data, function (err, input) {
     if (err) {
       cb({
         code: 500,
@@ -65,7 +65,7 @@ Conn.prototype.insert = function (coll, data, cb) {
       return false;
     }
     // Success
-    cb(false, data);
+    cb(false, input);
   });
 };
 
