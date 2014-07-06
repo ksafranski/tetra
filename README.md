@@ -30,9 +30,14 @@ for simplified deployment, versioning and management of RESTful APIs.
 After cloning or pulling the contents of the system, run `npm install` to 
 install all dependencies.
 
-The adapters by default support Mongo for documents and local (node-fs) for blob 
-storage. These should be configured in `/conf/service.json` before running the 
-service.
+The adapters by default support local storage (via [NeDB](https://github.com/louischatriot/nedb)) 
+for documents, local (node-fs) for blob storage and local logging via [winston](https://github.com/flatiron/winston). 
+
+The system also comes with an adapter for [Mongo](http://www.mongodb.com) which 
+can be activated by editing the `/conf/service.json` file. ([More info...](adapters/documents/mongo/README.md))
+
+The service is made to run 'out of the box' with little to no configuration required, 
+allowing easy setup and testing.
 
 Starting the service can be done by running `node index.js`. For running the 
 service continuously it is suggested you install the [forever](https://github.com/nodejitsu/forever) 
@@ -82,7 +87,7 @@ to the following:
 
 By default, the system includes adapters for:
 
-* Documents via a Mongo adapter
+* Documents via a local (nedb) adapter
 * Blobs via a local (node-fs) adapter
 * Logs via a local (winston) adapter
 
