@@ -23,22 +23,13 @@ Conn.prototype.setStore = function (coll) {
 };
 
 Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
-  // coll => Collection name / table
-  // cursor => Object: { page: N, limit: N }
-  // query => Query object (JSON) passed through the API request
-  // orderby => Orderby object (JSON) passed through API request
-  // cb => Callback which accepts (err, data) as arguments:
-  //         err: { code: 404, message: 'Not found' } -or- false,
-  //         data: Return data object, no envelope
+  // Set store
+  this.setStore();
 };
 
 Conn.prototype.insert = function (coll, data, cb) {
-  // coll => Collection name / table
-  // data => Valid JSON object
-  // cb => Callback which accepts (err, data) as arguments:
-  //         err: { code: 404, message: 'Not found' } -or- false,
-  //         data: Return data object, no envelope
   this.setStore(coll);
+  // Insert
   this.store.insert(data, function (err, data) {
     if (err) {
       cb({
@@ -53,13 +44,9 @@ Conn.prototype.insert = function (coll, data, cb) {
 };
 
 Conn.prototype.update = function (coll, query, data, cb) {
-  // coll => Collection name / table
-  // query => Query object (JSON) passed through the API request
-  // data => Valid JSON object
-  // cb => Callback which accepts (err, data) as arguments:
-  //         err: { code: 404, message: 'Not found' } -or- false,
-  //         data: Return data object, no envelope
+  // Set store
   this.setStore(coll);
+  // Update
   this.store.update(query, {
     $set: data
   }, {
@@ -78,12 +65,9 @@ Conn.prototype.update = function (coll, query, data, cb) {
 };
 
 Conn.prototype.remove = function (coll, query, cb) {
-  // coll => Collection name / table
-  // query => Query object (JSON) passed through the API request
-  // cb => Callback which accepts (err, data) as arguments:
-  //         err: { code: 404, message: 'Not found' } -or- false,
-  //         data: Return data object, no envelope
+  // Set store
   this.setStore(coll);
+  // Remove
   this.store.remove(query, {
     multi: true
   }, function (err) {
