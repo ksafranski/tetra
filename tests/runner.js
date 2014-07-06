@@ -2,9 +2,9 @@ var spawn = require('child_process').spawn;
 var output = require('./../libs/output');
 var readline = require('readline');
 var async = require('async');
+var client = require('./client');
 
 // Test groups
-var tests = [];
 var groups = [
   'authentication'
 ];
@@ -31,6 +31,7 @@ proc.on('close', function () {
 // Process has fully started
 proc.on('message', function () {
   // Build tests
+  var tests = [];
   output('success', 'Building tests');
   for (var i = 0, z = groups.length; i < z; i++) {
     var group = require('./groups/' + groups[i]);
@@ -44,6 +45,7 @@ proc.on('message', function () {
   // Run tests
   async.eachSeries(tests, function (test, callback) {
     output('success', 'Running: ' + test.name);
+    client.test(test);
     callback();
   }, function (err) {
     if (err) {
