@@ -27,6 +27,11 @@ Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
   this.setStore(coll);
   // Translate orderby
   if (orderby) {
+    try {
+      orderby = JSON.parse(orderby);
+    } catch (e) {
+      console.log('Bad order');
+    }
     // Set orderby
     for (var key in orderby) {
       orderby[key] = (orderby[key] === 'asc') ? 1 : -1;
@@ -37,6 +42,7 @@ Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
       _id: 1
     };
   }
+  console.log(orderby);
   // Set skip
   var skip = (cursor.page === 1) ? 0 : (cursor.count * (cursor.page)) - 1;
   // Find

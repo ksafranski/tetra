@@ -9,11 +9,8 @@
     "types": ["string", "number", "boolean", "array", "json"]
   },
   "documents": {
-    "adapter": "mongo",
-    "host": "http://localhost",
-    "user": "mongouser",
-    "pass": "mongopass",
-    "db": "test"
+    "adapter": "local",
+    "path": "documents/"
   },
   "blobs": {
     "adapter": "local",
