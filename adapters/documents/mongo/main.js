@@ -31,6 +31,11 @@ Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
   }
   // Translate orderby
   if (orderby) {
+    try {
+      orderby = JSON.parse(orderby);
+    } catch (e) {
+      console.log('Bad order');
+    }
     // Set orderby
     for (var key in orderby) {
       orderby[key] = (orderby[key] === 'asc') ? 1 : -1;
@@ -82,7 +87,7 @@ Conn.prototype.insert = function (coll, data, cb) {
       return false;
     }
     // Success
-    cb(false, data);
+    cb(false, data[0]);
   });
 };
 

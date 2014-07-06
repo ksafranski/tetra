@@ -17,6 +17,9 @@ node_modules
 !conf/service.json
 !conf/user.json
 
+# Documents
+documents/*
+
 # Blob
 blobs/*
 !blobs/.gitkeep

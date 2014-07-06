@@ -103,7 +103,7 @@ module.exports = function (req, res) {
       // Find by ID
       db.find(collection, cursor, {
         _id: id
-      }, function (err, data) {
+      }, orderby, function (err, data) {
         if (err) {
           self.respond(err.code, err.message);
           return false;
@@ -149,8 +149,8 @@ module.exports = function (req, res) {
           return false;
         }
         // All good
-        res.header('Location', self.uri + data[0]._id);
-        self.respond(201, data[0]);
+        res.header('Location', self.uri + data._id);
+        self.respond(201, data);
       });
     });
   };
@@ -177,13 +177,13 @@ module.exports = function (req, res) {
         return false;
       }
       // Passed, run insert
-      db.update(collection, query, req.body, function (err, data) {
+      db.update(collection, query, req.body, function (err) {
         if (err) {
           self.respond(err.code, err.message);
           return false;
         }
         // All good
-        self.respond(200, data);
+        self.respond(200);
       });
     });
   };
