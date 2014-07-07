@@ -50,17 +50,19 @@ proc.on('message', function () {
   // Run tests
   async.eachSeries(tests, function (test, callback) {
     // Pass to client
-    client.test(test, function (code, data) {
+    client.test(test, function (res) {
       // Check returned code
-      if (test.specs.resultCode !== code) {
-        output('error', test.name + ' returned ' + code + ', expected: ' + test.specs.resultCode);
+      if (test.specs.resultCode !== res.statusCode) {
+        output('error', test.name + ' returned ' + res.statusCode + ', expected: ' + test.specs.resultCode);
+        output('error', 'BODY: ' + res.body);
         callback(true);
         return;
       }
       // Check data
       if (test.result) {
-        if (test.specs.result !== data) {
+        if (test.specs.result !== res.body) {
           output('error', test.name + ' result did not match');
+          output('error', 'BODY: ' + res.body);
           callback(true);
           return;
         }
