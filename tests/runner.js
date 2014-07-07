@@ -9,7 +9,8 @@ var groups = [
   'authentication',
   'users',
   'versions',
-  'schemas'
+  'schemas',
+  'documents'
 ];
 
 // Start server
@@ -56,23 +57,41 @@ proc.on('message', function () {
     var start = new Date().getTime();
     // Pass to client
     client.test(test, function (res) {
+      var status = 'success';
       // Check returned code
       if (test.specs.resultCode !== res.statusCode) {
         output('error', test.name + ' returned ' + res.statusCode + ', expected: ' + test.specs.resultCode);
         if (res.body) {
           output('error', 'BODY: ' + res.body);
         }
-        callback(true);
-        return;
+        status = 'error';
       }
       // Check data
       if (test.result) {
         if (test.specs.result !== res.body) {
           output('error', test.name + ' result did not match');
           output('error', 'BODY: ' + res.body);
-          callback(true);
-          return;
+          status = 'error';
         }
+      }
+
+      // Output data
+      if (res.body) {
+        output(status, 'RESPONSE DATA:');
+        output(status, '-------------------------------');
+        var out;
+        try {
+          out = JSON.parse(res.body);
+        } catch (e) {
+          out = res.body;
+        }
+        console.log(JSON.stringify(out, null, 4));
+        output(status, '-------------------------------');
+      }
+
+      if (status === 'error') {
+        callback(true);
+        return;
       }
 
       // Passed!
