@@ -58,7 +58,7 @@ module.exports = {
   // Test read
   ReadAll: {
     method: 'GET',
-    url: '/document/vTEST/test',
+    url: '/document/vTEST/test?search=' + encodeURIComponent('{"name":"John Doe"}'),
     payload: false,
     resultCode: 200,
     result: false
@@ -66,7 +66,7 @@ module.exports = {
   // Test read query
   ReadQuery: {
     method: 'GET',
-    url: '/document/vTEST/test?search={"name":"John Doe"}',
+    url: '/document/vTEST/test?search=' + encodeURIComponent('{"name":"John Doe"}'),
     payload: false,
     resultCode: 200,
     result: testDoc
@@ -74,7 +74,7 @@ module.exports = {
   // Test Update
   Update: {
     method: 'PUT',
-    url: '/document/vTEST/test?search={"name":"John Doe"}',
+    url: '/document/vTEST/test?search=' + encodeURIComponent('{"name":"John Doe"}'),
     payload: {
       active: false
     },
@@ -84,7 +84,7 @@ module.exports = {
   // Test Delete
   Delete: {
     method: 'DELETE',
-    url: '/document/vTEST/test?search={"name":"John Doe"}',
+    url: '/document/vTEST/test?search=' + encodeURIComponent('{"name":"John Doe"}'),
     payload: false,
     resultCode: 204,
     result: false

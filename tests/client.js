@@ -3,35 +3,35 @@ var config = require('./../libs/config');
 
 module.exports = {
 
-  // JSON Client
-  client: restify.createJsonClient({
-    url: 'http://localhost:' + config.service.port,
-    version: '*'
-  }),
-
   // Run test
   test: function (request, cb) {
+
+    var client = restify.createJsonClient({
+      url: 'http://localhost:' + config.service.port,
+      version: '*'
+    });
+
     // BasicAuth
-    this.client.basicAuth('admin', 'password123');
+    client.basicAuth('admin', 'password123');
     // Request
     switch (request.specs.method) {
     case 'GET':
-      this.client.get(request.specs.url, function (err, req, res, data) {
+      client.get(request.specs.url, function (err, req, res, data) {
         cb(res, data);
       });
       break;
     case 'POST':
-      this.client.post(request.specs.url, request.specs.payload, function (err, req, res, data) {
+      client.post(request.specs.url, request.specs.payload, function (err, req, res, data) {
         cb(res, data);
       });
       break;
     case 'PUT':
-      this.client.put(request.specs.url, request.specs.payload, function (err, req, res, data) {
+      client.put(request.specs.url, request.specs.payload, function (err, req, res, data) {
         cb(res, data);
       });
       break;
     case 'DELETE':
-      this.client.del(request.specs.url, function (err, req, res) {
+      client.del(request.specs.url, function (err, req, res) {
         cb(res, false);
       });
       break;

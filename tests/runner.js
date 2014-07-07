@@ -6,10 +6,10 @@ var client = require('./client');
 
 // Test groups
 var groups = [
-  'authentication',
+  /*'authentication',
   'users',
   'versions',
-  'schemas',
+  'schemas',*/
   'documents'
 ];
 
@@ -59,7 +59,6 @@ proc.on('message', function () {
     client.test(test, function (res) {
       var status = 'success';
       // Check returned code
-      console.log(test.specs.resultCode, res.statusCode);
       if (test.specs.resultCode !== res.statusCode) {
         output('error', test.name + ' returned ' + res.statusCode + ', expected: ' + test.specs.resultCode);
         if (res.body) {

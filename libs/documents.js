@@ -121,6 +121,7 @@ module.exports = function (req, res) {
       db.find(collection, cursor, search, orderby, function (err, data) {
         if (err) {
           self.respond(err.code, err.message);
+          return false;
         }
         // Data?
         if (!Object.keys(data).length) {
