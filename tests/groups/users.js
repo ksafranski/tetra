@@ -19,6 +19,14 @@ module.exports = {
     resultCode: 200,
     result: {}
   },
+  // Test query
+  Query: {
+    method: 'GET',
+    url: '/user?search={"type":1}',
+    payload: false,
+    resultCode: 200,
+    result: false
+  },
   // Test Update
   Update: {
     method: 'PUT',
