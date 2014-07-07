@@ -49,9 +49,10 @@ Service.prototype.start = function () {
   }
   // CORS
   var allowCrossDomain = function (req, res, next) {
+    var allowedHeaders = 'access-control-allow-origin, accept, authorization, content-type';
     res.header('Access-Control-Allow-Origin', config.service.cors);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', allowedHeaders);
     // Intercept OPTIONS method
     if ('OPTIONS' === req.method) {
       res.send(200);
