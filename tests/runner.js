@@ -57,7 +57,9 @@ proc.on('message', function () {
       // Check returned code
       if (test.specs.resultCode !== res.statusCode) {
         output('error', test.name + ' returned ' + res.statusCode + ', expected: ' + test.specs.resultCode);
-        output('error', 'BODY: ' + res.body);
+        if (res.body) {
+          output('error', 'BODY: ' + res.body);
+        }
         callback(true);
         return;
       }
