@@ -7,7 +7,8 @@ var client = require('./client');
 // Test groups
 var groups = [
   'authentication',
-  'versions'
+  'versions',
+  'users'
 ];
 
 // Start server

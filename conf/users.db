@@ -1,2 +1,4 @@
+{"username":"testuserchanged","password":"sha1$a8e01e9b$1$a0ba0c962cf06c751f923c33d0f9989ea735ccbb","data":{},"type":1,"_id":"QPEkorPmlmfaOMIJ"}
 {"username":"admin","password":"sha1$91d2b0a4$1$a815aaae15bbf1646c598b774adc0f399c9bc1d7","data":{"title":"Admin Account"},"type":0,"_id":"lszABTuQR0uWAoqQ"}
 {"$$indexCreated":{"fieldName":"username","unique":true,"sparse":false}}
+{"$$deleted":true,"_id":"QPEkorPmlmfaOMIJ"}
