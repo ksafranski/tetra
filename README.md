@@ -23,6 +23,7 @@ for simplified deployment, versioning and management of RESTful APIs.
     * [Search](#search)
     * [Order](#order)
 * [Blobs](#blobs) -> [Read](#read-blob) / [Create](#create-blob) / [Update](#update-blob) / [Delete](#delete-blob)
+* [Contributing](#contributing)
 * [License](#license)
   
 ## Installation
