@@ -20,7 +20,7 @@ module.exports = function (req, res) {
   }
 
   // Get schema from POST / PUT
-  if (req.method === 'POST' || req.method === 'PUT') {
+  if (req.method === 'POST') {
     schema = req.body.name;
     if (!schema) {
       self.respond(404, 'Bad request body');
