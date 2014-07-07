@@ -28,8 +28,13 @@ proc.on('close', function () {
   output('success', 'Service stopped');
 });
 
+var endTests = function () {
+  proc.kill();
+};
+
 // Process has fully started
 proc.on('message', function () {
+
   // Build tests
   var tests = [];
   output('success', 'Building tests');
@@ -44,13 +49,31 @@ proc.on('message', function () {
   }
   // Run tests
   async.eachSeries(tests, function (test, callback) {
-    output('success', 'Running: ' + test.name);
-    client.test(test);
-    callback();
+    // Pass to client
+    client.test(test, function (code, data) {
+      // Check returned code
+      if (test.specs.resultCode !== code) {
+        output('error', test.name + ' returned ' + code + ', expected: ' + test.specs.resultCode);
+        callback(true);
+        return;
+      }
+      // Check data
+      if (test.result) {
+        if (test.specs.result !== data) {
+          output('error', test.name + ' result did not match');
+          callback(true);
+          return;
+        }
+      }
+
+      // Passed!
+      output('success', test.name + ' passed tests');
+      callback();
+    });
   }, function (err) {
     if (err) {
-      output('error', 'TEST FAILED');
+      output('error', 'TESTS FAILED');
     }
-    proc.kill();
+    endTests();
   });
 });
