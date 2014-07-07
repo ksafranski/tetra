@@ -59,9 +59,9 @@ module.exports = function (req, res) {
       // Get data
       var name = fields.name[0];
       var file = files.blob[0];
-      
+
       // Create if the blob does not already exist
-      blobExists(name, function() {
+      blobExists(name, function () {
         store.create(name, file, function (err) {
           if (err) {
             self.respond(err.code, err.message);
@@ -111,10 +111,10 @@ module.exports = function (req, res) {
       }
     });
   };
-  
+
   // Determine if a blob already exists, if not fire callback
-  var blobExists = function(name, cb) {
-    store.find(name, function (err, data) {
+  var blobExists = function (name, cb) {
+    store.find(name, function (err) {
       if (err) {
         // Blob does not exist
         cb();
