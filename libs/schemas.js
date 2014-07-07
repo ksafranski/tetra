@@ -20,7 +20,7 @@ module.exports = function (req, res) {
   }
 
   // Get schema from POST / PUT
-  if (req.method === 'POST' || req.method === 'PUT') {
+  if (req.method === 'POST') {
     schema = req.body.name;
     if (!schema) {
       self.respond(404, 'Bad request body');
@@ -134,8 +134,12 @@ module.exports = function (req, res) {
     // Merge
     doc = _.extend(current, doc);
 
+    // Check for rename
+    if (req.body.hasOwnProperty('name')) {
+      schema = req.body.name;
+    }
+
     // Save
-    // Create
     fs.writeFile(base + version + '/' + schema + '.json', JSON.stringify(doc, null, 4), 'utf8', function (err) {
       if (err) {
         self.respond(500);

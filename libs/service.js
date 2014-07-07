@@ -25,17 +25,19 @@ var Service = function () {
 Service.prototype.start = function () {
   var app = express();
   // SSL (Check and run)
-  if (fs.existsSync(certPath + 'ssl.key') && fs.existsSync(certPath + 'ssl.crt')) {
-    var opts = {
-      key: fs.readFileSync(certPath + 'ssl.key'),
-      cert: fs.readFileSync(certPath + 'ssl.crt')
-    };
-    // Check PEM
-    if (fs.existsSync(certPath + 'ssl.pem')) {
-      opts.ca = fs.readFileSync(certPath + 'ssl.crt');
+  if (!process.env.TESTS) {
+    if (fs.existsSync(certPath + 'ssl.key') && fs.existsSync(certPath + 'ssl.crt')) {
+      var opts = {
+        key: fs.readFileSync(certPath + 'ssl.key'),
+        cert: fs.readFileSync(certPath + 'ssl.crt')
+      };
+      // Check PEM
+      if (fs.existsSync(certPath + 'ssl.pem')) {
+        opts.ca = fs.readFileSync(certPath + 'ssl.crt');
+      }
+      // Use SSL
+      sslApp = https.createServer(opts, app);
     }
-    // Use SSL
-    sslApp = https.createServer(opts, app);
   }
   // Error exception handler
   var errorHandler = function (err, req, res) {
@@ -89,6 +91,12 @@ Service.prototype.start = function () {
     app.listen(config.service.port);
   }
   output('success', 'Service running over ' + config.service.port);
+  // Used for sending signal to tests when service started
+  if (process.hasOwnProperty('send')) {
+    process.send({
+      running: true
+    });
+  }
 };
 
 // Export

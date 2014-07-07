@@ -42,7 +42,6 @@ Conn.prototype.find = function (coll, cursor, query, orderby, cb) {
       _id: 1
     };
   }
-  console.log(orderby);
   // Set skip
   var skip = (cursor.page === 1) ? 0 : (cursor.count * (cursor.page)) - 1;
   // Find

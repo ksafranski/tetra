@@ -23,6 +23,7 @@ for simplified deployment, versioning and management of RESTful APIs.
     * [Search](#search)
     * [Order](#order)
 * [Blobs](#blobs) -> [Read](#read-blob) / [Create](#create-blob) / [Update](#update-blob) / [Delete](#delete-blob)
+* [Contributing](#contributing)
 * [License](#license)
   
 ## Installation
@@ -30,8 +31,8 @@ for simplified deployment, versioning and management of RESTful APIs.
 After cloning or pulling the contents of the system, run `npm install` to 
 install all dependencies.
 
-The adapters by default support local storage (via [NeDB](https://github.com/louischatriot/nedb)) 
-for documents, local (node-fs) for blob storage and local logging via [winston](https://github.com/flatiron/winston). 
+The adapters by default support local document storage (via [NeDB](https://github.com/louischatriot/nedb)), 
+local (node-fs) blob storage and local logging via [winston](https://github.com/flatiron/winston). 
 
 The system also comes with an adapter for [Mongo](http://www.mongodb.com) which 
 can be activated by editing the `/conf/service.json` file. ([More info...](adapters/documents/mongo/README.md))
@@ -136,6 +137,8 @@ certificate you can place it (`ssl.pem`) in the same directory.
 
 The system will automatically check for the presence of certificates and instruct 
 HTTPS services when the files are present.
+
+---
 
 ### Users
 
@@ -564,6 +567,26 @@ The delete simply removes the blob from the server:
 ```
 DELETE: http://youserver.com:NNNN/blob/some_file
 ```
+
+---
+
+## Contributing
+
+Contributions to this platform are welcomed and encouraged, however, please adhere 
+to the following:
+
+* Utilize the default `grunt` task to ensure code consistency
+* Create issues in GitHub before addressing any features, fixes, etc to avoid conflicts
+* Submit clear pull requests with testing details and a clear explanation of changes
+
+#### Testing
+
+The system comes with a test runner which utilizes [Restify](http://mcavage.me/node-restify) 
+to run a battery of system tests against the API. The tests have been designed to 
+ensure the core functionality of the system remains unbroken during ongoing development. 
+Please run the tests before submitting pull requests for features or fixes.
+
+Read the [testing documentation](/tests) for more information.
 
 ---
 
