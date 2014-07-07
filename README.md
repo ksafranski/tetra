@@ -40,10 +40,10 @@ can be activated by editing the `/conf/service.json` file. ([More info...](adapt
 The service is made to run 'out of the box' with little to no configuration required, 
 allowing easy setup and testing.
 
-Starting the service can be done by running `node index.js`. For running the 
-service continuously it is suggested you install the [forever](https://github.com/nodejitsu/forever) 
-npm globally (`npm install forever -g`) and then run the service via 
-`forever start index.js`.
+Starting the service can be done by running `node index.js`.
+
+Additionally, `preinstall` will install [node-forever](https://github.com/nodejitsu/forever) 
+allowing the service to be started as a forever process with `npm run service`.
 
 ## Usage
 
