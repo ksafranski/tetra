@@ -59,14 +59,17 @@ module.exports = function (req, res) {
       // Get data
       var name = fields.name[0];
       var file = files.blob[0];
-
-      store.create(name, file, function (err) {
-        if (err) {
-          self.respond(err.code, err.message);
-        } else {
-          res.header('Location', self.uri + name);
-          self.respond(201);
-        }
+      
+      // Create if the blob does not already exist
+      blobExists(name, function() {
+        store.create(name, file, function (err) {
+          if (err) {
+            self.respond(err.code, err.message);
+          } else {
+            res.header('Location', self.uri + name);
+            self.respond(201);
+          }
+        });
       });
 
     });
@@ -105,6 +108,18 @@ module.exports = function (req, res) {
         self.respond(err.code, err.message);
       } else {
         self.respond(204);
+      }
+    });
+  };
+  
+  // Determine if a blob already exists, if not fire callback
+  var blobExists = function(name, cb) {
+    store.find(name, function (err, data) {
+      if (err) {
+        // Blob does not exist
+        cb();
+      } else {
+        self.respond(404, 'Blob already exists');
       }
     });
   };
