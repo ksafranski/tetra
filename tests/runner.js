@@ -59,6 +59,7 @@ proc.on('message', function () {
     client.test(test, function (res) {
       var status = 'success';
       // Check returned code
+      console.log(test.specs.resultCode, res.statusCode);
       if (test.specs.resultCode !== res.statusCode) {
         output('error', test.name + ' returned ' + res.statusCode + ', expected: ' + test.specs.resultCode);
         if (res.body) {
@@ -73,6 +74,13 @@ proc.on('message', function () {
           output('error', 'BODY: ' + res.body);
           status = 'error';
         }
+      }
+
+      if (status !== 'error') {
+        // Passed!
+        var end = new Date().getTime();
+        var time = end - start;
+        output('success', test.name + ' passed tests (' + time + 'ms)');
       }
 
       // Output data
@@ -91,14 +99,10 @@ proc.on('message', function () {
 
       if (status === 'error') {
         callback(true);
-        return;
+      } else {
+        callback();
       }
 
-      // Passed!
-      var end = new Date().getTime();
-      var time = end - start;
-      output('success', test.name + ' passed tests (' + time + 'ms)');
-      callback();
     });
   }, function (err) {
     if (err) {
