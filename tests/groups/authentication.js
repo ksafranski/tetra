@@ -7,6 +7,7 @@ module.exports = {
     resultCode: 200,
     result: false
   },
+  // Test session authentication
   Session: {
     method: 'POST',
     url: '/session',

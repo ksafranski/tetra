@@ -49,6 +49,8 @@ proc.on('message', function () {
   }
   // Run tests
   async.eachSeries(tests, function (test, callback) {
+    // Start timer
+    var start = new Date().getTime();
     // Pass to client
     client.test(test, function (res) {
       // Check returned code
@@ -69,7 +71,9 @@ proc.on('message', function () {
       }
 
       // Passed!
-      output('success', test.name + ' passed tests');
+      var end = new Date().getTime();
+      var time = end - start;
+      output('success', test.name + ' passed tests (' + time + 'ms)');
       callback();
     });
   }, function (err) {
