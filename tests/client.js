@@ -16,22 +16,22 @@ module.exports = {
     // Request
     switch (request.specs.method) {
     case 'GET':
-      this.client.get(request.url, function (err, req, res, data) {
+      this.client.get(request.specs.url, function (err, req, res, data) {
         cb(res, data);
       });
       break;
     case 'POST':
-      this.client.post(request.url, request.specs.payload, function (err, req, res, data) {
+      this.client.post(request.specs.url, request.specs.payload, function (err, req, res, data) {
         cb(res, data);
       });
       break;
     case 'PUT':
-      this.client.put(request.url, request.specs.payload, function (err, req, res, data) {
+      this.client.put(request.specs.url, request.specs.payload, function (err, req, res, data) {
         cb(res, data);
       });
       break;
     case 'DELETE':
-      this.client.del(request.url, function (err, req, res) {
+      this.client.del(request.specs.url, function (err, req, res) {
         cb(res, false);
       });
       break;

@@ -2,9 +2,9 @@ module.exports = {
   // Test BasicAuth authentication
   BasicAuth: {
     method: 'GET',
-    url: '/',
+    url: '/user',
     payload: false,
-    resultCode: 404,
+    resultCode: 200,
     result: false
   },
   Session: {
