@@ -6,10 +6,10 @@ var client = require('./client');
 
 // Test groups
 var groups = [
-  /*'authentication',
+  'authentication',
   'users',
   'versions',
-  'schemas',*/
+  'schemas',
   'documents'
 ];
 
@@ -82,8 +82,8 @@ proc.on('message', function () {
         output('success', test.name + ' passed tests (' + time + 'ms)');
       }
 
-      // Output data
-      if (res.body) {
+      // Output data on error
+      if (res.body && status === 'error') {
         output(status, 'RESPONSE DATA:');
         output(status, '-------------------------------');
         var out;
