@@ -10,6 +10,12 @@ module.exports = function (type, data, schema, cb) {
   var toType = function (obj) {
     return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
   };
+  
+  // Ensure single entity
+  if (toType(data) === 'array') {
+    cb('Only accepts single object');
+    return false;
+  }
 
   // Loop through schema
   for (var prop in schema) {
@@ -45,7 +51,7 @@ module.exports = function (type, data, schema, cb) {
   }
 
   // Set err to failures or false
-  var err = (Object.keys(failures).length > 0) ? failures : false;
+  var err = (Object.keys(failures).length > 0) ? failures : err;
 
   // Fire callback
   cb(err);
