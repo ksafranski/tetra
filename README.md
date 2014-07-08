@@ -9,7 +9,7 @@ for simplified deployment, versioning and management of RESTful APIs.
 
 * [Installation](#installation)
 * [Usage](#usage)
-* [Req/Req](#requests--responses)
+* [Req/Res](#requests--responses)
 * [Logging](#logging)
 * [SSL](#ssl)
 * [Users](#users) > [Read](#read-user) / [Create](#create-user) / [Update](#update-user) / [Delete](#delete-user)
