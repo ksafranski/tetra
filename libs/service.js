@@ -82,6 +82,22 @@ Service.prototype.start = function () {
     var logger = require('./../adapters/logs/' + config.service.logs.adapter + '/main.js');
     app.use(logger);
   }
+  // General error catch
+  app.use(function (err, req, res) {
+    if (err) {
+      if (err.toString().indexOf('Unexpected token') !== -1) {
+        // The crap bodyParser doesn't seem to catch...
+        res.send(400, {
+          response: 'Invalid format of request body'
+        });
+      } else {
+        // General f-up's
+        res.send(500, {
+          response: 'Error processing request'
+        });
+      }
+    }
+  });
   // Bind endpoints to api module
   app.all('/*', processor).use(errorHandler);
   // Start listener
