@@ -1,6 +1,6 @@
 ![Codeship Status for telepharm/nbaas](https://codeship.io/projects/b4fbc3d0-dde4-0131-c2ca-42d485117a92/status)
 
-# NBaaS
+# Tetra
 
 Back-End as a Service platform built in Node.JS and developed to allow 
 for simplified deployment, versioning and management of RESTful APIs.
@@ -22,7 +22,7 @@ for simplified deployment, versioning and management of RESTful APIs.
     * [Multiples](#multiples)
     * [Search](#search)
     * [Order](#order)
-* [Blobs](#blobs) -> [Read](#read-blob) / [Create](#create-blob) / [Update](#update-blob) / [Delete](#delete-blob)
+* [Blobs](#blobs) > [Read](#read-blob) / [Create](#create-blob) / [Update](#update-blob) / [Delete](#delete-blob)
 * [Contributing](#contributing)
 * [License](#license)
   
