@@ -1,3 +1,4 @@
+var data = require('./../data.json');
 module.exports = {
   // Test BasicAuth authentication
   BasicAuth: {
@@ -12,8 +13,8 @@ module.exports = {
     method: 'POST',
     url: '/session',
     payload: {
-      username: 'admin',
-      password: 'password123'
+      username: data.authentication.username,
+      password: data.authentication.password
     },
     resultCode: 201,
     result: false

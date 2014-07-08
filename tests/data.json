@@ -1,0 +1,29 @@
+{
+  "authentication": {
+    "username": "admin",
+    "password": "password123"
+  },
+  "schema": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "list": {
+      "type": "array"
+    },
+    "info": {
+      "type": "json"
+    }
+  },
+  "document": {
+    "name": "John Doe",
+    "active": true,
+    "list": ["a", "b", "c"],
+    "info": {
+      "foo": "bar"
+    }
+  }
+}

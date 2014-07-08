@@ -1,19 +1,4 @@
-// Test schema
-var testDoc = {
-  name: {
-    type: 'string',
-    required: true
-  },
-  active: {
-    type: 'boolean'
-  },
-  list: {
-    type: 'array'
-  },
-  info: {
-    type: 'json'
-  }
-};
+var data = require('./../data.json');
 
 module.exports = {
   // Create new version
@@ -32,7 +17,7 @@ module.exports = {
     url: '/schema/vTEST',
     payload: {
       name: 'test',
-      document: testDoc
+      document: data.schema
     },
     resultCode: 201,
     result: false
@@ -43,7 +28,7 @@ module.exports = {
     url: '/schema/vTEST/test',
     payload: false,
     resultCode: 200,
-    result: testDoc
+    result: data.schema
   },
   // Test Update
   Update: {

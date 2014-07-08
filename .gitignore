@@ -16,6 +16,7 @@ node_modules
 *.json
 !conf/service.json
 !conf/user.json
+!tests/data.json
 conf/certs/*.crt
 conf/certs/*.key
 conf/certs/*.pem

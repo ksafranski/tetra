@@ -1,30 +1,4 @@
-// Test schema
-var testSchema = {
-  name: {
-    type: 'string',
-    required: true
-  },
-  active: {
-    type: 'boolean'
-  },
-  list: {
-    type: 'array'
-  },
-  info: {
-    type: 'json'
-  }
-};
-
-// Test doc
-var testDoc = {
-  name: 'John Doe',
-  active: true,
-  list: ['a', 'b', 'c'],
-  info: {
-    foo: 'bar'
-  }
-};
-
+var data = require('./../data.json');
 module.exports = {
   // Create new version
   CreateVersion: {
@@ -42,7 +16,7 @@ module.exports = {
     url: '/schema/vTEST',
     payload: {
       name: 'test',
-      document: testSchema
+      document: data.schema
     },
     resultCode: 201,
     result: false
@@ -51,9 +25,9 @@ module.exports = {
   Create: {
     method: 'POST',
     url: '/document/vTEST/test',
-    payload: testDoc,
+    payload: data.document,
     resultCode: 201,
-    result: testDoc
+    result: data.document
   },
   // Test read
   ReadAll: {
@@ -69,7 +43,7 @@ module.exports = {
     url: '/document/vTEST/test?search=' + encodeURIComponent('{"name":"John Doe"}'),
     payload: false,
     resultCode: 200,
-    result: testDoc
+    result: data.document
   },
   // Test Update
   Update: {
