@@ -10,7 +10,7 @@ module.exports = function (type, data, schema, cb) {
   var toType = function (obj) {
     return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
   };
-  
+
   // Ensure single entity
   if (toType(data) === 'array') {
     cb('Only accepts single object');
@@ -23,7 +23,6 @@ module.exports = function (type, data, schema, cb) {
     if (schema[prop].hasOwnProperty('required') && schema[prop].required && type === 'create') {
       if (!data.hasOwnProperty(prop)) {
         failures[prop] = 'required';
-        return false;
       }
     }
 
