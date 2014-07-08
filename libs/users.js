@@ -151,6 +151,13 @@ module.exports = function (req, res) {
         options.multi = true;
       }
 
+      // Encrypt password
+      for (var field in req.body) {
+        if (field === 'password') {
+          req.body.password = passwordHash.generate(req.body.password);
+        }
+      }
+
       // Update
       db.update(query, {
         $set: req.body
