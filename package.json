@@ -1,10 +1,10 @@
 {
-  "name": "nbaas",
+  "name": "tetra",
   "version": "0.1.0",
   "description": "RESTful API Back End as a Service",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fluidbyte/node-baas.git"
+    "url": "https://github.com/telepharm/tetra.git"
   },
   "dependencies": {
     "cli-color": "~0.2.3",
