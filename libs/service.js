@@ -33,7 +33,7 @@ Service.prototype.start = function () {
       };
       // Check PEM
       if (fs.existsSync(certPath + 'ssl.pem')) {
-        opts.ca = fs.readFileSync(certPath + 'ssl.crt');
+        opts.ca = fs.readFileSync(certPath + 'ssl.pem');
       }
       // Use SSL
       sslApp = https.createServer(opts, app);
