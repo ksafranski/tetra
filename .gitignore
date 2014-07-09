@@ -20,6 +20,7 @@ node_modules
 conf/certs/*.crt
 conf/certs/*.key
 conf/certs/*.pem
+conf/sessions.db
 
 
 # Documents

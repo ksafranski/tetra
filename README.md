@@ -32,7 +32,7 @@ After cloning or pulling the contents of the system, run `npm install` to
 install all dependencies.
 
 The adapters by default support local document storage (via [NeDB](https://github.com/louischatriot/nedb)), 
-local (node-fs) blob storage and local logging via [winston](https://github.com/flatiron/winston). 
+local (node-fs) blob storage and local logging via [bunyan](https://github.com/trentm/node-bunyan). 
 
 The system also comes with an adapter for [Mongo](http://www.mongodb.com) which 
 can be activated by editing the `/conf/service.json` file. ([More info...](adapters/documents/mongo/README.md))
@@ -66,7 +66,9 @@ to the following:
   "port": 8000,
   "authentication": true,
   "cors": "*",
-  "secret": "abcdef1234567890",
+  "sessionKey": "73bce8aaf3520eabe772",
+  "sessionSecret": "1aeb459cdde10ffd3a03efbb2",
+  "sessionMaxAge": 2592000000,
   "schemas": {
     "strict": true,
     "types": ["string", "number", "boolean", "array", "json"]

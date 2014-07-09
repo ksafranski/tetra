@@ -8,6 +8,7 @@ var config = require('./config');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
+var nedbSession = require('connect-nedb-session')(expressSession);
 var errorHandler = require('./errors');
 
 // SSL App
@@ -63,7 +64,16 @@ Service.prototype.start = function () {
   app.use(expressSession({
     resave: true,
     saveUninitialized: true,
-    secret: config.service.secret
+    secret: config.service.sessionSecret,
+    key: config.service.sessionKey,
+    cookie: {
+      path: '/',
+      httpOnly: true,
+      maxAge: config.service.sessionMaxAge
+    },
+    store: new nedbSession({
+      filename: 'conf/sessions.db'
+    })
   }));
   // Body parser
   app.use(bodyParser.json());
