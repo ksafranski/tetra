@@ -20,15 +20,19 @@ var log = new Logger({
   }],
 });
 
+// Save the log
+var save = function (obj) {
+  log.info(obj);
+};
+
+// ###
+// MIDDLEWARE
+// ###
+
 module.exports = function (req, res, next) {
 
   var send;
   var end;
-
-  // Save the log
-  var save = function (obj) {
-    log.info(obj);
-  };
 
   // Set start time
   if (!req._startTime) {
