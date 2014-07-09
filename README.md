@@ -90,7 +90,7 @@ By default, the system includes adapters for:
 
 * Documents via a local (nedb) adapter
 * Blobs via a local (node-fs) adapter
-* Logs via a local (winston) adapter
+* Logs via a local (bunyan) adapter
 
 For more information on adapters and writing custom adapters for other data or 
 document storage services, see the [adapters documentation](/adapters).
@@ -119,7 +119,7 @@ proper use of verbs/methods, proper use of req/res headers, etc.
 
 ### Logging
 
-The system includes a local logging system through Express middleware and Winston. 
+The system includes a local logging system through Express middleware and Bunyan. 
 The log adapter is activated by its presence in the `/conf/service.json` file. If 
 the logging service is not needed simply remove the `logs` property from the 
 config file and the middleware will not run.

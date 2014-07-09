@@ -13,11 +13,10 @@ var Logger = require('bunyan');
 var log = new Logger({
   name: 'http',
   streams: [{
-    stream: process.stdout,
-    level: 'debug'
-  }, {
+    type: 'rotating-file',
     path: logFile,
-    level: 'info'
+    period: '1d', // daily rotation
+    count: 5 // keep 5 back copies
   }],
 });
 
@@ -28,7 +27,6 @@ module.exports = function (req, res, next) {
 
   // Save the log
   var save = function (obj) {
-    //fs.appendFileSync(logfile, JSON.stringify(log, null, 4));
     log.info(obj);
   };
 
