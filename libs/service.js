@@ -8,7 +8,7 @@ var config = require('./config');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
-var connectDomain = require('connect-domain');
+var errorHandler = require('./errors');
 
 // SSL App
 var sslApp = false;
@@ -39,11 +39,6 @@ Service.prototype.start = function () {
       sslApp = https.createServer(opts, app);
     }
   }
-  // Error exception handler
-  var errorHandler = function (err, req, res) {
-    res.send(500, 'Internal error');
-    console.log(err);
-  };
   // Check and load config
   if (!config.service) {
     output('error', 'Missing config file: /conf/service.json');
@@ -63,7 +58,6 @@ Service.prototype.start = function () {
     }
   };
   app.use(allowCrossDomain);
-  app.use(connectDomain());
   // Sessions
   app.use(cookieParser());
   app.use(expressSession({
@@ -83,26 +77,9 @@ Service.prototype.start = function () {
     app.use(logger);
   }
   // General error catch
-  app.use(function (err, req, res, next) {
-    if (err) {
-      if (err.toString().indexOf('Unexpected token') !== -1) {
-        // The crap bodyParser doesn't seem to catch...
-        res.send(400, {
-          response: 'Invalid format of request body'
-        });
-        return false;
-      } else {
-        // General f-up's
-        res.send(500, {
-          response: 'Error processing request'
-        });
-        return false;
-      }
-    }
-    next();
-  });
+  app.use(errorHandler);
   // Bind endpoints to api module
-  app.all('/*', processor).use(errorHandler);
+  app.all('/*', processor);
   // Start listener
   if (sslApp) {
     sslApp.listen(config.service.port);
