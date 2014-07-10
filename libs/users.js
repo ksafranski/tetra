@@ -133,6 +133,11 @@ module.exports = function (req, res) {
 
   // Update user
   var update = function () {
+    // Ensure query
+    if (typeof query !== 'object' || !Object.keys(query).length) {
+      self.respond(400, 'Invalid query');
+      return false;
+    }
     // Ensure user exists
     db.find(query, function (err, data) {
       if (err) {
@@ -142,7 +147,7 @@ module.exports = function (req, res) {
 
       // User already exists
       if (!data.length) {
-        self.respond(404, 'poop');
+        self.respond(404);
         return false;
       }
 
@@ -178,6 +183,12 @@ module.exports = function (req, res) {
 
   // Delete user
   var del = function () {
+    // Ensure query
+    if (typeof query !== 'object' || !Object.keys(query).length) {
+      self.respond(400, 'Invalid query');
+      return false;
+    }
+    // Run query
     db.remove(query, {
       multi: true
     }, function (err) {
