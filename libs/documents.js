@@ -165,11 +165,12 @@ module.exports = function (req, res) {
       query = {
         _id: id
       };
-    } else if (search !== {}) {
+    } else if (typeof search === 'object' && Object.keys(search).length) {
       query = search;
     } else {
       // Not valid
       self.respond(400, 'Invalid query');
+      return false;
     }
     // Validate against scheam
     validate('update', req.body, schema, function (err) {
