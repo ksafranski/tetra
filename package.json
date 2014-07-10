@@ -1,6 +1,6 @@
 {
   "name": "tetra",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "RESTful API Back End as a Service in Node",
   "repository": {
     "type": "git",
