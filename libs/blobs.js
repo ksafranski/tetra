@@ -41,7 +41,9 @@ module.exports = function (req, res) {
       if (err) {
         self.respond(err.code, err.message);
       } else {
-        res.sendfile(data);
+        res.header('Content-Type', data.type);
+        res.header('Content-Length', data.size);
+        res.sendfile(data.file);
       }
     });
   };

@@ -122,7 +122,8 @@ Conn.prototype.find = function (blob, cb) {
   // blob => name/path of blob
   // cb => Callback which accepts (err, data) as arguments:
   //         err: { code: 404, message: 'Not found' } -or- false,
-  //         data: Return data object, no envelope
+  //         data: Return data object:
+  //               { file: [binary], type: [mime], size: [bytes] }
 };
 ```
 

@@ -2,6 +2,7 @@
 var config = require('./../../../libs/config');
 var fs = require('fs');
 var path = require('path');
+var mime = require('mime');
 
 var Conn = function () {
   this.base = __dirname + '/../../../' + config.service.blobs.path;
@@ -20,7 +21,13 @@ Conn.prototype.find = function (blob, cb) {
       message: 'Blob not found'
     });
   } else {
-    cb(false, path.resolve(this.base + blob));
+    var type = mime.lookup(this.base + blob);
+    var size = fs.statSync(this.base + blob).size;
+    cb(false, {
+      file: path.resolve(this.base + blob),
+      type: type,
+      size: size
+    });
   }
 };
 
